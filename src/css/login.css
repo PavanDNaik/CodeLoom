@@ -1,0 +1,14 @@
+/* body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100vh;
+} */
+
+.log-in {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  padding: 30px;
+  justify-self: center;
+}
