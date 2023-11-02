@@ -178,23 +178,23 @@ const problems = [
     title: "Sum of two Integers",
     difficulty: "easy",
     discription:
-      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     testCases: ["1 2", "3 4", "5 -2"],
   },
   {
     pnum: 2,
-    title: "Sum of two Integers",
+    title: "Sum of three Integers",
     difficulty: "medium",
     discription:
-      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     testCases: ["1 2", "3 4", "5 -2"],
   },
   {
     pnum: 3,
-    title: "Sum of two Integers",
+    title: "Sum of four Integers",
     difficulty: "hard",
     discription:
-      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     testCases: ["1 2", "3 4", "5 -2"],
   },
 ];
@@ -204,8 +204,13 @@ app.get("/problems", (req, res) => {
 });
 
 app.get("/problems/:id", (req, res) => {
-  console.log(req.method.id);
-  console.log(problemName);
+  const requestedProblemTitle = req.params.id.replaceAll("-", " ");
+  const foundp = problems.find((p) => p.title == requestedProblemTitle);
+  if (foundp) {
+    return res.json({ problemInfo: foundp });
+  } else {
+    return res.json("cannot find problem");
+  }
 });
 
 app.listen(port, () => {

@@ -13,7 +13,7 @@ function Home() {
   return (
     <div>
       <Navbar {...info} />
-      <div>Some info about the website / landing page</div>
+      <div>Some info about the website </div>
       <Footer />
     </div>
   );

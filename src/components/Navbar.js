@@ -7,7 +7,7 @@ function Navbar({ userName }) {
     <div className="navbar">
       <ul className="flex">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/home">Home</Link>
         </li>
         <li>
           <Link to="/problems">Problems</Link>

@@ -4,12 +4,14 @@ import Signupform from "./components/Signupform";
 import Loginform from "./components/Loginform";
 import Problems from "./screens/Problems";
 import Editor from "./components/Editor";
+import DashBoard from "./screens/DashBoard";
 import "./App.css";
 function App() {
   return (
     <div>
       <Router>
         <Routes>
+          <Route exact path="/" element={<DashBoard />} />
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/sign-up" element={<Signupform />} />
           <Route exact path="/login" element={<Loginform />} />

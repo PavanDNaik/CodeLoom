@@ -31,3 +31,19 @@ a {
   padding: 10px 50px;
   border: 1px solid black;
 }
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+}
+.editor-container {
+}
+
+.editor-testresult {
+  border: 1px solid black;
+  height: 80px;
+}
