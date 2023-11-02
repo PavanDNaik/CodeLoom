@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/login.css";
 function Signupform() {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   async function handleSignUp() {
     const result = await fetch("http://localhost:5000/sign-up", {
       method: "POST",
@@ -19,15 +20,17 @@ function Signupform() {
       }),
     });
     const data = await result.json();
-    if (data.errors) {
-      setError(data.errors);
-    } else {
+    if (!data.errors && data.msg) {
       setError("");
       localStorage.setItem("user", JSON.stringify(data.msg));
+      navigate("/", { state: { ...data.msg } });
+    } else {
+      setError(data.errors);
     }
   }
   return (
     <div className="log-in">
+      {/* {user && <Navigate to="/" state={user} replace={true}></Navigate>} */}
       <div>{error}</div>
       <input
         type="text"

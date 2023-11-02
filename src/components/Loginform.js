@@ -1,9 +1,31 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import "../css/login.css";
 function Loginform() {
+  const navigate = useNavigate();
   const [error, setError] = useState("");
-  function handleLogin() {}
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  async function handleLogin() {
+    const result = await fetch("http://localhost:5000/log-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+    const data = await result.json();
+    if (!data.errors && data.msg) {
+      setError("");
+      localStorage.setItem("user", JSON.stringify(data.msg));
+      navigate("/", { state: { ...data.msg } });
+    } else {
+      setError(data.errors);
+    }
+  }
   return (
     <div className="log-in">
       <div>{error}</div>
@@ -12,16 +34,18 @@ function Loginform() {
         name="email"
         id="email"
         placeholder="Enter the email"
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
         name="password"
         id="password"
         placeholder="Enter the passworld"
+        onChange={(e) => setPassword(e.target.value)}
       />
       <button
-        onClick={(e) => {
-          handleLogin(e);
+        onClick={async (e) => {
+          await handleLogin(e);
         }}
       >
         submit

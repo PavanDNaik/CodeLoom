@@ -153,6 +153,61 @@ app.post("/sign-up", async (req, res) => {
   }
 });
 
+app.post("/log-in", async (req, res) => {
+  userEmail = req.body.email;
+  userPassword = req.body.password;
+  const someUser = await user.findOne({ userEmail: userEmail });
+
+  if (someUser) {
+    if (someUser._doc.userPassword == userPassword) {
+      res.json({ msg: someUser._doc });
+      return;
+    } else {
+      res.json({ errors: "passwrod is wrong" });
+      return;
+    }
+  } else {
+    res.json({ errors: "Email id or passwrod is wrong" });
+  }
+});
+
+//problems
+const problems = [
+  {
+    pnum: 1,
+    title: "Sum of two Integers",
+    difficulty: "easy",
+    discription:
+      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+    testCases: ["1 2", "3 4", "5 -2"],
+  },
+  {
+    pnum: 2,
+    title: "Sum of two Integers",
+    difficulty: "medium",
+    discription:
+      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+    testCases: ["1 2", "3 4", "5 -2"],
+  },
+  {
+    pnum: 3,
+    title: "Sum of two Integers",
+    difficulty: "hard",
+    discription:
+      "Complete the solveMeFirst function in the editor below.<br/>solveMeFirst has the following parameters:<br/>int a: the first value<br/>int b: the second value",
+    testCases: ["1 2", "3 4", "5 -2"],
+  },
+];
+
+app.get("/problems", (req, res) => {
+  res.json({ problems });
+});
+
+app.get("/problems/:id", (req, res) => {
+  console.log(req.method.id);
+  console.log(problemName);
+});
+
 app.listen(port, () => {
   console.log(`running in http://localhost:${port}`);
 });

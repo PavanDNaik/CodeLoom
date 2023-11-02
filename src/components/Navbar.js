@@ -1,20 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
-function Navbar() {
+import Profile from "./Profile";
+
+function Navbar({ userName }) {
   return (
-    <div>
+    <div className="navbar">
       <ul className="flex">
         <li>
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/">Problems</Link>
+          <Link to="/problems">Problems</Link>
         </li>
         <li>
           <Link to="/">Contest</Link>
         </li>
         <li>
-          <Link to="/login">Login</Link>
+          {userName ? (
+            <Profile name={userName} />
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
         </li>
       </ul>
     </div>
