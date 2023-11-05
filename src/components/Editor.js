@@ -62,7 +62,9 @@ function Editor() {
       <SplitPane split="vertical" sizes={bodySizes} onChange={setBodySizes}>
         <Pane minSize={50} maxSize="70%">
           <div className="split-pane-layoutCSS  problem-info">
-            <h3 className="problem-title">{problemInfo.title}</h3>
+            <h3 className="problem-title">
+              {problemInfo.pnum}. {problemInfo.title}
+            </h3>
             <pre className="problem-discrption">{problemInfo.discription}</pre>
             <div className="problem-examples"></div>
           </div>
@@ -101,6 +103,7 @@ function Editor() {
               </div>
               <div className="codeEditor">
                 <MonacoEditor
+                  value={problemInfo.boilerPlate}
                   language={lang}
                   theme={theme}
                   onChange={(value) => setCode(value)}

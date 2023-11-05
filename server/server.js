@@ -179,6 +179,7 @@ const problems = [
     difficulty: "easy",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    boilerPlate: "def addTwoNumers(num1, num2):\n",
     testCases: ["1 2", "3 4", "5 -2"],
   },
   {
@@ -187,6 +188,7 @@ const problems = [
     difficulty: "medium",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    boilerPlate: "def addTwoNumers(num1, num2, num3 ):\n",
     testCases: ["1 2", "3 4", "5 -2"],
   },
   {
@@ -195,6 +197,7 @@ const problems = [
     difficulty: "hard",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    boilerPlate: "def addTwoNumers(num1, num2, num3, num4):\n",
     testCases: ["1 2", "3 4", "5 -2"],
   },
 ];
@@ -206,6 +209,7 @@ app.get("/problems", (req, res) => {
 app.get("/problems/:id", (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
   const foundp = problems.find((p) => p.title == requestedProblemTitle);
+
   if (foundp) {
     return res.json({ problemInfo: foundp });
   } else {
