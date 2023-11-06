@@ -179,8 +179,17 @@ const problems = [
     difficulty: "easy",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
-    boilerPlate: "def addTwoNumers(num1, num2):\n",
-    testCases: ["1 2", "3 4", "5 -2"],
+    boilerPlate: {
+      python: "def addTwoNumers(num1, num2):\n",
+      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
+      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      cpp: "",
+    },
+    testCases: [
+      [1, 2],
+      [3, 4],
+      [5, -2],
+    ],
   },
   {
     pnum: 2,
@@ -188,8 +197,13 @@ const problems = [
     difficulty: "medium",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
-    boilerPlate: "def addTwoNumers(num1, num2, num3 ):\n",
-    testCases: ["1 2", "3 4", "5 -2"],
+    boilerPlate: {
+      python: "def addTwoNumers(num1, num2):\n",
+      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
+      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      cpp: "",
+    },
+    testCases: ["1  2", "3  4", "5  -2"],
   },
   {
     pnum: 3,
@@ -197,7 +211,12 @@ const problems = [
     difficulty: "hard",
     discription:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
-    boilerPlate: "def addTwoNumers(num1, num2, num3, num4):\n",
+    boilerPlate: {
+      python: "def addTwoNumers(num1, num2):\n",
+      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
+      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      cpp: "",
+    },
     testCases: ["1 2", "3 4", "5 -2"],
   },
 ];

@@ -1,5 +1,4 @@
 #include <stdio.h>
-int main()
-{
-print("hii");
+int add(int num1,int num2){
+
 }

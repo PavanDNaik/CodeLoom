@@ -23,7 +23,7 @@ function Signupform() {
     if (!data.errors && data.msg) {
       setError("");
       localStorage.setItem("user", JSON.stringify(data.msg));
-      navigate("/", { state: { ...data.msg } });
+      navigate("/home", { state: { ...data.msg } });
     } else {
       setError(data.errors);
     }
