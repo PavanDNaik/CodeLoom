@@ -4,10 +4,10 @@ const app = express();
 const cors = require("cors");
 const { spawn } = require("child_process");
 const fs = require("fs");
-const { log } = require("console");
 const mongoose = require("mongoose");
-
-mongoose.connect("mongodb://127.0.0.1:27017/web-project-db");
+const mongoURI =
+  "mongodb+srv://pawannaik396:web-project@cluster0.dpuzv08.mongodb.net/?retryWrites=true&w=majority";
+mongoose.connect(mongoURI);
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -190,6 +190,20 @@ const problems = [
       [3, 4],
       [5, -2],
     ],
+  },
+  {
+    pnum: 2,
+    title: "Sum of three Integers",
+    difficulty: "medium",
+    discription:
+      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    boilerPlate: {
+      python: "def addTwoNumers(num1, num2):\n",
+      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
+      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      cpp: "",
+    },
+    testCases: ["1  2", "3  4", "5  -2"],
   },
   {
     pnum: 2,
