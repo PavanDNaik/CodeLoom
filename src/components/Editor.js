@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import MonacoEditor from "@monaco-editor/react";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
+import Description from "./Description";
+import Submision from "./Submision";
 
 //fetch problem
 async function getProblemInfo({ problemId }) {
@@ -28,6 +30,7 @@ function Editor() {
   const [lang, setLang] = useState("python");
   const [theme, setTheme] = useState("vs-dark");
   const [problemInfo, setProblemInfo] = useState({});
+  const [submitionOrInfo, setSubmitionOrInfo] = useState("info");
 
   //output - hooks
   const [testResult, setTestResult] = useState("");
@@ -69,16 +72,36 @@ function Editor() {
     <div className="coding-interface">
       <SplitPane split="vertical" sizes={bodySizes} onChange={setBodySizes}>
         <Pane minSize={50} maxSize="70%">
-          <div className="split-pane-layoutCSS  problem-info">
-            <h3 className="problem-title">
-              {problemInfo.pnum}. {problemInfo.title}
-            </h3>
-            <pre className="problem-discrption">{problemInfo.discription}</pre>
-            <div className="problem-examples"></div>
+          <div className="description-submission-container">
+            <div>
+              <button
+                onClick={() => {
+                  if (submitionOrInfo === "sub") {
+                    setSubmitionOrInfo("info");
+                  }
+                }}
+              >
+                Description
+              </button>
+              <button
+                onClick={() => {
+                  if (submitionOrInfo === "info") {
+                    setSubmitionOrInfo("sub");
+                  }
+                }}
+              >
+                Submissions
+              </button>
+            </div>
+            {submitionOrInfo === "info" ? (
+              <Description {...problemInfo} />
+            ) : (
+              <Submision />
+            )}
           </div>
         </Pane>
 
-        <Pane>
+        <Pane className="editor-testcases-container">
           <SplitPane
             split="horizontal"
             sizes={editorSizes}
@@ -122,7 +145,7 @@ function Editor() {
               </div>
             </Pane>
 
-            <div className="split-pane-layoutCSS result-test-case-container">
+            <div className="result-test-case-container split-pane-layoutCSS ">
               <div className="stick-top-of-container">
                 <div>
                   <button

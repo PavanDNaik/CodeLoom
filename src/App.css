@@ -25,6 +25,11 @@ a {
   height: 50px;
   border-top: 1px solid black;
 }
+
+.split-pane-layoutCSS {
+  height: 100%;
+}
+
 .problemSet {
   display: flex;
   flex-direction: column;
@@ -56,24 +61,31 @@ a {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  overflow-x: hidden;
-  height: 100%;
+  word-wrap: break-word;
+  height: 90%;
   background-color: #1e293b;
 }
 .coding-interface {
   height: 90vh;
+  padding: 0.3rem;
+}
+
+.editor-testcases-container {
+  border-radius: 5px;
 }
 
 .monaco-editor-container {
   width: 100%;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
   background-color: #1e293b;
-  border-radius: 2px;
+  border-radius: 5px;
   gap: 5px;
-  margin-left: 5px;
+  /* margin-left: 5px; */
+  padding: 0.3rem;
   /* padding: 5px; */
   /* margin-bottom: 20px; */
 }
+
 .editor-config-selects {
   height: 8%;
 }
@@ -94,10 +106,6 @@ a {
   height: 10vh;
 }
 
-.split-pane-layoutCSS {
-  height: 100%;
-}
-
 .stick-top-of-container {
   display: flex;
   justify-content: space-between;
@@ -107,6 +115,21 @@ a {
 .Test-cases-caontainer {
   height: 100%;
   width: 100%;
-  padding: 5px;
+  padding: 0.3rem;
   background-color: #1e293b;
+}
+
+.description-submission-container {
+  height: 100%;
+  padding: 0.5rem;
+  background-color: #334155;
+  border-radius: 5px;
+  word-wrap: break-word;
+}
+
+.result-test-case-container {
+  height: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: #334155;
 }

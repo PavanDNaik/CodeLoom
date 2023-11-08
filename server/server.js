@@ -120,12 +120,14 @@ app.post("/run", (req, res) => {
   });
 });
 
+//schema
 const userSchema = new mongoose.Schema({
   userName: String,
   userEmail: String,
   userPassword: String,
 });
 
+// const problemSetSchema = new mongoose.Schema({});
 const user = mongoose.model("user", userSchema);
 
 app.post("/sign-up", async (req, res) => {
@@ -177,7 +179,7 @@ const problems = [
     pnum: 1,
     title: "Sum of two Integers",
     difficulty: "easy",
-    discription:
+    description:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     boilerPlate: {
       python: "def addTwoNumers(num1, num2):\n",
@@ -195,7 +197,7 @@ const problems = [
     pnum: 2,
     title: "Sum of three Integers",
     difficulty: "medium",
-    discription:
+    description:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     boilerPlate: {
       python: "def addTwoNumers(num1, num2):\n",
@@ -203,13 +205,17 @@ const problems = [
       c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
       cpp: "",
     },
-    testCases: ["1  2", "3  4", "5  -2"],
+    testCases: [
+      [1, 2],
+      [3, 4],
+      [5, -2],
+    ],
   },
   {
     pnum: 2,
     title: "Sum of three Integers",
     difficulty: "medium",
-    discription:
+    description:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     boilerPlate: {
       python: "def addTwoNumers(num1, num2):\n",
@@ -217,13 +223,17 @@ const problems = [
       c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
       cpp: "",
     },
-    testCases: ["1  2", "3  4", "5  -2"],
+    testCases: [
+      [1, 2],
+      [3, 4],
+      [5, -2],
+    ],
   },
   {
     pnum: 3,
     title: "Sum of four Integers",
     difficulty: "hard",
-    discription:
+    description:
       "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
     boilerPlate: {
       python: "def addTwoNumers(num1, num2):\n",
@@ -231,7 +241,11 @@ const problems = [
       c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
       cpp: "",
     },
-    testCases: ["1 2", "3 4", "5 -2"],
+    testCases: [
+      [1, 2],
+      [3, 4],
+      [5, -2],
+    ],
   },
 ];
 
