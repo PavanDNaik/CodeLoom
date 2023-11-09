@@ -115,7 +115,7 @@ function executeCode(lang, code, callback) {
 app.post("/run", (req, res) => {
   const code = req.body.code;
   const lang = req.body.lang;
-  const testCode = problems["1"].testCode[lang];
+  const testCode = problems[req.body.pnum].testCode[lang];
 
   executeCode(lang, code + testCode, (result) => {
     if (result) {
@@ -291,7 +291,10 @@ Notice that the answer must be a substring, "pwke" is a subsequence and not a su
       python: `def longestSubstring(s):
     `,
       java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
-      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      c: `#include <stdio.h>
+int longestSubstring(char *s){
+    
+}`,
       cpp: "",
     },
     testCode: {
@@ -307,7 +310,24 @@ for i in range(len(testCases)):
         exit(0)
 print("true")`,
       java: ``,
-      c: ``,
+      c: `
+int main()
+{
+    char *testCases[3] = {"abcabcbb", "bbbbb", "pwwkew"};
+    int expected[3] = {3,1,3};
+    for(int i=0;i<3;i++)
+    {
+        int res = longestSubstring(testCases[i]);
+        if(res != expected[i])
+        {
+            printf("INPUT: %s",testCases[i]);
+            printf("EXPECTED: %d",expected[i]);
+            printf("RESULT: %d",res);
+            return 0;
+        }
+    }
+      printf("true");
+}`,
       cpp: ``,
     },
     testCases: ["abcabcbb", "bbbbb", "pwwkew"],

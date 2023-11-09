@@ -57,6 +57,7 @@ function Editor() {
       body: JSON.stringify({
         code: code,
         lang: lang,
+        pnum: problemInfo.pnum,
       }),
     }).catch((err) => {
       console.log(err);

@@ -1,6 +1,6 @@
 #include <stdio.h>
-int add(int num1,int num2){
-    return num1+num2;
+int longestSubstring(char *s){
+    return 1;
 }
       int main()
 {
@@ -12,8 +12,8 @@ int add(int num1,int num2){
         if(res != expected[i])
         {
             printf("INPUT: %d, %d",testCases[i][0], testCases[i][1]);
-            printf("EXPECTED: %d",expected[i]);
-            printf("RESULT: %d",res);
+            printf("  EXPECTED: %d",expected[i]);
+            printf("  RESULT: %d",res);
             return 0;
         }
     }
