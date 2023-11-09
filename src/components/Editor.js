@@ -116,6 +116,9 @@ function Editor() {
                 <select
                   onChange={(e) => {
                     setLang(e.target.value);
+                    if (problemInfo.boilerPlate) {
+                      setCode(problemInfo.boilerPlate[e.target.value]);
+                    }
                   }}
                 >
                   <option value="python">python</option>
@@ -175,7 +178,7 @@ function Editor() {
                       return (
                         <pre key={index}>
                           <h4>CASE {index}</h4>
-                          {`[${val}]`}
+                          {`${val}`}
                         </pre>
                       );
                     })}

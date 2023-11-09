@@ -1,3 +1,13 @@
-def addTwoNumers(num1, num2):
-    return num1 + num2
-print(addTwoNumers(5,6))
+def longestSubstring(s):
+    
+    
+testCases = ["abcabcbb", "bbbbb", "pwwkew"]
+expected = [3,1,3]
+for i in range(len(testCases)):
+    res = longestSubstring(testCases[i])
+    if res != expected[i]:
+        print("INPUT: ",testCases[i])
+        print("EXPECTED: ",expected[i])
+        print("RESULT: ",res)
+        exit(0)
+print("true")

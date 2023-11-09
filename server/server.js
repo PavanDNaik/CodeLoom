@@ -38,8 +38,7 @@ function getResults(childProcess, callback) {
   });
 
   childProcess.on("close", (code) => {
-    // console.log(result);
-    callback(result);
+    return callback(result);
   });
 }
 
@@ -50,23 +49,24 @@ function getResultOfexe(childProcess, exec, callback) {
   });
 
   childProcess.stderr.on("data", (err) => {
-    if (err) {
-      result += err;
-      return callback(result);
-    }
+    if (err) result += err;
   });
-  console.log(exec);
+
   childProcess.on("close", (code) => {
-    const runEXE = spawn("./" + exec, []);
-    runEXE.stdout.on("data", (data) => {
-      result += data;
-    });
-    runEXE.stderr.on("data", (data) => {
-      result += data;
-    });
-    runEXE.on("close", (data) => {
+    if (code === 0) {
+      const runEXE = spawn("./" + exec, []);
+      runEXE.stdout.on("data", (data) => {
+        result += data;
+      });
+      runEXE.stderr.on("data", (err) => {
+        result += err;
+      });
+      runEXE.on("close", (code) => {
+        return callback(result);
+      });
+    } else {
       callback(result);
-    });
+    }
   });
 }
 
@@ -115,8 +115,14 @@ function executeCode(lang, code, callback) {
 app.post("/run", (req, res) => {
   const code = req.body.code;
   const lang = req.body.lang;
-  executeCode(lang, code, (result) => {
-    res.json(result);
+  const testCode = problems["1"].testCode[lang];
+
+  executeCode(lang, code + testCode, (result) => {
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   });
 });
 
@@ -174,18 +180,84 @@ app.post("/log-in", async (req, res) => {
 });
 
 //problems
-const problems = [
-  {
+const problems = {
+  1: {
     pnum: 1,
     title: "Sum of two Integers",
     difficulty: "easy",
-    description:
-      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    description: `Complete the solveMeFirst function in the editor below.
+      nsolveMeFirst has the following parameters:
+      nint a: the first value
+      int b: the second value`,
     boilerPlate: {
-      python: "def addTwoNumers(num1, num2):\n",
-      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
-      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      python: `def addTwoNumers(num1, num2):
+    `,
+      java: `import java.util.*;
+class addNumbers{
+    public static int add(int num1,int num2){
+  
+    }
+}`,
+      c: `#include <stdio.h>
+int add(int num1,int num2){
+
+}`,
       cpp: "",
+    },
+    testCode: {
+      python: `
+testCases = [[1, 2],[3, 4], [5, -2]]
+n = len(testCases)
+expected = [3, 7, 3]
+for i in range(n):
+    res = addTwoNumers(testCases[i][0],testCases[i][1])
+    if res != expected[i]:
+        print("INPUT: ",testCases[i][0],",", testCases[i][1])
+        print("EXPECTED: ",expected[i])
+        print("RESULT: ",res)
+        exit(0)
+print(True)`,
+      java: `
+      public class testJava {
+
+    public void testCode(){
+        int[][] TestCases = {{1,2},{3,4},{5,-2}};
+        int[] expected = {3, 7, 3};
+        addNumbers myobj = new addNumbers();
+        for(int i=0;i<TestCases.length;i++){
+            int res = myobj.add(TestCases[i][0],TestCases[i][1]);
+            if(res != expected[i]){
+                System.out.println("CASE: "+TestCases[i][0]+", "+TestCases[i][1]);
+                System.out.println("EXPECTED: "+expected[i]);
+                System.out.println("RESULT: "+res);
+                System.exit(0);
+            }
+        }
+        System.out.println("true");
+    }
+    public static void main(String args[]){
+        testJava t=new testJava();
+        t.testCode();
+    }
+}`,
+      c: `
+      int main()
+{
+    int testCases[3][2] = {{1, 2},{3, 4},{5, -2}};
+    int expected[3] = {3, 7, 3};
+    for(int i=0;i<3;i++)
+    {
+        int res = add(testCases[i][0],testCases[i][1]);
+        if(res != expected[i])
+        {
+            printf("INPUT: %d, %d",testCases[i][0], testCases[i][1]);
+            printf("  EXPECTED: %d",expected[i]);
+            printf("  RESULT: %d",res);
+            return 0;
+        }
+    }
+      printf("true");
+}`,
     },
     testCases: [
       [1, 2],
@@ -193,16 +265,76 @@ const problems = [
       [5, -2],
     ],
   },
-  {
+  2: {
+    pnum: 2,
+    title: "Longest Substring Without Repeating Characters",
+    difficulty: "medium",
+    description: `Complete the solveMeFirst function in the editor below.
+
+Example 1:
+
+Input: s = "abcabcbb"
+Output: 3
+Explanation: The answer is "abc", with the length of 3.
+Example 2:
+
+Input: s = "bbbbb"
+Output: 1
+Explanation: The answer is "b", with the length of 1.
+Example 3:
+
+Input: s = "pwwkew"
+Output: 3
+Explanation: The answer is "wke", with the length of 3.
+Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.`,
+    boilerPlate: {
+      python: `def longestSubstring(s):
+    `,
+      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
+      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      cpp: "",
+    },
+    testCode: {
+      python: `
+testCases = ["abcabcbb", "bbbbb", "pwwkew"]
+expected = [3,1,3]
+for i in range(len(testCases)):
+    res = longestSubstring(testCases[i])
+    if res != expected[i]:
+        print("INPUT: ",testCases[i])
+        print("EXPECTED: ",expected[i])
+        print("RESULT: ",res)
+        exit(0)
+print("true")`,
+      java: ``,
+      c: ``,
+      cpp: ``,
+    },
+    testCases: ["abcabcbb", "bbbbb", "pwwkew"],
+  },
+  3: {
     pnum: 2,
     title: "Sum of three Integers",
     difficulty: "medium",
-    description:
-      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
+    description: `Complete the solveMeFirst function in the editor below.
+      nsolveMeFirst has the following parameters:
+      nint a: the first value
+      int b: the second value`,
     boilerPlate: {
-      python: "def addTwoNumers(num1, num2):\n",
-      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
-      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
+      python: `def addTwoNumers(num1, num2):
+      `,
+      java: `import java.util.*;
+      class addNumbers{
+        public int add(int num1,int num2){
+
+        }
+      }
+      `,
+      c: `#include <stdio.h>
+      int add(num1, num2){
+      
+      }
+      `,
       cpp: "",
     },
     testCases: [
@@ -211,25 +343,7 @@ const problems = [
       [5, -2],
     ],
   },
-  {
-    pnum: 2,
-    title: "Sum of three Integers",
-    difficulty: "medium",
-    description:
-      "Complete the solveMeFirst function in the editor below.\nsolveMeFirst has the following parameters:\nint a: the first value\nint b: the second value",
-    boilerPlate: {
-      python: "def addTwoNumers(num1, num2):\n",
-      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
-      c: "#include <stdio.h>\nint add(num1, num2){\n\n}",
-      cpp: "",
-    },
-    testCases: [
-      [1, 2],
-      [3, 4],
-      [5, -2],
-    ],
-  },
-  {
+  4: {
     pnum: 3,
     title: "Sum of four Integers",
     difficulty: "hard",
@@ -247,7 +361,7 @@ const problems = [
       [5, -2],
     ],
   },
-];
+};
 
 app.get("/problems", (req, res) => {
   res.json({ problems });
@@ -255,8 +369,11 @@ app.get("/problems", (req, res) => {
 
 app.get("/problems/:id", (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
-  const foundp = problems.find((p) => p.title == requestedProblemTitle);
+  // const foundp = problems.find((p) => p.title == requestedProblemTitle);
 
+  const foundp = Object.values(problems).find(
+    (p) => p.title == requestedProblemTitle
+  );
   if (foundp) {
     return res.json({ problemInfo: foundp });
   } else {
