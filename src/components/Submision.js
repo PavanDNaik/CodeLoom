@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function Submision(props) {
   const [submission, setSubmissions] = useState([]);
+  const [fetchStatus, setFetchStatus] = useState("Loading...");
   useEffect(() => {
     getLatestSubmissions();
   }, []);
@@ -26,6 +27,8 @@ function Submision(props) {
       fetchedSubmissions.json().then((data) => {
         if (data.listOfSubmission) {
           setSubmissions([...data.listOfSubmission]);
+        } else {
+          setFetchStatus("No Submissions !!");
         }
       });
     } catch {
@@ -39,7 +42,7 @@ function Submision(props) {
         <h5 className="date-of-submission">Date</h5>
       </div>
       {submission.length == 0 ? (
-        <div className="submission-list-loading">Loading...</div>
+        <div className="submission-list-loading">{fetchStatus}</div>
       ) : (
         submission
           .slice()

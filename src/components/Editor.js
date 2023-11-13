@@ -49,6 +49,7 @@ function Editor() {
 
   async function handleRun(e) {
     e.target.disable = true;
+    setTestResult("Running...");
     const result = await fetch("http://localhost:5000/run", {
       method: "POST",
       headers: {
@@ -60,6 +61,7 @@ function Editor() {
         pnum: problemInfo.pnum,
       }),
     }).catch((err) => {
+      setTestResult("SERVER ERROR!");
       console.log(err);
     });
     if (!result) return;
@@ -71,6 +73,7 @@ function Editor() {
 
   async function handleSubmit(e) {
     e.target.disable = true;
+    setTestResult("Executing...");
     const user = JSON.parse(localStorage.getItem("user"));
     const result = await fetch("http://localhost:5000/submit", {
       method: "POST",
@@ -84,6 +87,7 @@ function Editor() {
         userEmail: user.userEmail,
       }),
     }).catch((err) => {
+      setTestResult("SERVER ERROR!");
       console.log(err);
     });
     if (!result) return;
