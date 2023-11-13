@@ -1,15 +1,18 @@
 def longestSubstring(s):
-    left = 0
-    seen = {}
-    output = 0
-    
-    for right, curr in enumerate(s):
-        if curr in seen:
-            left = max(left, seen[curr] + 1)
-        output = max(output, right - left + 1)
-        seen[curr] = right
-
-    return output
+        n = len(s)
+        maxLength = 0
+        charMap = {}
+        left = 0
+        
+        for right in range(n):
+            if s[right] not in charMap or charMap[s[right]] < left:
+                charMap[s[right]] = right
+                maxLength = max(maxLength, right - left + 1)
+            else:
+                left = charMap[s[right]] + 1
+                charMap[s[right]] = right
+        
+        return maxLength
 testCases = ["abcabcbb", "bbbbb", "pwwkew"]
 expected = [3,1,3]
 for i in range(len(testCases)):
@@ -19,4 +22,4 @@ for i in range(len(testCases)):
         print("EXPECTED: ",expected[i])
         print("RESULT: ",res)
         exit(0)
-print("true")
+print("True")

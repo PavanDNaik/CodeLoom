@@ -60,10 +60,16 @@ a {
 .problem-info {
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
+  overflow-y: auto;
+  /* overflow-x: hidden; */
   word-wrap: break-word;
   height: 90%;
   background-color: #1e293b;
+}
+
+.problem-discription {
+  width: inherit;
+  word-wrap: break-word;
 }
 .coding-interface {
   height: 90vh;

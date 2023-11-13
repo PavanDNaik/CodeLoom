@@ -69,6 +69,30 @@ function Editor() {
     e.target.disable = false;
   }
 
+  async function handleSubmit(e) {
+    e.target.disable = true;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const result = await fetch("http://localhost:5000/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        code: code,
+        lang: lang,
+        pnum: problemInfo.pnum,
+        userEmail: user.userEmail,
+      }),
+    }).catch((err) => {
+      console.log(err);
+    });
+    if (!result) return;
+    const output = await result.json();
+    setCaseOrResult && setCaseOrResult(true);
+    setTestResult(output);
+    e.target.disable = false;
+  }
+
   return (
     <div className="coding-interface">
       <SplitPane split="vertical" sizes={bodySizes} onChange={setBodySizes}>
@@ -165,7 +189,9 @@ function Editor() {
                 </div>
                 <div>
                   <button onClick={async (e) => await handleRun(e)}>run</button>
-                  <button>submit</button>
+                  <button onClick={async (e) => await handleSubmit(e)}>
+                    submit
+                  </button>
                 </div>
               </div>
               {caseOrResult ? (
