@@ -85,23 +85,20 @@ a {
   border: 1px solid black;
   background-color: #1e293b;
   border-radius: 5px;
-  gap: 5px;
-  /* margin-left: 5px; */
-  padding: 0.3rem;
-  /* padding: 5px; */
-  /* margin-bottom: 20px; */
+  padding: 0 5px;
 }
 
 .editor-config-selects {
   height: 8%;
 }
+.result-test-case-container {
+  /* margin: 1rem; */
+}
 .output-section-container {
-  overflow-y: scroll;
-  height: 100%;
+  overflow-y: auto;
+  height: auto;
   width: 100%;
   background-color: #1e293b;
-  margin-top: 5px;
-  margin-left: 5px;
   border-radius: 3px;
 }
 
@@ -142,19 +139,33 @@ a {
 
 .wrong-submission,
 .correct-submission {
-  padding: 0.2rem;
+  padding: 0.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.wrong-submission::before {
+  content: "Wong Answer";
+}
+
+.correct-submission::before {
+  content: "Accepted";
+}
+
 .wrong-submission {
-  background-color: rgb(221, 98, 98);
+  color: rgb(221, 98, 98);
 }
 .correct-submission {
-  background-color: rgb(88, 201, 88);
+  color: rgb(88, 201, 88);
 }
 
 .submission-list-container {
   position: relative;
   height: 90%;
-  overflow-y: scroll;
+  overflow-y: auto;
   color: #1e293b;
   font-weight: 800;
   padding: 1rem;
@@ -167,4 +178,8 @@ a {
   /* position: absolute;
   top: 0;
   right: 10px; */
+}
+
+h5.date-of-submission {
+  margin: 0;
 }

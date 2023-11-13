@@ -171,37 +171,34 @@ app.post("/submit", (req, res) => {
   const currentUserEmail = req.body.userEmail;
   const currentPnum = req.body.pnum;
   const testCode = problems[currentPnum].submitionTestCode[lang];
+
   executeCode(lang, code + testCode, async (result) => {
     if (result) {
+      let submissionStatus;
+      let isSolved;
+      const date = new Date();
+      const currentDate = date.toLocaleDateString();
       if (result.substring(0, 4) == "True") {
-        const submisonInfo = {
-          solved: true,
-          lastSubmission: code,
-          submissions: ["AC"],
-        };
-        await updateUsersProgressHistory(
-          currentUserEmail,
-          String(currentPnum),
-          submisonInfo,
-          code,
-          true,
-          "AC"
-        );
+        submissionStatus = "AC" + currentDate;
+        isSolved = true;
       } else {
-        const submisonInfo = {
-          solved: false,
-          lastSubmission: code,
-          submissions: ["WA"],
-        };
-        await updateUsersProgressHistory(
-          currentUserEmail,
-          String(currentPnum),
-          submisonInfo,
-          code,
-          false,
-          "WA"
-        );
+        submissionStatus = "WA" + currentDate;
+        isSolved = false;
       }
+      const submisonInfo = {
+        solved: isSolved,
+        lastSubmission: code,
+        submissions: [submissionStatus],
+      };
+
+      await updateUsersProgressHistory(
+        currentUserEmail,
+        String(currentPnum),
+        submisonInfo,
+        code,
+        isSolved,
+        submissionStatus
+      );
       res.json(String(result));
     } else {
       res.status(500).json({ error: "Internal Server Error" });
