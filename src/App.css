@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box;
+}
 body {
   margin: 0;
   padding: 0;
@@ -24,6 +27,12 @@ a {
   right: 0;
   height: 50px;
   border-top: 1px solid black;
+}
+
+button:hover,
+a:hover,
+select:hover {
+  cursor: pointer;
 }
 
 .split-pane-layoutCSS {
@@ -54,22 +63,55 @@ a {
 }
 
 .editor-testresult {
-  border: 1px solid black;
-  height: 80px;
+  overflow-y: auto;
+  background-color: rgba(225, 225, 225, 0.1);
+  height: 100%;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: wrap;
 }
+
 .problem-info {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  /* overflow-x: hidden; */
+  padding: 1rem;
+  white-space: pre-wrap;
   word-wrap: break-word;
-  height: 90%;
+  height: 93%;
   background-color: #1e293b;
+}
+
+.problem-info > * {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.problem-title {
+  border-bottom: 1px solid rgba(225, 225, 225, 0.2);
+  margin-bottom: 0;
+  padding-bottom: 1.5rem;
 }
 
 .problem-discription {
   width: inherit;
-  word-wrap: break-word;
+}
+
+.problem-overview {
+  font-size: 0.9rem;
+  font-weight: 300;
+  line-height: 1.5rem;
+}
+
+.examples p {
+  font-size: 1rem;
+  font-weight: 400;
+  color: white;
+}
+
+.example-overview {
+  border-left: 1px solid rgba(225, 225, 225, 0.2);
+  padding-left: 0.8rem;
 }
 .coding-interface {
   height: 90vh;
@@ -85,7 +127,7 @@ a {
   border: 1px solid black;
   background-color: #1e293b;
   border-radius: 5px;
-  padding: 0 5px;
+  padding: 0 1rem;
 }
 
 .editor-config-selects {
@@ -93,13 +135,15 @@ a {
 }
 .result-test-case-container {
   /* margin: 1rem; */
+  padding: 0.5rem 1rem;
 }
 .output-section-container {
   overflow-y: auto;
-  height: auto;
+  height: 80%;
   width: 100%;
   background-color: #1e293b;
   border-radius: 3px;
+  padding: 1rem;
 }
 
 .codeEditor {
@@ -115,14 +159,28 @@ a {
   padding: 2px 10px;
 }
 
-.Test-cases-caontainer {
-  height: 100%;
-  width: 100%;
+.Test-cases-container {
+  height: 80%;
   padding: 0.3rem;
   background-color: #1e293b;
+  overflow: auto;
 }
 
+.test-cases-heading {
+  /* background-color: rgba(0, 0, 0, 0.2); */
+  font-size: 1rem;
+  padding: 0.2rem;
+  margin: 0;
+}
+.test-case-input {
+  font-size: 0.9rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.2rem;
+  border-radius: 0.2rem;
+  margin-top: 0.2rem;
+}
 .description-submission-container {
+  box-sizing: border-box;
   height: 100%;
   padding: 0.5rem;
   background-color: #334155;
@@ -137,14 +195,19 @@ a {
   background-color: #334155;
 }
 
+.submission-list-header,
 .wrong-submission,
 .correct-submission {
-  padding: 0.3rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  padding: 0.35rem;
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 0.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.submission-list-header {
+  color: #eee;
 }
 
 .wrong-submission::before {
@@ -153,6 +216,14 @@ a {
 
 .correct-submission::before {
   content: "Accepted";
+}
+
+.wrong-submission:hover,
+.correct-submission:hover {
+  /* transform: scale(1.05); */
+  background-color: rgba(255, 255, 255, 0.1);
+  transition: ease;
+  cursor: pointer;
 }
 
 .wrong-submission {
@@ -180,6 +251,12 @@ a {
   right: 10px; */
 }
 
-h5.date-of-submission {
+.date-of-submission {
   margin: 0;
+  color: #eee;
+}
+
+.submission-list-loading {
+  color: #eee;
+  text-align: center;
 }

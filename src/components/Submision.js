@@ -34,20 +34,31 @@ function Submision(props) {
   }
   return (
     <div className="submission-list-container">
-      {submission.map((value, index) => {
-        return (
-          <div
-            key={index}
-            className={
-              value.charAt(0) === "A"
-                ? "correct-submission"
-                : "wrong-submission"
-            }
-          >
-            <h5 className="date-of-submission">{value.substring(2)}</h5>
-          </div>
-        );
-      })}
+      <div className="submission-list-header">
+        <div>Status</div>
+        <h5 className="date-of-submission">Date</h5>
+      </div>
+      {submission.length == 0 ? (
+        <div className="submission-list-loading">Loading...</div>
+      ) : (
+        submission
+          .slice()
+          .reverse()
+          .map((value, index) => {
+            return (
+              <div
+                key={index}
+                className={
+                  value.charAt(0) === "A"
+                    ? "correct-submission"
+                    : "wrong-submission"
+                }
+              >
+                <h6 className="date-of-submission">{value.substring(2)}</h6>
+              </div>
+            );
+          })
+      )}
     </div>
   );
 }

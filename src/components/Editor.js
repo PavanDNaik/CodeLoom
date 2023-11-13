@@ -96,34 +96,36 @@ function Editor() {
   return (
     <div className="coding-interface">
       <SplitPane split="vertical" sizes={bodySizes} onChange={setBodySizes}>
-        <Pane minSize={50} maxSize="70%">
-          <div className="description-submission-container">
-            <div>
-              <button
-                onClick={() => {
-                  if (submitionOrInfo === "sub") {
-                    setSubmitionOrInfo("info");
-                  }
-                }}
-              >
-                Description
-              </button>
-              <button
-                onClick={() => {
-                  if (submitionOrInfo === "info") {
-                    setSubmitionOrInfo("sub");
-                  }
-                }}
-              >
-                Submissions
-              </button>
-            </div>
-            {submitionOrInfo === "info" ? (
-              <Description {...problemInfo} />
-            ) : (
-              <Submision problemNumber={String(problemInfo.pnum)} />
-            )}
+        <Pane
+          minSize={50}
+          maxSize="70%"
+          className="description-submission-container"
+        >
+          <div>
+            <button
+              onClick={() => {
+                if (submitionOrInfo === "sub") {
+                  setSubmitionOrInfo("info");
+                }
+              }}
+            >
+              Description
+            </button>
+            <button
+              onClick={() => {
+                if (submitionOrInfo === "info") {
+                  setSubmitionOrInfo("sub");
+                }
+              }}
+            >
+              Submissions
+            </button>
           </div>
+          {submitionOrInfo === "info" ? (
+            <Description {...problemInfo} />
+          ) : (
+            <Submision problemNumber={String(problemInfo.pnum)} />
+          )}
         </Pane>
 
         <Pane className="editor-testcases-container">
@@ -199,13 +201,13 @@ function Editor() {
                   <pre className="editor-testresult">{testResult}</pre>
                 </div>
               ) : (
-                <div className="Test-cases-caontainer">
+                <div className="Test-cases-container">
                   {problemInfo.testCases &&
                     problemInfo.testCases.map((val, index) => {
                       return (
                         <pre key={index}>
-                          <h4>CASE {index}</h4>
-                          {`${val}`}
+                          <h4 className="test-cases-heading">CASE {index}</h4>
+                          <div className="test-case-input">{`${val}`}</div>
                         </pre>
                       );
                     })}

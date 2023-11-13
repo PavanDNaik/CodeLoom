@@ -7,14 +7,16 @@ function Description({ pnum, title, description }) {
         {pnum}. {title}
       </h3>
       <pre className="problem-discrption">
-        <h4>{description && description.overview}</h4>
+        <h4 className="problem-overview">
+          {description && description.overview}
+        </h4>
         {description &&
           description.examples.map((value, index) => {
             return (
-              <pre key={index}>
+              <div key={index} className="examples">
                 <p>EXAMPLE {index + 1}:</p>
-                {value}
-              </pre>
+                <pre className="example-overview">{value}</pre>
+              </div>
             );
           })}
       </pre>
