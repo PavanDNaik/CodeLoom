@@ -116,7 +116,7 @@ function executeCode(lang, code, callback) {
   });
 }
 
-async function updateUsersProblemHistory(
+async function updateUsersProgressHistory(
   currentUserEmail,
   currentPnum,
   submisonInfo,
@@ -128,12 +128,11 @@ async function updateUsersProblemHistory(
     .model("user")
     .findOne({ userEmail: currentUserEmail })
     .then((currentUser) => {
-      if (!currentUser.problemsReached.get(currentPnum)) {
+      if (!currentUser.problemsReached) {
+        currentUser.problemsReached = new Map();
         currentUser.problemsReached.set(currentPnum, submisonInfo);
-        currentUser
-          .save()
-          .then((updated) => console.log(updated))
-          .catch((err) => console.log("ERROR: " + err));
+      } else if (!currentUser.problemsReached.get(currentPnum)) {
+        currentUser.problemsReached.set(currentPnum, submisonInfo);
       } else {
         const previousHistory = currentUser.problemsReached.get(currentPnum);
         previousHistory.solved |= isSolved;
@@ -141,13 +140,13 @@ async function updateUsersProblemHistory(
         previousHistory.submissions.push(submissionStatus);
 
         currentUser.problemsReached.set(currentPnum, previousHistory);
-        currentUser
-          .save()
-          .then((updated) => {
-            console.log(updated.problemsReached.get(currentPnum));
-          })
-          .catch((err) => console.log(err));
       }
+      currentUser
+        .save()
+        .then(() => {
+          console.log("USER PROGRESS UPDATED");
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 }
@@ -180,7 +179,7 @@ app.post("/submit", (req, res) => {
           lastSubmission: code,
           submissions: ["AC"],
         };
-        await updateUsersProblemHistory(
+        await updateUsersProgressHistory(
           currentUserEmail,
           String(currentPnum),
           submisonInfo,
@@ -192,9 +191,9 @@ app.post("/submit", (req, res) => {
         const submisonInfo = {
           solved: false,
           lastSubmission: code,
-          submissions: ["wA"],
+          submissions: ["WA"],
         };
-        await updateUsersProblemHistory(
+        await updateUsersProgressHistory(
           currentUserEmail,
           String(currentPnum),
           submisonInfo,
@@ -210,11 +209,25 @@ app.post("/submit", (req, res) => {
   });
 });
 
-// const reachedProblemSchema = new mongoose.Schema({
-//   lastSubmission: Object,
-//   solved: Boolean,
-//   submissions: [Object],
-// });
+app.post("/submissions", (req, res) => {
+  mongoose
+    .model("user")
+    .findOne({ userEmail: req.body.user })
+    .then((fetchedUser) => {
+      if (
+        !fetchedUser.problemsReached ||
+        !fetchedUser.problemsReached.get(req.body.pnum)
+      ) {
+        res.json({ msg: "No submission" });
+      } else {
+        res.json({
+          listOfSubmission: fetchedUser.problemsReached.get(req.body.pnum)
+            .submissions,
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+});
 //schema
 const userSchema = new mongoose.Schema({
   userName: String,
@@ -230,7 +243,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// const problemSetSchema = new mongoose.Schema({});
 const user = mongoose.model("user", userSchema);
 
 app.post("/sign-up", async (req, res) => {

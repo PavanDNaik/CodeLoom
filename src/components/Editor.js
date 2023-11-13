@@ -121,7 +121,7 @@ function Editor() {
             {submitionOrInfo === "info" ? (
               <Description {...problemInfo} />
             ) : (
-              <Submision />
+              <Submision problemNumber={String(problemInfo.pnum)} />
             )}
           </div>
         </Pane>
