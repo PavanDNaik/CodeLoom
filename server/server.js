@@ -314,6 +314,22 @@ const problemSchema = new mongoose.Schema({
   },
   testCases: Array,
 });
+
+const problem = mongoose.model("problems", problemSchema);
+app.post("/addProblem", (req, res) => {
+  const newProblem = new problem({
+    ...problems[req.body.pnum],
+  });
+  newProblem
+    .save()
+    .then(() => {
+      console.log("New Problem Added!");
+      res.json("problem added");
+    })
+    .catch(() => {
+      console.log("Could not Add problem!");
+    });
+});
 const problems = {
   1: {
     pnum: 1,
@@ -404,6 +420,7 @@ print(True)`,
     }
       printf("True");
 }`,
+      cpp: "",
     },
     submitionTestCode: {
       python: `
@@ -612,14 +629,18 @@ app.get("/problems/:id", (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
   // const foundp = problems.find((p) => p.title == requestedProblemTitle);
 
-  const foundp = Object.values(problems).find(
-    (p) => p.title == requestedProblemTitle
-  );
-  if (foundp) {
-    return res.json({ problemInfo: foundp });
-  } else {
-    return res.json("cannot find problem");
-  }
+  // const foundp = Object.values(problems).find(
+  //   (p) => p.title == requestedProblemTitle
+  // );
+  mongoose
+    .model("problems")
+    .findOne({ title: requestedProblemTitle })
+    .then((foundp) => {
+      return res.json({ problemInfo: foundp });
+    })
+    .catch(() => {
+      res.status(404).json("cannot find problem");
+    });
 });
 
 app.listen(port, () => {

@@ -8,6 +8,9 @@ import Submision from "./Submision";
 
 //fetch problem
 async function getProblemInfo({ problemId }) {
+  if (localStorage.getItem(problemId)) {
+    return JSON.parse(localStorage.getItem(problemId));
+  }
   const problemInfoString = await fetch(
     `http://localhost:5000/problems/${problemId}`,
     {
@@ -43,7 +46,15 @@ function Editor() {
 
   useEffect(() => {
     getProblemInfo(problemId).then((data) => {
-      setProblemInfo({ ...data });
+      if (!data) {
+        console.log("could not fint data");
+      } else {
+        setProblemInfo({ ...data });
+        localStorage.setItem(
+          data.title.replaceAll(" ", "-"),
+          JSON.stringify(data)
+        );
+      }
     });
   }, [problemId]);
 
@@ -67,6 +78,7 @@ function Editor() {
     if (!result) return;
     const output = await result.json();
     setCaseOrResult && setCaseOrResult(true);
+
     setTestResult(output);
     e.target.disable = false;
   }
@@ -90,15 +102,34 @@ function Editor() {
       setTestResult("SERVER ERROR!");
       console.log(err);
     });
-    if (!result) return;
+    if (!result) {
+      setTestResult("");
+      return;
+    }
     const output = await result.json();
-    setCaseOrResult && setCaseOrResult(true);
-    setTestResult(output);
+    if (output.substring(0, 4) === "True") {
+      const submissionPopMessage =
+        document.getElementById("submission-message");
+      setTestResult("All Test Cases Passed");
+      submissionPopMessage.classList.toggle("display-none");
+      submissionPopMessage.classList.toggle("submission-success-message");
+      setTimeout(() => {
+        submissionPopMessage.classList.toggle("display-none");
+        submissionPopMessage.classList.toggle("submission-success-message");
+      }, 2500);
+    } else {
+      setCaseOrResult && setCaseOrResult(true);
+      setTestResult(output);
+    }
+
     e.target.disable = false;
   }
 
   return (
     <div className="coding-interface">
+      <div className="display-none" id="submission-message">
+        SUBMISSION SUCCESSFULL
+      </div>
       <SplitPane split="vertical" sizes={bodySizes} onChange={setBodySizes}>
         <Pane
           minSize={50}

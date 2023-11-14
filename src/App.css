@@ -35,6 +35,10 @@ select:hover {
   cursor: pointer;
 }
 
+.display-none {
+  display: none;
+  visibility: hidden;
+}
 .split-pane-layoutCSS {
   height: 100%;
 }
@@ -259,4 +263,40 @@ select:hover {
 .submission-list-loading {
   color: #eee;
   text-align: center;
+}
+
+.submission-success-message {
+  z-index: 3;
+  position: fixed;
+  top: 0.3rem;
+  left: 40%;
+  right: 40%;
+  background-color: #d4d4d4;
+  font-weight: 600;
+  color: green;
+  width: max-content;
+  padding: 0.5rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  /* right: auto; */
+}
+
+.submission-success-message::after {
+  margin: 0 -0.7rem;
+  margin-bottom: -0.5rem;
+  content: "";
+  height: 3px;
+  background-color: green;
+  animation-name: submission-success-loader;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes submission-success-loader {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
 }
