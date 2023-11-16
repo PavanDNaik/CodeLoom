@@ -33,17 +33,25 @@ function Editor() {
   const [lang, setLang] = useState("python");
   const [theme, setTheme] = useState("vs-dark");
   const [problemInfo, setProblemInfo] = useState({});
-  const [submitionOrInfo, setSubmitionOrInfo] = useState("info");
+  const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
 
   //output - hooks
   const [testResult, setTestResult] = useState("");
-  const [caseOrResult, setCaseOrResult] = useState(false);
+  const [showCaseOrResult, setshowCaseOrResult] = useState("CASE");
 
   //split-pane
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
   const problemId = useParams();
 
+  //function for swithcing of tabs
+  function showTab(tabValue, currentTabValue, setTabValue) {
+    if (currentTabValue !== tabValue) {
+      setTabValue(tabValue);
+    }
+  }
+
+  //loader
   useEffect(() => {
     getProblemInfo(problemId).then((data) => {
       if (!data) {
@@ -58,9 +66,14 @@ function Editor() {
     });
   }, [problemId]);
 
+  function setMessageInResult(outputMessage) {
+    showTab("RESULT", showCaseOrResult, setshowCaseOrResult);
+    setTestResult(outputMessage);
+  }
+
   async function handleRun(e) {
     e.target.disable = true;
-    setTestResult("Running...");
+    setMessageInResult("Running...");
     const result = await fetch("http://localhost:5000/run", {
       method: "POST",
       headers: {
@@ -72,20 +85,20 @@ function Editor() {
         pnum: problemInfo.pnum,
       }),
     }).catch((err) => {
-      setTestResult("SERVER ERROR!");
+      setMessageInResult("SERVER ERROR!");
       console.log(err);
     });
-    if (!result) return;
-    const output = await result.json();
-    setCaseOrResult && setCaseOrResult(true);
+    if (result) {
+      const output = await result.json();
+      setMessageInResult(output);
+    }
 
-    setTestResult(output);
     e.target.disable = false;
   }
 
   async function handleSubmit(e) {
     e.target.disable = true;
-    setTestResult("Executing...");
+    setMessageInResult("Executing...");
     const user = JSON.parse(localStorage.getItem("user"));
     const result = await fetch("http://localhost:5000/submit", {
       method: "POST",
@@ -99,7 +112,7 @@ function Editor() {
         userEmail: user.userEmail,
       }),
     }).catch((err) => {
-      setTestResult("SERVER ERROR!");
+      setMessageInResult("SERVER ERROR!");
       console.log(err);
     });
     if (!result) {
@@ -110,7 +123,7 @@ function Editor() {
     if (output.substring(0, 4) === "True") {
       const submissionPopMessage =
         document.getElementById("submission-message");
-      setTestResult("All Test Cases Passed");
+      setMessageInResult("All Test Cases Passed");
       submissionPopMessage.classList.toggle("display-none");
       submissionPopMessage.classList.toggle("submission-success-message");
       setTimeout(() => {
@@ -118,8 +131,7 @@ function Editor() {
         submissionPopMessage.classList.toggle("submission-success-message");
       }, 2500);
     } else {
-      setCaseOrResult && setCaseOrResult(true);
-      setTestResult(output);
+      setMessageInResult(output);
     }
 
     e.target.disable = false;
@@ -139,24 +151,20 @@ function Editor() {
           <div>
             <button
               onClick={() => {
-                if (submitionOrInfo === "sub") {
-                  setSubmitionOrInfo("info");
-                }
+                showTab("DESCRIPTION", submitionOrInfo, setSubmitionOrInfo);
               }}
             >
               Description
             </button>
             <button
               onClick={() => {
-                if (submitionOrInfo === "info") {
-                  setSubmitionOrInfo("sub");
-                }
+                showTab("SUBMISSION", submitionOrInfo, setSubmitionOrInfo);
               }}
             >
               Submissions
             </button>
           </div>
-          {submitionOrInfo === "info" ? (
+          {submitionOrInfo === "DESCRIPTION" ? (
             <Description {...problemInfo} />
           ) : (
             <Submision problemNumber={String(problemInfo.pnum)} />
@@ -214,12 +222,16 @@ function Editor() {
               <div className="stick-top-of-container">
                 <div>
                   <button
-                    onClick={() => caseOrResult && setCaseOrResult(false)}
+                    onClick={() =>
+                      showTab("CASE", showCaseOrResult, setshowCaseOrResult)
+                    }
                   >
                     TestCase
                   </button>
                   <button
-                    onClick={() => !caseOrResult && setCaseOrResult(true)}
+                    onClick={() =>
+                      showTab("RESULT", showCaseOrResult, setshowCaseOrResult)
+                    }
                   >
                     TestResult
                   </button>
@@ -231,7 +243,7 @@ function Editor() {
                   </button>
                 </div>
               </div>
-              {caseOrResult ? (
+              {showCaseOrResult === "RESULT" ? (
                 <div className="output-section-container">
                   <pre className="editor-testresult">{testResult}</pre>
                 </div>
