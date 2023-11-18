@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Question from "../components/Question";
 async function getAllProblems() {
@@ -30,12 +29,14 @@ function Problems() {
 
   return (
     <div>
-      <Navbar {...info} />
       <div className="problemSet">
-        {allProblems &&
+        {allProblems ? (
           Object.values(allProblems).map((values, index) => {
             return <Question key={index} {...values} />;
-          })}
+          })
+        ) : (
+          <div>Loading...</div>
+        )}
       </div>
 
       <Footer />

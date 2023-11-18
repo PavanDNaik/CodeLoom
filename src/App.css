@@ -8,7 +8,8 @@ body {
   box-sizing: border-box;
   /* background-color: #111827; */
   background-color: #0f172a;
-  color: #d4d4d4;
+  background-color: #101820;
+  color: #abb2bf;
 }
 
 ul {
@@ -29,7 +30,7 @@ ul.navbar-list {
   list-style-type: none;
   border: 2px solid #0e0f13;
   border-radius: 13px;
-  animation: slide-in 1s ease-in-out;
+  animation: slide-in 0.5s ease-in-out;
 }
 
 ul.navbar-list li a {
@@ -41,11 +42,13 @@ ul.navbar-list li a {
 }
 
 ul.navbar-list li a:hover:not(.active) {
-  background-color: #0c0b0b;
+  background-color: #0d9488;
 }
 
 .active-navbar-elements {
-  background-color: #10b981;
+  background-color: #fee715;
+  /* color: #0f172a !important; */
+  font-weight: 700;
 }
 
 .drop-down-profile-info {
@@ -347,5 +350,47 @@ select:hover {
   }
   100% {
     width: 100%;
+  }
+}
+
+.landing-page-container {
+  background-color: black;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+
+.landing-title {
+  height: 300px;
+  width: 300px;
+  padding: 3rem;
+  border: 3px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.street-light-effect {
+  /* animation: street-light 3s ease-in-out infinite; */
+}
+
+@keyframes street-light {
+  0% {
+    border: 4px solid gold;
+  }
+  25% {
+    border: 2px solid gold;
+  }
+  65% {
+    border: none;
+  }
+  70% {
+    border: 3px solid goldenrod;
+  }
+  100% {
+    border: 3px solid gold;
   }
 }

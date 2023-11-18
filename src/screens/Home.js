@@ -2,8 +2,8 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useLocation } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
-import Code from "./Code";
 import Problems from "./Problems";
+import Contact from "../components/Contact";
 function Home() {
   const location = useLocation();
   let info = localStorage.getItem("user");
@@ -18,7 +18,7 @@ function Home() {
       <div>
         <Routes>
           <Route exact path="/problems" element={<Problems />} />
-          <Route exact path="/problems/:problemId" element={<Code />} />
+          <Route exact path="/contact" element={<Contact />} />
         </Routes>
       </div>
       <Footer />
