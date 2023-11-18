@@ -5,9 +5,11 @@ import Profile from "./Profile";
 function Navbar({ userName }) {
   return (
     <div className="navbar">
-      <ul className="flex">
+      <ul className="navbar-list">
         <li>
-          <Link to="/home">Home</Link>
+          <Link to="/home" className="active-navbar-elements">
+            Home
+          </Link>
         </li>
         <li>
           <Link to="/problems">Problems</Link>

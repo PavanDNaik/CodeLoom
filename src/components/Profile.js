@@ -10,8 +10,23 @@ function Profile({ name }) {
   return (
     <div>
       {logout && <Navigate to="/" replace={true} state={""}></Navigate>}
-      <h3>{name}</h3>
-      <button onClick={() => handleLogOut()}>log-out</button>
+      <button
+        onClick={(e) => {
+          document.getElementById("profile").classList.toggle("display-none");
+        }}
+      >
+        Profile
+      </button>
+      <div className="display-none drop-down-profile-info" id="profile">
+        <h3>{name}</h3>
+        <button
+          onClick={(e) => {
+            handleLogOut();
+          }}
+        >
+          log-out
+        </button>
+      </div>
     </div>
   );
 }

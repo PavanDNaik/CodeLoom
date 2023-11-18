@@ -7,11 +7,9 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 const mongoURI =
   "mongodb+srv://pawannaik396:web-project@cluster0.dpuzv08.mongodb.net/?retryWrites=true&w=majority";
-try {
-  mongoose.connect(mongoURI);
-} catch {
-  console.log("ERROR");
-}
+
+mongoose.connect(mongoURI);
+
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -636,7 +634,11 @@ app.get("/problems/:id", (req, res) => {
     .model("problems")
     .findOne({ title: requestedProblemTitle })
     .then((foundp) => {
-      return res.json({ problemInfo: foundp });
+      if (!foundp) {
+        res.status(404).json({ fetchError: "COULD NOT FOUND" });
+      } else {
+        return res.json(foundp);
+      }
     })
     .catch(() => {
       res.status(404).json("cannot find problem");
