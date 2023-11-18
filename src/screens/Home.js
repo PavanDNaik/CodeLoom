@@ -1,7 +1,9 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useLocation } from "react-router-dom";
-
+import { Routes, Route } from "react-router-dom";
+import Code from "./Code";
+import Problems from "./Problems";
 function Home() {
   const location = useLocation();
   let info = localStorage.getItem("user");
@@ -13,7 +15,12 @@ function Home() {
   return (
     <div>
       <Navbar {...info} />
-      <div>Some info about the website </div>
+      <div>
+        <Routes>
+          <Route exact path="/problems" element={<Problems />} />
+          <Route exact path="/problems/:problemId" element={<Code />} />
+        </Routes>
+      </div>
       <Footer />
     </div>
   );

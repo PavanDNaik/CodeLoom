@@ -5,6 +5,7 @@ import "split-pane-react/esm/themes/default.css";
 import Description from "../components/Description";
 import Submision from "../components/Submision";
 import Editor from "../components/Editor";
+
 //fetch problem
 async function getProblemInfo({ problemId }) {
   if (localStorage.getItem(problemId)) {
@@ -28,31 +29,20 @@ async function getProblemInfo({ problemId }) {
 
 function Code() {
   //editor and problem hooks
+  const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [lang, setLang] = useState("python");
-  const getCodeInfo = (codeFromEditor, language) => {
-    setCode(codeFromEditor);
-    setLang(language);
-  };
-
   const [problemInfo, setProblemInfo] = useState({});
-  const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
-  const navigate = useNavigate();
-  //output - hooks
   const [testResult, setTestResult] = useState("");
+
+  //tab hooks
+  const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
   const [showCaseOrResult, setshowCaseOrResult] = useState("CASE");
 
   //split-pane
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
   const problemId = useParams();
-
-  //function for swithcing of tabs
-  function showTab(tabValue, currentTabValue, setTabValue) {
-    if (currentTabValue !== tabValue) {
-      setTabValue(tabValue);
-    }
-  }
 
   //loader
   useEffect(() => {
@@ -74,9 +64,33 @@ function Code() {
     });
   }, [problemId]);
 
+  //callbakc to editor
+  const getCodeInfo = (codeFromEditor, language) => {
+    setCode(codeFromEditor);
+    setLang(language);
+  };
+
+  //general tab switching
+  function showTab(tabValue, currentTabValue, setTabValue) {
+    if (currentTabValue !== tabValue) {
+      setTabValue(tabValue);
+    }
+  }
+
+  //setting messages
   function setMessageInResult(outputMessage) {
     showTab("RESULT", showCaseOrResult, setshowCaseOrResult);
     setTestResult(outputMessage);
+  }
+
+  function showSubmissionSuccesMessage() {
+    const submissionPopMessage = document.getElementById("submission-message");
+    submissionPopMessage.classList.toggle("display-none");
+    submissionPopMessage.classList.toggle("submission-success-message");
+    setTimeout(() => {
+      submissionPopMessage.classList.toggle("display-none");
+      submissionPopMessage.classList.toggle("submission-success-message");
+    }, 2500);
   }
 
   async function handleRun(e) {
@@ -98,7 +112,11 @@ function Code() {
     });
     if (result) {
       const output = await result.json();
-      setMessageInResult(output);
+      if (output.substring(0, 4) === "True") {
+        setMessageInResult("All Test Cases Passed");
+      } else {
+        setMessageInResult(output);
+      }
     }
 
     e.target.disable = false;
@@ -129,15 +147,8 @@ function Code() {
     }
     const output = await result.json();
     if (output.substring(0, 4) === "True") {
-      const submissionPopMessage =
-        document.getElementById("submission-message");
       setMessageInResult("All Test Cases Passed");
-      submissionPopMessage.classList.toggle("display-none");
-      submissionPopMessage.classList.toggle("submission-success-message");
-      setTimeout(() => {
-        submissionPopMessage.classList.toggle("display-none");
-        submissionPopMessage.classList.toggle("submission-success-message");
-      }, 2500);
+      showSubmissionSuccesMessage();
     } else {
       setMessageInResult(output);
     }
