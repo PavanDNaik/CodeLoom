@@ -6,7 +6,7 @@ function Description({ pnum, title, description }) {
       <h3 className="problem-title">
         {pnum}. {title}
       </h3>
-      <pre className="problem-discrption">
+      <div className="problem-descrption">
         <h4 className="problem-overview">
           {description && description.overview}
         </h4>
@@ -19,7 +19,7 @@ function Description({ pnum, title, description }) {
               </div>
             );
           })}
-      </pre>
+      </div>
       <div className="problem-examples"></div>
     </div>
   );

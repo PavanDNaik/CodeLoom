@@ -1,9 +1,30 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Profile from "./Profile";
+import moonImg from "../images/dark-mode.svg";
+import sunImg from "../images/light-mode.svg";
 
 function Navbar({ userName }) {
   const [active, setActive] = useState("Home");
+  const [themeImg, setThemeImg] = useState(
+    getCurrentTheme() === "light-mode" ? moonImg : sunImg
+  );
+
+  function getCurrentTheme() {
+    if (document.body.classList.contains("light-mode")) {
+      return "light-mode";
+    } else return "dark-mode";
+  }
+
+  function handleThemeChange() {
+    if (getCurrentTheme() === "light-mode") {
+      document.body.classList.remove("light-mode");
+      setThemeImg(sunImg);
+    } else {
+      document.body.classList.add("light-mode");
+      setThemeImg(moonImg);
+    }
+  }
   function getLink(value, to) {
     return (
       <Link
@@ -23,7 +44,16 @@ function Navbar({ userName }) {
       <ul className="navbar-list">
         <li>{getLink("Home", "/home")}</li>
         <li>{getLink("Problems", "./problems")}</li>
-        <li>{getLink("Contact", "./contact")}</li>
+        <li>{getLink("About-Us", "./contact")}</li>
+        <li>
+          <img
+            src={themeImg}
+            alt=""
+            srcset=""
+            className="switch-theme-icon"
+            onClick={handleThemeChange}
+          />
+        </li>
         <li>
           {userName ? (
             <Profile name={userName} />

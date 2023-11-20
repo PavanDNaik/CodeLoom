@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-
+import logoutSVG from "../images/log-out.svg";
+import profilSVG from "../images/profile.svg";
 function Profile({ name }) {
   const [logout, setLogout] = useState(false);
   function handleLogOut() {
@@ -10,22 +11,25 @@ function Profile({ name }) {
   return (
     <div>
       {logout && <Navigate to="/" replace={true} state={""}></Navigate>}
-      <button
+      <div
         onClick={(e) => {
           document.getElementById("profile").classList.toggle("display-none");
         }}
+        className="profile-icon-div"
       >
-        Profile
-      </button>
+        <img src={profilSVG} alt="Profile" />
+      </div>
       <div className="display-none drop-down-profile-info" id="profile">
         <h3>{name}</h3>
-        <button
+        <div
+          className="log-out-profile"
           onClick={(e) => {
             handleLogOut();
           }}
         >
-          log-out
-        </button>
+          <div>log-out</div>
+          <img src={logoutSVG} alt="" />
+        </div>
       </div>
     </div>
   );

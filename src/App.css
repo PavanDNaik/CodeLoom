@@ -2,66 +2,127 @@
   box-sizing: border-box;
   margin: 0;
 }
+
+:root {
+  --primary-color: #1c1917;
+  --secondary-color: #292524;
+  --tertiary-color: #44403c;
+  --border-color: #78716c;
+  --highlight-color: #d6d3d1;
+  --font-color: #f5f5f4;
+}
+
+.light-mode {
+  --primary-color: #f5f5f4;
+  --secondary-color: #d6d3d1;
+  --tertiary-color: #78716c;
+  --border-color: #44403c;
+  --highlight-color: #292524;
+  --font-color: #1c1917;
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* background-color: #111827; */
-  background-color: #0f172a;
-  background-color: #101820;
-  color: #abb2bf;
+  background-color: var(--primary-color);
+  color: var(--font-color);
 }
-
 ul {
   list-style-type: none;
 }
+
 a {
   text-decoration: none;
-  color: #d4d4d4;
+  color: var(--font-color);
 }
+
 ul.navbar-list {
   position: fixed;
-  top: 1px;
+  top: 0px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 97%;
-  background-color: #0f172a;
   list-style-type: none;
-  border: 2px solid #0e0f13;
-  border-radius: 13px;
+  width: 100vw;
+  background-color: var(--secondary-color);
+  border-bottom: 1px solid var(--border-color);
   animation: slide-in 0.5s ease-in-out;
+  padding: 10px 5px;
 }
 
 ul.navbar-list li a {
   display: flex;
-  color: white;
-  padding: 13px 51px;
-  border-radius: 13px;
+  color: var(--font-color);
   text-decoration: none;
+  border-bottom: 2px solid var(--secondary-color);
 }
 
-ul.navbar-list li a:hover:not(.active) {
-  background-color: #0d9488;
+ul.navbar-list li a:hover:not(.active-navbar-elements) {
+  border-bottom: 2px solid var(--border-color);
 }
 
 .active-navbar-elements {
-  background-color: #fee715;
-  /* color: #0f172a !important; */
+  border-bottom: 2px solid var(--tertiary-color);
   font-weight: 700;
 }
 
-.drop-down-profile-info {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  height: 5rem;
-  gap: 1rem;
-  padding: 0.4rem 0.2rem;
-  position: absolute;
-  bottom: -6rem;
+.switch-theme-icon {
+  width: 1.5rem;
+  cursor: pointer;
 }
 
+.switch-theme-icon > svg {
+  fill: white;
+}
+.drop-down-profile-info {
+  background-color: #737373;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.4rem 0.2rem;
+  border-radius: 5px;
+  position: absolute;
+  top: 110%;
+  right: 15%;
+}
+
+.drop-down-profile-info > h3 {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.drop-down-profile-info > div.log-out-profile {
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: var(--secondary-color);
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 2px 10px;
+}
+
+div.log-out-profile:hover {
+  background-color: var(--tertiary-color);
+  color: var(--highlight-color);
+}
+
+div.log-out-profile > img {
+  width: 1rem;
+}
+
+.profile-icon-div {
+  width: 2rem;
+}
+
+.profile-icon-div > img {
+  fill: var(--font-color);
+  cursor: pointer;
+}
 @keyframes slide-in {
   0% {
     top: -30%;
@@ -95,19 +156,39 @@ select:hover {
 }
 
 .problemSet {
+  height: max-content;
   margin-top: 4rem;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .question {
   display: flex;
   justify-content: space-between;
+  gap: 20%;
   padding: 10px 50px;
-  border: 1px solid black;
+  transition: ease-in-out;
 }
 
+.question:nth-child(2n + 1) {
+  background-color: var(--secondary-color);
+}
+
+.question:hover {
+  background-color: var(--tertiary-color);
+}
+
+.problemset-table-titles {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--font-color);
+  padding: 10px 40px;
+  background-color: var(--tertiary-color);
+  color: var(--highlight-color);
+  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color);
+}
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -116,6 +197,17 @@ select:hover {
 
 .flex-row {
   display: flex;
+}
+
+.description-submission-container {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.5rem;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  color: var(--font-color);
+  border-radius: 5px;
+  word-wrap: break-word;
 }
 
 .editor-testresult {
@@ -135,7 +227,7 @@ select:hover {
   white-space: pre-wrap;
   word-wrap: break-word;
   height: 93%;
-  background-color: #1e293b;
+  gap: 5%;
 }
 
 .problem-info > * {
@@ -147,27 +239,37 @@ select:hover {
   border-bottom: 1px solid rgba(225, 225, 225, 0.2);
   margin-bottom: 0;
   padding-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 900;
 }
 
-.problem-discription {
+div.problem-descrption {
   width: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
 
 .problem-overview {
-  font-size: 0.9rem;
-  font-weight: 300;
-  line-height: 1.5rem;
-}
-
-.examples p {
   font-size: 1rem;
   font-weight: 400;
-  color: white;
+  line-height: 2rem;
+}
+
+.examples {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.examples p {
+  font-size: 1.2rem;
+  font-weight: 400;
 }
 
 .example-overview {
   border-left: 1px solid rgba(225, 225, 225, 0.2);
   padding-left: 0.8rem;
+  font-size: 0.9rem;
 }
 .coding-interface {
   height: 90vh;
@@ -180,8 +282,8 @@ select:hover {
 
 .monaco-editor-container {
   width: 100%;
-  border: 1px solid black;
-  background-color: #1e293b;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   padding: 0 1rem;
 }
@@ -190,14 +292,17 @@ select:hover {
   height: 8%;
 }
 .result-test-case-container {
-  /* margin: 1rem; */
   padding: 0.5rem 1rem;
+  height: 100%;
+  border-radius: 5px;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--border-color);
 }
+
 .output-section-container {
   overflow-y: auto;
   height: 80%;
   width: 100%;
-  background-color: #1e293b;
   border-radius: 3px;
   padding: 1rem;
 }
@@ -218,44 +323,29 @@ select:hover {
 .Test-cases-container {
   height: 80%;
   padding: 0.3rem;
-  background-color: #1e293b;
+  margin-top: 5px;
   overflow: auto;
 }
 
 .test-cases-heading {
   /* background-color: rgba(0, 0, 0, 0.2); */
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 0.2rem;
   margin: 0;
 }
 .test-case-input {
-  font-size: 0.9rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 0.2rem;
+  font-size: 1.1rem;
+  background-color: var(--tertiary-color);
+  padding: 0.3rem 0.4rem;
   border-radius: 0.2rem;
   margin-top: 0.2rem;
-}
-.description-submission-container {
-  box-sizing: border-box;
-  height: 100%;
-  padding: 0.5rem;
-  background-color: #334155;
-  border-radius: 5px;
-  word-wrap: break-word;
-}
-
-.result-test-case-container {
-  height: 100%;
-  border: 1px solid black;
-  border-radius: 5px;
-  background-color: #334155;
 }
 
 .submission-list-header,
 .wrong-submission,
 .correct-submission {
   padding: 0.35rem;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: var(--tertiary-color);
   border-radius: 0.2rem;
   display: flex;
   justify-content: space-between;
@@ -263,7 +353,7 @@ select:hover {
 }
 
 .submission-list-header {
-  color: #eee;
+  color: var(--font-color);
 }
 
 .wrong-submission::before {
@@ -277,7 +367,7 @@ select:hover {
 .wrong-submission:hover,
 .correct-submission:hover {
   /* transform: scale(1.05); */
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--border-color);
   transition: ease;
   cursor: pointer;
 }
@@ -291,23 +381,23 @@ select:hover {
 
 .submission-list-container {
   position: relative;
-  height: 90%;
-  overflow-y: auto;
-  color: #1e293b;
-  font-weight: 800;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  height: 90%;
+  overflow-y: auto;
+  padding: 1rem;
+  color: var(--font-color);
+  font-weight: 800;
 }
 
 .date-of-submission {
   margin: 0;
-  color: #eee;
+  color: var(--font-color);
 }
 
 .submission-list-loading {
-  color: #eee;
+  color: var(--font-color);
   text-align: center;
 }
 
@@ -317,7 +407,7 @@ select:hover {
   top: 0.3rem;
   left: 40%;
   right: 40%;
-  background-color: #d4d4d4;
+  background-color: var(--highlight-color);
   font-weight: 600;
   color: green;
   width: max-content;
