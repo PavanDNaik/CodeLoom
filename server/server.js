@@ -205,6 +205,10 @@ app.post("/submit", (req, res) => {
 });
 
 app.post("/submissions", (req, res) => {
+  if (!req.body.user) {
+    res.json([]);
+    return;
+  }
   mongoose
     .model("user")
     .findOne({ userEmail: req.body.user })

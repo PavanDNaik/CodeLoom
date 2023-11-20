@@ -14,8 +14,8 @@ function Description({ pnum, title, description }) {
           description.examples.map((value, index) => {
             return (
               <div key={index} className="examples">
-                <p>EXAMPLE {index + 1}:</p>
-                <pre className="example-overview">{value}</pre>
+                <h4>EXAMPLE {index + 1}:</h4>
+                <p className="example-overview">{value}</p>
               </div>
             );
           })}

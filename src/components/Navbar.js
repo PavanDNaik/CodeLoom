@@ -55,11 +55,7 @@ function Navbar({ userName }) {
           />
         </li>
         <li>
-          {userName ? (
-            <Profile name={userName} />
-          ) : (
-            <Link to="/login">Login</Link>
-          )}
+          <Profile userName={userName} />
         </li>
       </ul>
     </div>

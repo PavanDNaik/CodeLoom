@@ -8,9 +8,13 @@ function Submision(props) {
   }, []);
   async function getLatestSubmissions() {
     try {
+      if (!localStorage.getItem("user")) {
+        setFetchStatus("Log-In/Sign-Up to see submissions!!");
+        return;
+      }
       const userEmailToFetch = JSON.parse(
         localStorage.getItem("user")
-      ).userEmail;
+      )?.userEmail;
       const fetchedSubmissions = await fetch(
         `http://localhost:5000/submissions`,
         {
@@ -26,13 +30,16 @@ function Submision(props) {
       ).catch((err) => console.log(err));
       fetchedSubmissions.json().then((data) => {
         if (data.listOfSubmission) {
+          if (!data.listOfSubmission.length) {
+            setFetchStatus("No Submissions !!");
+          }
           setSubmissions([...data.listOfSubmission]);
         } else {
           setFetchStatus("No Submissions !!");
         }
       });
     } catch {
-      console.log("NETWORK ERROR!!");
+      setFetchStatus("No submissions!!");
     }
   }
   return (

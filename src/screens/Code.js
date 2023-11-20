@@ -5,7 +5,8 @@ import "split-pane-react/esm/themes/default.css";
 import Description from "../components/Description";
 import Submision from "../components/Submision";
 import Editor from "../components/Editor";
-
+import backSVG from "../images/back.svg";
+import Profile from "../components/Profile";
 //fetch problem
 async function getProblemInfo({ problemId }) {
   if (localStorage.getItem(problemId)) {
@@ -93,7 +94,22 @@ function Code() {
     }, 2500);
   }
 
+  function getUser() {
+    return JSON.parse(localStorage.getItem("user"));
+  }
+
+  function userNotLogedIn() {
+    if (getUser()) {
+      return false;
+    } else {
+      alert("Please Login Continue!!");
+      return true;
+    }
+  }
   async function handleRun(e) {
+    if (userNotLogedIn()) {
+      return;
+    }
     e.target.disable = true;
     setMessageInResult("Running...");
     const result = await fetch("http://localhost:5000/run", {
@@ -123,9 +139,12 @@ function Code() {
   }
 
   async function handleSubmit(e) {
+    if (userNotLogedIn()) {
+      return;
+    }
     e.target.disable = true;
     setMessageInResult("Executing...");
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = getUser();
     const result = await fetch("http://localhost:5000/submit", {
       method: "POST",
       headers: {
@@ -158,6 +177,13 @@ function Code() {
 
   return (
     <div className="coding-interface">
+      <div className="coding-interface-navbar">
+        <div className="back-svg" onClick={() => navigate(-1)}>
+          <img src={backSVG} alt="<" />
+          <span>Back</span>
+        </div>
+        <Profile userName={getUser()?.userName} />
+      </div>
       <div className="display-none" id="submission-message">
         SUBMISSION SUCCESSFULL
       </div>
@@ -167,18 +193,20 @@ function Code() {
           maxSize="70%"
           className="description-submission-container"
         >
-          <div>
+          <div className="stick-top-of-container-2">
             <button
-              onClick={() => {
+              onClick={(e) => {
                 showTab("DESCRIPTION", submitionOrInfo, setSubmitionOrInfo);
               }}
+              className={submitionOrInfo === "DESCRIPTION" ? "clicked" : ""}
             >
               Description
             </button>
             <button
-              onClick={() => {
+              onClick={(e) => {
                 showTab("SUBMISSION", submitionOrInfo, setSubmitionOrInfo);
               }}
+              className={submitionOrInfo === "SUBMISSION" ? "clicked" : ""}
             >
               Submissions
             </button>
@@ -208,26 +236,36 @@ function Code() {
               <div className="stick-top-of-container">
                 <div>
                   <button
-                    onClick={() =>
+                    onClick={(e) =>
                       showTab("CASE", showCaseOrResult, setshowCaseOrResult)
                     }
+                    className={showCaseOrResult === "CASE" ? "clicked" : ""}
                   >
                     TestCase
                   </button>
                   <button
-                    onClick={() =>
+                    onClick={(e) =>
                       showTab("RESULT", showCaseOrResult, setshowCaseOrResult)
                     }
+                    className={showCaseOrResult === "RESULT" ? "clicked" : ""}
                   >
                     TestResult
                   </button>
                 </div>
-                <div>
-                  <button onClick={async (e) => await handleRun(e)}>run</button>
-                  <button onClick={async (e) => await handleSubmit(e)}>
-                    submit
+                <span className="run-submit-button-container">
+                  <button
+                    onClick={async (e) => await handleRun(e)}
+                    className="run-button"
+                  >
+                    Run
                   </button>
-                </div>
+                  <button
+                    onClick={async (e) => await handleSubmit(e)}
+                    className="submit-button"
+                  >
+                    Submit
+                  </button>
+                </span>
               </div>
               {showCaseOrResult === "RESULT" ? (
                 <div className="output-section-container">

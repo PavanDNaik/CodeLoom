@@ -1,8 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-}
-
 :root {
   --primary-color: #1c1917;
   --secondary-color: #292524;
@@ -19,6 +14,11 @@
   --border-color: #44403c;
   --highlight-color: #292524;
   --font-color: #1c1917;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
 body {
@@ -72,9 +72,6 @@ ul.navbar-list li a:hover:not(.active-navbar-elements) {
   cursor: pointer;
 }
 
-.switch-theme-icon > svg {
-  fill: white;
-}
 .drop-down-profile-info {
   background-color: #737373;
   display: flex;
@@ -82,9 +79,10 @@ ul.navbar-list li a:hover:not(.active-navbar-elements) {
   gap: 1rem;
   padding: 0.4rem 0.2rem;
   border-radius: 5px;
-  position: absolute;
-  top: 110%;
-  right: 15%;
+  position: fixed;
+  top: 10%;
+  right: 8%;
+  z-index: 6;
 }
 
 .drop-down-profile-info > h3 {
@@ -117,6 +115,7 @@ div.log-out-profile > img {
 
 .profile-icon-div {
   width: 2rem;
+  padding: auto 1px;
 }
 
 .profile-icon-div > img {
@@ -261,9 +260,9 @@ div.problem-descrption {
   flex-direction: column;
   gap: 10px;
 }
-.examples p {
+.examples h4 {
   font-size: 1.2rem;
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .example-overview {
@@ -271,9 +270,44 @@ div.problem-descrption {
   padding-left: 0.8rem;
   font-size: 0.9rem;
 }
+
 .coding-interface {
-  height: 90vh;
   padding: 0.3rem;
+  min-width: 750px;
+  height: 90vh;
+}
+
+.back-svg {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 600;
+  height: 100%;
+}
+
+.back-svg:hover {
+  transform: scale(1.1);
+}
+
+.back-svg img {
+  width: 1.3rem;
+}
+.coding-interface-navbar {
+  background-color: var(--secondary-color);
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navabar-login {
+  padding: 5px 10px;
+  background-color: var(--highlight-color);
+  color: var(--primary-color);
+  font-weight: 800;
+  border-radius: 5px;
 }
 
 .editor-testcases-container {
@@ -290,9 +324,18 @@ div.problem-descrption {
 
 .editor-config-selects {
   height: 8%;
+  padding: 2px;
+}
+.editor-config-selects > select {
+  background-color: var(--tertiary-color);
+  color: var(--highlight-color);
+  padding: 2px;
+  border-radius: 2px;
+  margin-left: 10px;
+  border-color: var(--border-color);
 }
 .result-test-case-container {
-  padding: 0.5rem 1rem;
+  padding: 1rem;
   height: 100%;
   border-radius: 5px;
   background-color: var(--secondary-color);
@@ -317,7 +360,77 @@ div.problem-descrption {
 .stick-top-of-container {
   display: flex;
   justify-content: space-between;
-  padding: 2px 10px;
+}
+
+.stick-top-of-container-2 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.stick-top-of-container-2,
+.stick-top-of-container {
+  background-color: var(--tertiary-color);
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.stick-top-of-container-2 > button,
+.stick-top-of-container > div > button {
+  border: none;
+  background: transparent;
+  color: var(--border-color);
+  font-weight: 600;
+  padding: 5px;
+}
+
+.stick-top-of-container-2 > button:hover:not(.clicked),
+.stick-top-of-container > div > button:hover:not(.clicked) {
+  background-color: var(--border-color);
+  color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.stick-top-of-container-2 > button:first-child,
+.stick-top-of-container > div > button:first-child {
+  border-right: 2px solid var(--border-color);
+}
+
+.stick-top-of-container-2 > button.clicked,
+.stick-top-of-container > div > button.clicked {
+  /* background-color: var(--border-color); */
+  font-weight: 700;
+  color: var(--highlight-color);
+}
+
+.run-button,
+.submit-button {
+  border: none;
+  padding: 5px;
+  font-weight: 600;
+  width: 100px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+}
+
+.run-button {
+  margin-right: 20px;
+  color: #54d784;
+  background-color: var(--secondary-color);
+}
+
+.submit-button {
+  background-color: #39c56c;
+  color: var(--font-color);
+}
+
+.run-button:hover {
+  background-color: var(--border-color);
+}
+
+.submit-button:hover {
+  background-color: transparent;
+  color: #39c56c;
 }
 
 .Test-cases-container {
