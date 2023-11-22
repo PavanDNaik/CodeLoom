@@ -154,28 +154,41 @@ async function updateUsersProgressHistory(
 
         currentUser.problemsReached.set(currentPnum, previousHistory);
       }
-      currentUser
-        .save()
-        .then(() => {
-          console.log("USER PROGRESS UPDATED");
-        })
-        .catch((err) => console.log(err));
+      currentUser.save().catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 }
 
+async function fetchTestCode(type, pnum, lang, callback) {
+  mongoose
+    .model("problems")
+    .findOne({
+      pnum,
+    })
+    .select(`${type}.${lang}`)
+    .then((problem) => {
+      callback(problem[type][lang]);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 app.post("/run", (req, res) => {
   const code = req.body.code;
   const lang = req.body.lang;
-  const testCode = problems[req.body.pnum].testCode[lang];
-
-  executeCode(lang, code + testCode, (result) => {
-    if (result) {
-      res.json(result);
-    } else {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
+  try {
+    fetchTestCode("testCode", req.body.pnum, lang, (testCode) => {
+      executeCode(lang, code + testCode, (result) => {
+        if (result) {
+          res.json(result);
+        } else {
+          res.status(500).json({ error: "Internal Server Error" });
+        }
+      });
+    });
+  } catch (e) {
+    res.json({ error: "unable to fetch test Code" });
+  }
 });
 
 app.post("/submit", (req, res) => {
@@ -183,40 +196,53 @@ app.post("/submit", (req, res) => {
   const lang = req.body.lang;
   const currentUserEmail = req.body.userEmail;
   const currentPnum = req.body.pnum;
-  const testCode = problems[currentPnum].submitionTestCode[lang];
 
-  executeCode(lang, code + testCode, async (result) => {
-    if (result) {
-      let submissionStatus;
-      let isSolved;
-      const date = new Date();
-      const currentDate = date.toLocaleDateString();
-      if (result.substring(0, 4) == "True") {
-        submissionStatus = { status: "AC", lang, date: currentDate };
-        isSolved = true;
-      } else {
-        submissionStatus = { status: "WA", lang, date: currentDate };
-        isSolved = false;
-      }
-      const submisonInfo = {
-        solved: isSolved,
-        lastSubmission: code,
-        submissions: [submissionStatus],
-      };
+  try {
+    fetchTestCode("submissionTestCode", req.body.pnum, lang, (testCode) => {
+      executeCode(lang, code + testCode, async (result) => {
+        if (result) {
+          let submissionStatus;
+          let isSolved;
+          const date = new Date();
+          const currentDate = date.toLocaleDateString();
+          if (result.substring(0, 4) == "True") {
+            submissionStatus = {
+              status: "AC",
+              lang,
+              date: currentDate,
+            };
+            isSolved = true;
+          } else {
+            submissionStatus = {
+              status: "WA",
+              lang,
+              date: currentDate,
+            };
+            isSolved = false;
+          }
+          const submisonInfo = {
+            solved: isSolved,
+            lastSubmission: code,
+            submissions: [submissionStatus],
+          };
 
-      await updateUsersProgressHistory(
-        currentUserEmail,
-        String(currentPnum),
-        submisonInfo,
-        code,
-        isSolved,
-        submissionStatus
-      );
-      res.json(String(result));
-    } else {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  });
+          await updateUsersProgressHistory(
+            currentUserEmail,
+            String(currentPnum),
+            submisonInfo,
+            code,
+            isSolved,
+            submissionStatus
+          );
+          res.json(String(result));
+        } else {
+          res.status(500).json({ error: "Internal Server Error" });
+        }
+      });
+    });
+  } catch {
+    // res.json({ error: "Internal server Error" });
+  }
 });
 
 app.post("/submissions", (req, res) => {
@@ -227,6 +253,7 @@ app.post("/submissions", (req, res) => {
   mongoose
     .model("user")
     .findOne({ userEmail: req.body.user })
+    .select(`problemsReached.${req.body.pnum}`)
     .then((fetchedUser) => {
       if (
         !fetchedUser.problemsReached ||
@@ -287,6 +314,12 @@ app.post("/sign-up", async (req, res) => {
 app.post("/log-in", async (req, res) => {
   userEmail = req.body.email;
   userPassword = req.body.password;
+  // user
+  //   .findOne({ userEmail: userEmail })
+  //   .select("userName userEmail problemsReached.$")
+  //   .then((user) => {
+  //     res.json(user);
+  //   });
   const someUser = await user.findOne({ userEmail: userEmail });
 
   if (someUser) {
@@ -323,7 +356,7 @@ const problemSchema = new mongoose.Schema({
     c: String,
     cpp: String,
   },
-  submitionTestCode: {
+  submissionTestCode: {
     python: String,
     java: String,
     c: String,
@@ -347,314 +380,32 @@ app.post("/addProblem", (req, res) => {
       console.log("Could not Add problem!");
     });
 });
-const problems = {
-  1: {
-    pnum: 1,
-    title: "Sum of two Integers",
-    difficulty: "easy",
-    description: {
-      overview: `Complete the solveMeFirst function in the editor below.
-solveMeFirst has the following parameters:
-int num1: the first value
-int num2: the second value
-return the sum of two numbers`,
-      examples: [
-        `Input: 1, 2
-output:3
-Explanation: 1 + 2 = 3
-`,
-        `Input: 5, -2
-Output: 3
-Explanation: 5 + (-2) = 3`,
-      ],
-    },
-    boilerPlate: {
-      python: `def addTwoNumers(num1, num2):
-    `,
-      java: `import java.util.*;
-class addNumbers{
-    public static int add(int num1,int num2){
-  
-    }
-}`,
-      c: `#include <stdio.h>
-int add(int num1,int num2){
-
-}`,
-      cpp: "",
-    },
-    testCode: {
-      python: `
-testCases = [[1, 2],[3, 4], [5, -2]]
-n = len(testCases)
-expected = [3, 7, 3]
-for i in range(n):
-    res = addTwoNumers(testCases[i][0],testCases[i][1])
-    if res != expected[i]:
-        print("INPUT: ",testCases[i][0],",", testCases[i][1])
-        print("EXPECTED: ",expected[i])
-        print("RESULT: ",res)
-        exit(0)
-print(True)`,
-      java: `
-      public class testJava {
-
-    public void testCode(){
-        int[][] TestCases = {{1,2},{3,4},{5,-2}};
-        int[] expected = {3, 7, 3};
-        addNumbers myobj = new addNumbers();
-        for(int i=0;i<TestCases.length;i++){
-            int res = myobj.add(TestCases[i][0],TestCases[i][1]);
-            if(res != expected[i]){
-                System.out.println("CASE: "+TestCases[i][0]+", "+TestCases[i][1]);
-                System.out.println("EXPECTED: "+expected[i]);
-                System.out.println("RESULT: "+res);
-                System.exit(0);
-            }
-        }
-        System.out.println("True");
-    }
-    public static void main(String args[]){
-        testJava t=new testJava();
-        t.testCode();
-    }
-}`,
-      c: `
-      int main()
-{
-    int testCases[3][2] = {{1, 2},{3, 4},{5, -2}};
-    int expected[3] = {3, 7, 3};
-    for(int i=0;i<3;i++)
-    {
-        int res = add(testCases[i][0],testCases[i][1]);
-        if(res != expected[i])
-        {
-            printf("INPUT: %d, %d",testCases[i][0], testCases[i][1]);
-            printf("  EXPECTED: %d",expected[i]);
-            printf("  RESULT: %d",res);
-            return 0;
-        }
-    }
-      printf("True");
-}`,
-      cpp: "",
-    },
-    submitionTestCode: {
-      python: `
-testCases = [[1, 2],[3, 4], [5, -2]]
-n = len(testCases)
-expected = [3, 7, 3]
-for i in range(n):
-    res = addTwoNumers(testCases[i][0],testCases[i][1])
-    if res != expected[i]:
-        print("INPUT: ",testCases[i][0],",", testCases[i][1])
-        print("EXPECTED: ",expected[i])
-        print("RESULT: ",res)
-        exit(0)
-print(True)`,
-      java: `
-      public class testJava {
-
-    public void testCode(){
-        int[][] TestCases = {{1,2},{3,4},{5,-2}};
-        int[] expected = {3, 7, 3};
-        addNumbers myobj = new addNumbers();
-        for(int i=0;i<TestCases.length;i++){
-            int res = myobj.add(TestCases[i][0],TestCases[i][1]);
-            if(res != expected[i]){
-                System.out.println("CASE: "+TestCases[i][0]+", "+TestCases[i][1]);
-                System.out.println("EXPECTED: "+expected[i]);
-                System.out.println("RESULT: "+res);
-                System.exit(0);
-            }
-        }
-        System.out.println("True");
-    }
-    public static void main(String args[]){
-        testJava t=new testJava();
-        t.testCode();
-    }
-}`,
-      c: `
-      int main()
-{
-    int testCases[3][2] = {{1, 2},{3, 4},{5, -2}};
-    int expected[3] = {3, 7, 3};
-    for(int i=0;i<3;i++)
-    {
-        int res = add(testCases[i][0],testCases[i][1]);
-        if(res != expected[i])
-        {
-            printf("INPUT: %d, %d",testCases[i][0], testCases[i][1]);
-            printf("  EXPECTED: %d",expected[i]);
-            printf("  RESULT: %d",res);
-            return 0;
-        }
-    }
-      printf("True");
-}`,
-    },
-    testCases: [
-      [1, 2],
-      [3, 4],
-      [5, -2],
-    ],
-  },
-  2: {
-    pnum: 2,
-    title: "Longest Substring Without Repeating Characters",
-    difficulty: "medium",
-    description: {
-      overview: `Complete the solveMeFirst function in the editor below.`,
-      examples: [
-        `Input: s = "abcabcbb"
-Output: 3
-Explanation: The answer is "abc", with the length of 3.
-Example 2:`,
-        `Input: s = "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.`,
-        `Input: s = "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3.
-Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.`,
-      ],
-    },
-    boilerPlate: {
-      python: `def longestSubstring(s):
-    `,
-      java: "import java.util.*;\nclass addNumbers{\npublic int add(int num1,int num2){\n\n}\n}\n",
-      c: `#include <stdio.h>
-int longestSubstring(char *s){
-    
-}`,
-      cpp: "",
-    },
-    testCode: {
-      python: `
-testCases = ["abcabcbb", "bbbbb", "pwwkew"]
-expected = [3,1,3]
-for i in range(len(testCases)):
-    res = longestSubstring(testCases[i])
-    if res != expected[i]:
-        print("INPUT: ",testCases[i])
-        print("EXPECTED: ",expected[i])
-        print("RESULT: ",res)
-        exit(0)
-print("True")`,
-      java: ``,
-      c: `
-int main()
-{
-    char *testCases[3] = {"abcabcbb", "bbbbb", "pwwkew"};
-    int expected[3] = {3,1,3};
-    for(int i=0;i<3;i++)
-    {
-        int res = longestSubstring(testCases[i]);
-        if(res != expected[i])
-        {
-            printf("INPUT: %s",testCases[i]);
-            printf("EXPECTED: %d",expected[i]);
-            printf("RESULT: %d",res);
-            return 0;
-        }
-    }
-      printf("True");
-}`,
-      cpp: ``,
-    },
-    submitionTestCode: {
-      python: `
-testCases = ["abcabcbb", "bbbbb", "pwwkew"]
-expected = [3,1,3]
-for i in range(len(testCases)):
-    res = longestSubstring(testCases[i])
-    if res != expected[i]:
-        print("INPUT: ",testCases[i])
-        print("EXPECTED: ",expected[i])
-        print("RESULT: ",res)
-        exit(0)
-print("True")`,
-      java: ``,
-      c: `
-int main()
-{
-    char *testCases[3] = {"abcabcbb", "bbbbb", "pwwkew"};
-    int expected[3] = {3,1,3};
-    for(int i=0;i<3;i++)
-    {
-        int res = longestSubstring(testCases[i]);
-        if(res != expected[i])
-        {
-            printf("INPUT: %s",testCases[i]);
-            printf("EXPECTED: %d",expected[i]);
-            printf("RESULT: %d",res);
-            return 0;
-        }
-    }
-      printf("True");
-}`,
-      cpp: ``,
-    },
-    testCases: ["abcabcbb", "bbbbb", "pwwkew"],
-  },
-
-  3: {
-    pnum: 3,
-    title: "Median of Two Sorted Arrays",
-    difficulty: "hard",
-    description: {
-      overview: `Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
-
-The overall run time complexity should be O(log (m+n)).`,
-      examples: [
-        `Input: nums1 = [1,3], nums2 = [2]
-Output: 2.00000
-Explanation: merged array = [1,2,3] and median is 2.
-`,
-        `Input: nums1 = [1,2], nums2 = [3,4]
-Output: 2.50000
-Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.`,
-      ],
-    },
-    boilerPlate: {
-      python: `def addTwoNumers(num1, num2):
-      `,
-      java: `import java.util.*;
-      class addNumbers{
-        public int add(int num1,int num2){
-
-        }
-      }
-      `,
-      c: `#include <stdio.h>
-      int add(num1, num2){
-      
-      }
-      `,
-      cpp: "",
-    },
-    testCases: [[[1, 3], [2]][([1, 2], [3, 4])]],
-  },
-};
 
 app.get("/problems", (req, res) => {
-  res.json({ problems });
+  try {
+    mongoose
+      .model("problems")
+      .find({})
+      .select("pnum title difficulty")
+      .then((problems) => {
+        // mongoose.us
+        res.json(problems);
+      });
+  } catch {
+    console.log("error fetching problems");
+  }
 });
 
 app.get("/problems/:id", (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
-  // const foundp = problems.find((p) => p.title == requestedProblemTitle);
 
-  // const foundp = Object.values(problems).find(
-  //   (p) => p.title == requestedProblemTitle
-  // );
   mongoose
     .model("problems")
     .findOne({ title: requestedProblemTitle })
+    .select("-testCode -submissionTestCode")
     .then((foundp) => {
       if (!foundp) {
-        res.status(404).json({ fetchError: "COULD NOT FOUND" });
+        res.status(404).json({ fetchError: "FAILED to FETCH" });
       } else {
         return res.json(foundp);
       }

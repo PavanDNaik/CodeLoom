@@ -3,6 +3,7 @@ import MonacoEditor from "@monaco-editor/react";
 function Editor({ getCodeInfo, problemInfo }) {
   const [theme, setTheme] = useState("vs-dark");
   const [lang, setLang] = useState("python");
+
   function handleChange(code) {
     getCodeInfo(code, lang);
   }
@@ -33,6 +34,12 @@ function Editor({ getCodeInfo, problemInfo }) {
         </select>
       </div>
       <div className="codeEditor">
+        {/* options=
+        {{
+          minimap: {
+            enabled: false,
+          },
+        }} */}
         <MonacoEditor
           value={problemInfo.boilerPlate ? problemInfo.boilerPlate[lang] : ""}
           language={lang}

@@ -127,9 +127,12 @@ function Code() {
       setMessageInResult("SERVER ERROR!");
       console.log(err);
     });
+
     if (result) {
       const output = await result.json();
-      if (output.substring(0, 4) === "True") {
+      if (output.error) {
+        setMessageInResult(output.error);
+      } else if (output.substring && output?.substring(0, 4) === "True") {
         setMessageInResult("All Test Cases Passed");
       } else {
         setMessageInResult(output);
@@ -166,7 +169,9 @@ function Code() {
       return;
     }
     const output = await result.json();
-    if (output.substring(0, 4) === "True") {
+    if (output.error) {
+      setMessageInResult(output.error);
+    } else if (output.substring && output.substring(0, 4) === "True") {
       setMessageInResult("All Test Cases Passed");
       showSubmissionSuccesMessage();
     } else {

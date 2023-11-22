@@ -17,7 +17,7 @@ function Home() {
       <Navbar {...info} />
       <div>
         <Routes>
-          <Route exact path="/problems" element={<Problems />} />
+          <Route exact path="/problems" element={<Problems user={info} />} />
           <Route exact path="/contact" element={<Contact />} />
         </Routes>
       </div>

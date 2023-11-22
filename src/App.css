@@ -323,6 +323,7 @@ div.problem-descrption {
 }
 
 .editor-config-selects {
+  z-index: 3;
   height: 8%;
   padding: 2px;
 }
@@ -371,6 +372,7 @@ div.problem-descrption {
 .stick-top-of-container {
   background-color: var(--tertiary-color);
   padding: 5px;
+  min-width: 250px;
   border-radius: 5px;
 }
 
@@ -462,6 +464,7 @@ div.problem-descrption {
   height: 90%;
   overflow-y: auto;
   padding: 1rem;
+  min-width: 250px;
   color: var(--font-color);
 }
 
