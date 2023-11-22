@@ -1,6 +1,6 @@
 #include <stdio.h>
-int longestSubstring(char *s){
-    return 1;
+int add(int num1,int num2){
+    return num1+num2;
 }
       int main()
 {
@@ -17,5 +17,5 @@ int longestSubstring(char *s){
             return 0;
         }
     }
-      printf("true");
+      printf("True");
 }

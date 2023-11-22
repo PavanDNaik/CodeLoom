@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 function Submision(props) {
-  const [submission, setSubmissions] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("Loading...");
   useEffect(() => {
     getLatestSubmissions();
@@ -46,25 +46,29 @@ function Submision(props) {
     <div className="submission-list-container">
       <div className="submission-list-header">
         <div>Status</div>
-        <h5 className="date-of-submission">Date</h5>
+        <div>Language</div>
+        <div className="date-of-submission">Date</div>
       </div>
-      {submission.length == 0 ? (
+      {submissions.length === 0 ? (
         <div className="submission-list-loading">{fetchStatus}</div>
       ) : (
-        submission
+        submissions
           .slice()
           .reverse()
-          .map((value, index) => {
+          .map((submision, index) => {
             return (
-              <div
-                key={index}
-                className={
-                  value.charAt(0) === "A"
-                    ? "correct-submission"
-                    : "wrong-submission"
-                }
-              >
-                <h6 className="date-of-submission">{value.substring(2)}</h6>
+              <div key={index} className="submission-element">
+                <h4
+                  className={
+                    submision.status === "AC"
+                      ? "correct-submission"
+                      : "wrong-submission"
+                  }
+                >
+                  {submision.status}
+                </h4>
+                <h5 className="language">{submision.lang}</h5>
+                <h5 className="date-of-submission">{submision.date}</h5>
               </div>
             );
           })

@@ -1,9 +1,8 @@
 import java.util.*;
 class addNumbers{
-    public static int add(int num1,int num2){
+    public int add(int num1,int num2){
         return num1+num2;
     }
-    public static void main(String args[]){}
 }
       public class testJava {
 
@@ -20,7 +19,7 @@ class addNumbers{
                 System.exit(0);
             }
         }
-        System.out.println("true");
+        System.out.println("True");
     }
     public static void main(String args[]){
         testJava t=new testJava();

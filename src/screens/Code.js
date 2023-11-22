@@ -7,6 +7,7 @@ import Submision from "../components/Submision";
 import Editor from "../components/Editor";
 import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
+
 //fetch problem
 async function getProblemInfo({ problemId }) {
   if (localStorage.getItem(problemId)) {
@@ -102,7 +103,7 @@ function Code() {
     if (getUser()) {
       return false;
     } else {
-      alert("Please Login Continue!!");
+      alert("Please Login to Continue!!");
       return true;
     }
   }

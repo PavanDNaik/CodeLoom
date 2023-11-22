@@ -57,14 +57,8 @@ function getResultOfexe(childProcess, exec, callback) {
   childProcess.on("close", (code) => {
     if (code === 0) {
       const runEXE = spawn("./" + exec, []);
-      runEXE.stdout.on("data", (data) => {
-        result += data;
-      });
-      runEXE.stderr.on("data", (err) => {
-        result += err;
-      });
-      runEXE.on("close", (code) => {
-        return callback(result);
+      getResults(runEXE, (ret) => {
+        callback(ret);
       });
     } else {
       callback(result);
@@ -80,9 +74,30 @@ function executeCode(lang, code, callback) {
         callback(ret);
       });
     } else if (lang == "java") {
-      const javaProcess = spawn("java", ["userProgramFiles/testJava.java"]);
-      getResults(javaProcess, (ret) => {
-        callback(ret);
+      const javaProcess = spawn("javac", ["userProgramFiles/testJava.java"]);
+
+      let compileError = "";
+
+      javaProcess.stdout.on("data", (data) => {
+        compileError += data;
+      });
+
+      javaProcess.stderr.on("data", (data) => {
+        compileError += data;
+      });
+      javaProcess.on("close", (code) => {
+        if (code == 0) {
+          const runProcess = spawn("java", [
+            "-cp",
+            "userProgramFiles",
+            "testJava",
+          ]);
+          getResults(runProcess, (ret) => {
+            callback(ret);
+          });
+        } else {
+          callback(compileError);
+        }
       });
     } else if (lang == "c") {
       const cCompileProcess = spawn("gcc", [
@@ -177,10 +192,10 @@ app.post("/submit", (req, res) => {
       const date = new Date();
       const currentDate = date.toLocaleDateString();
       if (result.substring(0, 4) == "True") {
-        submissionStatus = "AC" + currentDate;
+        submissionStatus = { status: "AC", lang, date: currentDate };
         isSolved = true;
       } else {
-        submissionStatus = "WA" + currentDate;
+        submissionStatus = { status: "WA", lang, date: currentDate };
         isSolved = false;
       }
       const submisonInfo = {
