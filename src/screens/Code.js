@@ -9,7 +9,7 @@ import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
 
 //fetch problem
-async function getProblemInfo({ problemId }) {
+async function getProblemInfo({ problemId, token }) {
   if (localStorage.getItem(problemId)) {
     return JSON.parse(localStorage.getItem(problemId));
   }
@@ -19,6 +19,7 @@ async function getProblemInfo({ problemId }) {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        token: token,
       },
     }
   );
@@ -48,7 +49,10 @@ function Code() {
 
   //loader
   useEffect(() => {
-    getProblemInfo(problemId).then((data) => {
+    getProblemInfo(
+      problemId,
+      JSON.parse(localStorage.getItem("user")).userEmail
+    ).then((data) => {
       if (!data) {
         console.log("could not fint data");
       } else {

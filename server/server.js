@@ -1,16 +1,16 @@
+require("dotenv").config();
+
 const express = require("express");
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const { spawn } = require("child_process");
 const fs = require("fs");
 const mongoose = require("mongoose");
-const mongoURI =
-  "mongodb+srv://pawannaik396:web-project@cluster0.dpuzv08.mongodb.net/?retryWrites=true&w=majority";
 
-mongoose.connect(mongoURI);
+mongoose.connect(process.env.MONGO_SECRETE_URI);
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 const port = 5000;
@@ -267,7 +267,7 @@ app.post("/submissions", (req, res) => {
         });
       }
     })
-    .catch((err) => console.log(err));
+    .catch(() => res.sendStatus(404));
 });
 //schema
 const userSchema = new mongoose.Schema({
@@ -303,10 +303,10 @@ app.post("/sign-up", async (req, res) => {
     newUser
       .save()
       .then((msg) => {
-        res.json({ msg });
+        res.json({ msg, route: "/home" });
       })
       .catch((errors) => {
-        res.json({ errors });
+        res.status(404).json({ errors });
       });
   }
 });
@@ -320,11 +320,11 @@ app.post("/log-in", async (req, res) => {
   //   .then((user) => {
   //     res.json(user);
   //   });
-  const someUser = await user.findOne({ userEmail: userEmail });
+  const someUser = await user.findOne({ userEmail });
 
   if (someUser) {
     if (someUser._doc.userPassword == userPassword) {
-      res.json({ msg: someUser._doc });
+      res.json({ msg: someUser._doc, route: "/home" });
       return;
     } else {
       res.json({ errors: "passwrod is wrong" });
@@ -335,6 +335,24 @@ app.post("/log-in", async (req, res) => {
   }
 });
 
+async function userAuthOnGetRequest(req, res, next) {
+  // console.log(req.headers.token);
+  // if (!req.headers.token) {
+  //   res.status("404").send({ fetchError: "Log - in required 1" });
+  //   return;
+  // } else {
+  //   const user = await mongoose
+  //     .model("user")
+  //     .findOne({ userEmail: req.headers.token });
+  //   if (!user) {
+  //     res.status("401").send({ fetchError: "Forbidden 2" });
+  //     return;
+  //   } else {
+  //     next();
+  //   }
+  // }
+  next();
+}
 //problems
 const problemSchema = new mongoose.Schema({
   pnum: Number,
@@ -381,7 +399,7 @@ app.post("/addProblem", (req, res) => {
     });
 });
 
-app.get("/problems", (req, res) => {
+app.get("/problems", userAuthOnGetRequest, (req, res) => {
   try {
     mongoose
       .model("problems")
@@ -396,7 +414,7 @@ app.get("/problems", (req, res) => {
   }
 });
 
-app.get("/problems/:id", (req, res) => {
+app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
 
   mongoose
@@ -411,7 +429,7 @@ app.get("/problems/:id", (req, res) => {
       }
     })
     .catch(() => {
-      res.status(404).json("cannot find problem");
+      res.status(404).json({ fetchError: "cannot find problem" });
     });
 });
 

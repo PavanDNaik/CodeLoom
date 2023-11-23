@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Question from "../components/Question";
-async function getAllProblems() {
+async function getAllProblems(user) {
   let allProblems = sessionStorage.getItem("problemSet");
 
   if (allProblems) {
     let setOfProblemObject = JSON.parse(allProblems);
     return setOfProblemObject;
   }
+
   let problemRequest = await fetch("http://localhost:5000/problems", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      token: user,
     },
   });
 
@@ -22,10 +24,15 @@ async function getAllProblems() {
 
 function Problems({ user }) {
   const [allProblems, setAllProblems] = useState(null);
+  const [listStatus, setListStatus] = useState("Loading...");
   useEffect(() => {
-    getAllProblems(user.userEmail).then((problemSet) => {
-      setAllProblems(problemSet);
-    });
+    if (user) {
+      getAllProblems(user).then((problemSet) => {
+        setAllProblems(problemSet);
+      });
+    } else {
+      setListStatus("Log - in to get see The Problems");
+    }
   }, []);
 
   return (
@@ -38,10 +45,10 @@ function Problems({ user }) {
         </div>
         {allProblems ? (
           Object.values(allProblems).map((values, index) => {
-            return <Question key={index} {...values} />;
+            return <Question key={index} {...values} user={user} />;
           })
         ) : (
-          <div>Loading...</div>
+          <div>{listStatus}</div>
         )}
       </div>
     </div>

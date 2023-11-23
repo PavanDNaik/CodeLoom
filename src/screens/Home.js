@@ -4,14 +4,11 @@ import { useLocation } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Problems from "./Problems";
 import Contact from "../components/Contact";
+import PageNotFound from "./PageNotFound";
 function Home() {
   const location = useLocation();
-  let info = localStorage.getItem("user");
-  if (location.state) {
-    info = location.state;
-  } else if (info) {
-    info = JSON.parse(info);
-  }
+  let info = JSON.parse(localStorage.getItem("user"));
+
   return (
     <div>
       <Navbar {...info} />
@@ -19,6 +16,7 @@ function Home() {
         <Routes>
           <Route exact path="/problems" element={<Problems user={info} />} />
           <Route exact path="/contact" element={<Contact />} />
+          <Route Component={<PageNotFound />} />
         </Routes>
       </div>
       <Footer />

@@ -702,3 +702,10 @@ div.problem-descrption {
   right: 1.5%;
   opacity: 0.75;
 }
+
+.page-not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
