@@ -49,6 +49,11 @@ ul.navbar-list {
   border-bottom: 1px solid var(--border-color);
   animation: slide-in 0.5s ease-in-out;
   padding: 10px 5px;
+  z-index: 2;
+}
+
+ul.navbar-list.no-animation {
+  animation: none;
 }
 
 ul.navbar-list li a {
@@ -323,11 +328,13 @@ div.problem-descrption {
 }
 
 .editor-config-selects {
+  display: flex;
   z-index: 3;
   height: 8%;
   padding: 2px;
 }
-.editor-config-selects > select {
+.editor-config-selects > select,
+.editor-config-selects > div {
   background-color: var(--tertiary-color);
   color: var(--highlight-color);
   padding: 2px;
@@ -335,6 +342,7 @@ div.problem-descrption {
   margin-left: 10px;
   border-color: var(--border-color);
 }
+
 .result-test-case-container {
   padding: 1rem;
   height: 100%;
@@ -708,4 +716,45 @@ div.problem-descrption {
   justify-content: center;
   align-items: center;
   height: 90vh;
+}
+
+.admin-working-container {
+  margin-top: 80px;
+  height: max-content;
+}
+
+.admin-basic-problem-info {
+  display: flex;
+  width: max-content;
+  flex-direction: column;
+}
+
+div.admin-section-titles {
+  margin: 20px 0;
+  border-bottom: 1px dotted var(--border-color);
+}
+.boiler-and-test-container {
+  display: flex;
+  gap: 5%;
+}
+
+.admin-boiler-monaco-editor {
+  width: 36vw;
+  height: 400px;
+}
+
+.admin-test-monaco-editor {
+  width: 56vw;
+  height: 400px;
+}
+
+.admin-submission-monaco-editor {
+  height: 600px;
+  width: 90%;
+}
+
+.admin-test-cases {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

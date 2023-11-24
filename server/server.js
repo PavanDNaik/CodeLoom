@@ -384,15 +384,15 @@ const problemSchema = new mongoose.Schema({
 });
 
 const problem = mongoose.model("problems", problemSchema);
-app.post("/addProblem", (req, res) => {
+app.post("/admin/addProblem", (req, res) => {
   const newProblem = new problem({
-    ...problems[req.body.pnum],
+    ...req.body.newProblem,
   });
   newProblem
     .save()
     .then(() => {
       console.log("New Problem Added!");
-      res.json("problem added");
+      res.json({ success: "problem added" });
     })
     .catch(() => {
       console.log("Could not Add problem!");

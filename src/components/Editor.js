@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import MonacoEditor from "@monaco-editor/react";
-function Editor({ getCodeInfo, problemInfo }) {
+function Editor({ getCodeInfo, problemInfo, defaultLanguage }) {
   const [theme, setTheme] = useState("vs-dark");
-  const [lang, setLang] = useState("python");
+  const [lang, setLang] = useState(
+    defaultLanguage ? defaultLanguage : "python"
+  );
 
   function handleChange(code) {
     getCodeInfo(code, lang);
@@ -11,19 +13,24 @@ function Editor({ getCodeInfo, problemInfo }) {
   return (
     <>
       <div className="editor-config-selects">
-        <select
-          onChange={(e) => {
-            setLang(e.target.value);
-            if (problemInfo.boilerPlate) {
-              getCodeInfo(problemInfo.boilerPlate[e.target.value], lang);
-            }
-          }}
-        >
-          <option value="python">python</option>
-          <option value="java">java</option>
-          <option value="c">C</option>
-          <option value="cpp">C++</option>
-        </select>
+        {!defaultLanguage ? (
+          <select
+            onChange={(e) => {
+              setLang(e.target.value);
+              if (problemInfo.boilerPlate) {
+                getCodeInfo(problemInfo.boilerPlate[e.target.value], lang);
+              }
+            }}
+          >
+            <option value="python">python</option>
+            <option value="java">java</option>
+            <option value="c">C</option>
+            {/* <option value="cpp">C++</option> */}
+          </select>
+        ) : (
+          <div className="default-language">Default: {defaultLanguage}</div>
+        )}
+
         <select
           onChange={(e) => {
             setTheme(e.target.value);
@@ -41,7 +48,11 @@ function Editor({ getCodeInfo, problemInfo }) {
           },
         }} */}
         <MonacoEditor
-          value={problemInfo.boilerPlate ? problemInfo.boilerPlate[lang] : ""}
+          value={
+            problemInfo && problemInfo.boilerPlate
+              ? problemInfo.boilerPlate[lang]
+              : ""
+          }
           language={lang}
           theme={theme}
           resizerSize={5}

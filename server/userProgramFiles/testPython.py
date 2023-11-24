@@ -1,5 +1,5 @@
 def addTwoNumers(num1, num2):
-    return num1+num2
+    return num1
 testCases = [[1, 2],[3, 4], [5, -2]]
 n = len(testCases)
 expected = [3, 7, 3]
