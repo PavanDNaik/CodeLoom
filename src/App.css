@@ -155,6 +155,12 @@ select:hover {
   display: none !important;
   visibility: hidden !important;
 }
+.display-flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+}
 .split-pane-layoutCSS {
   height: 100%;
 }
@@ -725,14 +731,19 @@ div.problem-descrption {
 
 .admin-basic-problem-info {
   display: flex;
-  width: max-content;
   flex-direction: column;
 }
 
 div.admin-section-titles {
   margin: 20px 0;
-  border-bottom: 1px dotted var(--border-color);
+  font-size: 1.3rem;
+  text-align: center;
+  padding-top: 10px;
+  padding: 1rem;
+  color: #39c56c;
+  border-top: 1px solid var(--border-color);
 }
+
 .boiler-and-test-container {
   display: flex;
   gap: 5%;
@@ -756,5 +767,66 @@ div.admin-section-titles {
 .admin-test-cases {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 1rem;
+}
+
+div.admin-test-cases input {
+  width: 60%;
+  font-size: 1.3rem;
+  padding: 10px;
+}
+
+.admin-basic-problem-credentials {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-flex-div {
+  padding: 0 5%;
+  display: flex;
+  gap: 5%;
+}
+.admin-flex-div > * {
+  flex: 1;
+}
+
+.admin-basic-problem-info input,
+.admin-basic-problem-info textarea,
+.admin-basic-problem-info select,
+.admin-basic-problem-info option,
+.admin-basic-problem-info button {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  background-color: var(--highlight-color);
+  padding: 2px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+}
+
+.overview-container {
+  padding: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+textarea.overview {
+  width: 80%;
+  margin: 5px auto;
+}
+.admin-basic-problem-info button {
+  margin-left: 5px;
+}
+
+.admin-example-container {
+  display: flex;
+  margin: 5px 0;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-evenly;
+  row-gap: 10px;
 }

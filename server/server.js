@@ -1,7 +1,6 @@
 require("dotenv").config();
 
 const express = require("express");
-// const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
 const { spawn } = require("child_process");
@@ -241,7 +240,7 @@ app.post("/submit", (req, res) => {
       });
     });
   } catch {
-    // res.json({ error: "Internal server Error" });
+    res.json({ error: "Internal server Error" });
   }
 });
 

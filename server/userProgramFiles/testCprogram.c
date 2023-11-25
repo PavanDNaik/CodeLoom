@@ -1,17 +1,16 @@
 #include <stdio.h>
-int add(int num1,int num2){
-    return num1+num2;
-}
-      int main()
+int smallesEven(int n){
+    return n%2?n*2:n;
+}int main()
 {
-    int testCases[3][2] = {{1, 2},{3, 4},{5, -2}};
-    int expected[3] = {3, 7, 3};
+    int testCases[3] = {5,6,7};
+    int expected[3] = {10,6,14};
     for(int i=0;i<3;i++)
     {
-        int res = add(testCases[i][0],testCases[i][1]);
+        int res = smallesEven(testCases[i]);
         if(res != expected[i])
         {
-            printf("INPUT: %d, %d",testCases[i][0], testCases[i][1]);
+            printf("INPUT: %d, %d",testCases[i]);
             printf("  EXPECTED: %d",expected[i]);
             printf("  RESULT: %d",res);
             return 0;

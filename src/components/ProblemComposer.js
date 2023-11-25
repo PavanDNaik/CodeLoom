@@ -20,8 +20,7 @@ function ProblemComposer() {
     pnum: "",
     title: "",
     difficulty: "easy",
-    descrption: "",
-    examples: [],
+    description: { overview: "", examples: [] },
     testCases: [],
   });
 
@@ -65,7 +64,7 @@ function ProblemComposer() {
       return "";
     }
     return (
-      <div>
+      <div className="admin-example-container">
         {Array.from({ length: numOfExamples }, (V, index) => index).map(
           (v, index) => {
             return (
@@ -75,11 +74,8 @@ function ProblemComposer() {
                 key={index}
                 placeholder={EXAMPLE_SYNTAX}
                 onChange={(e) => {
-                  updateBasicInfoStateByProperty(
-                    "examples",
-                    e.target.value,
-                    index
-                  );
+                  basicProblemInfo.description.examples[index] = e.target.value;
+                  setBasicProblemInfo(basicProblemInfo);
                 }}
               ></textarea>
             );
@@ -90,6 +86,7 @@ function ProblemComposer() {
   }
 
   function handleProblemSubmit() {
+    console.log(basicProblemInfo);
     const newProblem = {
       ...basicProblemInfo,
       boilerPlate,
@@ -121,43 +118,52 @@ function ProblemComposer() {
   return (
     <div className="problem-composer-container">
       <div className="admin-basic-problem-info">
-        <div className="admin-section-titles">Problem Number:</div>
-        <input
-          type="number"
-          placeholder="Problem Number"
-          onChange={(e) =>
-            updateBasicInfoStateByProperty("pnum", e.target.value)
-          }
-        />
-        <div className="admin-section-titles">Title:</div>
-        <input
-          type="text"
-          placeholder="Problem Title"
-          onChange={(e) =>
-            updateBasicInfoStateByProperty("title", e.target.value)
-          }
-        />
-        <div className="admin-section-titles">Difficulty:</div>
-        <select
-          onChange={(e) =>
-            updateBasicInfoStateByProperty("difficulty", e.target.value)
-          }
-        >
-          <option value="easy">easy</option>
-          <option value="medium">medium</option>
-          <option value="hard">hard</option>
-        </select>
-        <div className="admin-section-titles">Description:</div>
-        <div>
+        <div className="admin-basic-problem-credentials">
+          <div className="admin-section-titles admin-flex-div">
+            <div>Problem Number:</div>
+            <div>Title:</div>
+            <div>Difficulty:</div>
+          </div>
+          <div className="admin-flex-div">
+            <input
+              type="number"
+              placeholder="Problem Number"
+              onChange={(e) =>
+                updateBasicInfoStateByProperty("pnum", e.target.value)
+              }
+            />
+            <input
+              type="text"
+              placeholder="Problem Title"
+              onChange={(e) =>
+                updateBasicInfoStateByProperty("title", e.target.value)
+              }
+            />
+            <select
+              onChange={(e) =>
+                updateBasicInfoStateByProperty("difficulty", e.target.value)
+              }
+            >
+              <option value="easy">easy</option>
+              <option value="medium">medium</option>
+              <option value="hard">hard</option>
+            </select>
+          </div>
+        </div>
+        <div className="overview-container">
+          <div className="admin-section-titles">Description:</div>
           <textarea
+            className="overview"
             cols="30"
             rows="10"
             placeholder="OverView"
-            onChange={(e) =>
-              updateBasicInfoStateByProperty("descrption", e.target.value)
-            }
+            onChange={(e) => {
+              basicProblemInfo.description.overview = e.target.value;
+              setBasicProblemInfo(basicProblemInfo);
+            }}
           ></textarea>
-          <div>
+          <div className="">
+            <div className="admin-section-titles">Examples</div>
             <input
               type="number"
               id="numOfExamples"
@@ -175,22 +181,25 @@ function ProblemComposer() {
             {numOfExamples > 0 ? getExampleTemplate() : ""}
           </div>
         </div>
-        <div className="admin-section-titles">TestCases:</div>
         <div className="admin-test-cases">
+          <div className="admin-section-titles">TestCases:</div>
           <input
             type="text"
+            placeholder="CASE 0"
             onChange={(e) =>
               updateBasicInfoStateByProperty("testCases", e.target.value, 0)
             }
           />
           <input
             type="text"
+            placeholder="CASE 1"
             onChange={(e) =>
               updateBasicInfoStateByProperty("testCases", e.target.value, 1)
             }
           />
           <input
             type="text"
+            placeholder="CASE 2"
             onChange={(e) =>
               updateBasicInfoStateByProperty("testCases", e.target.value, 2)
             }
@@ -237,8 +246,11 @@ function ProblemComposer() {
         );
       })}
       <div className="admin-section-titles">UPLOAD PROBLEM</div>
-      <div id="upload-message" className="upload-message"></div>
-      <button className="upload" onClick={handleProblemSubmit}>
+      <div
+        id="upload-message"
+        className="upload-message display-flex-center"
+      ></div>
+      <button className="submit-button" onClick={handleProblemSubmit}>
         Upload
       </button>
     </div>
