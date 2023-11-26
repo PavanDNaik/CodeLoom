@@ -232,11 +232,11 @@ function ProblemComposer() {
       <div className="admin-section-titles">Submission Test Code</div>
       {LANGUAGES.map((lang, index) => {
         return (
-          <div key={index} className="admin-submission-container">
+          <div key={"key" + index} className="admin-submission-container">
             <div>
               <div key={index} className="admin-submission-monaco-editor">
                 <Editor
-                  key={index}
+                  id={index}
                   defaultLanguage={lang}
                   getCodeInfo={updateSubmissionTestCode}
                 />

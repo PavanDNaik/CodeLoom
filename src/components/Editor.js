@@ -36,6 +36,9 @@ function Editor({ getCodeInfo, problemInfo, defaultLanguage }) {
             setTheme(e.target.value);
           }}
         >
+          <option value="vs-dark" disabled hidden selected>
+            Theme
+          </option>
           <option value="vs-dark">Dark</option>
           <option value="light">Light</option>
         </select>

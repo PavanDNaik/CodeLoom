@@ -22,18 +22,39 @@ async function getAllProblems(user) {
   return allProblems;
 }
 
+function getPrior(a, b, sortFactor) {
+  if (a.difficulty === b.difficulty) {
+    return a.pnum - b.pnum;
+  } else if (
+    (a.difficulty === "medium" && b.difficulty === "easy") ||
+    (a.difficulty === "hard" && b.difficulty === "medium") ||
+    (a.difficulty === "hard" && b.difficulty === "easy")
+  ) {
+    return sortFactor;
+  }
+  return -1 * sortFactor;
+}
+
 function Problems({ user }) {
   const [allProblems, setAllProblems] = useState(null);
+  const [sortFactor, setSortFactor] = useState(1);
   const [listStatus, setListStatus] = useState("Loading...");
+
   useEffect(() => {
     if (user) {
       getAllProblems(user).then((problemSet) => {
-        setAllProblems(problemSet);
+        setAllProblems(Object.values(problemSet));
       });
     } else {
       setListStatus("Log - in to get see The Problems");
     }
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    if (allProblems) {
+      allProblems.sort((a, b) => getPrior(a, b, sortFactor));
+    }
+  }, [sortFactor, allProblems]);
 
   return (
     <div>
@@ -41,10 +62,22 @@ function Problems({ user }) {
         <div className="problemset-table-titles">
           <div>Number</div>
           <div>Title</div>
-          <div>Difficulty</div>
+          <div className="editor-config-selects">
+            <select
+              onChange={(e) => {
+                setSortFactor(e.target.value);
+              }}
+            >
+              <option value="0" disabled selected hidden>
+                Difficulty
+              </option>
+              <option value="-1">Easy</option>
+              <option value="1">Hard</option>
+            </select>
+          </div>
         </div>
         {allProblems ? (
-          Object.values(allProblems).map((values, index) => {
+          allProblems.map((values, index) => {
             return <Question key={index} {...values} user={user} />;
           })
         ) : (

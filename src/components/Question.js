@@ -7,7 +7,7 @@ function Question({ pnum, title, difficulty, user }) {
       <Link to={user ? "/problems/" + title.replaceAll(" ", "-") : "/login"}>
         <div>{title}</div>
       </Link>
-      <div>{difficulty}</div>
+      <div className={difficulty}>{difficulty}</div>
     </div>
   );
 }

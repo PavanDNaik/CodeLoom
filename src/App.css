@@ -27,6 +27,7 @@ body {
   box-sizing: border-box;
   background-color: var(--primary-color);
   color: var(--font-color);
+  transition: background-color 500ms linear;
 }
 ul {
   list-style-type: none;
@@ -86,8 +87,18 @@ ul.navbar-list li a:hover:not(.active-navbar-elements) {
   border-radius: 5px;
   position: fixed;
   top: 10%;
-  right: 8%;
+  right: 10%;
   z-index: 6;
+  animation: smooth-appear 250ms ease-in-out;
+}
+
+@keyframes smooth-appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .drop-down-profile-info > h3 {
@@ -188,6 +199,17 @@ select:hover {
   background-color: var(--tertiary-color);
 }
 
+.easy {
+  color: #39c56c;
+}
+
+.medium {
+  color: #facc15;
+}
+
+.hard {
+  color: #ef4444;
+}
 .problemset-table-titles {
   display: flex;
   align-items: center;
@@ -203,6 +225,19 @@ select:hover {
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.increase,
+.decrease {
+  cursor: pointer;
+}
+
+.increase::before {
+  content: "^ ";
+}
+
+.decrease::before {
+  content: "v ";
 }
 
 .flex-row {
@@ -331,6 +366,7 @@ div.problem-descrption {
   border: 1px solid var(--border-color);
   border-radius: 5px;
   padding: 0 1rem;
+  min-height: 350px;
 }
 
 .editor-config-selects {
@@ -341,7 +377,7 @@ div.problem-descrption {
 }
 .editor-config-selects > select,
 .editor-config-selects > div {
-  background-color: var(--tertiary-color);
+  background-color: var(--secondary-color);
   color: var(--highlight-color);
   padding: 2px;
   border-radius: 2px;
