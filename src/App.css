@@ -440,6 +440,7 @@ div.problem-descrption {
   background-color: var(--border-color);
   color: var(--primary-color);
   border-radius: 2px;
+  transition: background-color 250ms ease-in-out;
 }
 
 .stick-top-of-container-2 > button:first-child,

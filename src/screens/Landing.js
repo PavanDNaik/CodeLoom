@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import js_logo from "../images/js_logo.png";
 import python_logo from "../images/python_logo.png";
@@ -8,7 +8,12 @@ import go_logo from "../images/go_logo.png";
 
 function Landing() {
   const navigate = useNavigate();
-
+  function isLooged() {
+    if (localStorage.getItem("user")) {
+      return true;
+    }
+    return false;
+  }
   return (
     <div className="landing-page-container">
       <img
@@ -58,20 +63,28 @@ function Landing() {
         </div>
       </div>
 
-      <div className="landing-sign-up-buttons">
-        <button
-          onClick={() => navigate("/sign-up")}
-          className="landing-sign-in"
-        >
-          Sign-In
-        </button>
-        <button
-          onClick={() => navigate("/sign-up")}
-          className="landing-sign-up"
-        >
-          Sign-Up
-        </button>
-      </div>
+      {isLooged ? (
+        <div className="landing-sign-up-buttons">
+          <button
+            onClick={() => navigate("/sign-up")}
+            className="landing-sign-in"
+          >
+            Sign-In
+          </button>
+          <button
+            onClick={() => navigate("/sign-up")}
+            className="landing-sign-up"
+          >
+            Sign-Up
+          </button>
+        </div>
+      ) : (
+        <div className="landing-sign-up-buttons">
+          <button onClick={() => navigate("/home")} className="landing-sign-up">
+            Already Logged In
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -37,7 +37,7 @@ function Code() {
   const [lang, setLang] = useState("python");
   const [problemInfo, setProblemInfo] = useState({});
   const [testResult, setTestResult] = useState("");
-
+  // const [clickable, setClickable] = useState(true);
   //tab hooks
   const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
   const [showCaseOrResult, setshowCaseOrResult] = useState("CASE");
@@ -112,10 +112,12 @@ function Code() {
     }
   }
   async function handleRun(e) {
+    console.log(e.target.disabled);
     if (userNotLogedIn()) {
       return;
     }
-    e.target.disable = true;
+
+    e.target.disabled = true;
     setMessageInResult("Running...");
     const result = await fetch("http://localhost:5000/run", {
       method: "POST",
@@ -143,14 +145,16 @@ function Code() {
       }
     }
 
-    e.target.disable = false;
+    setTimeout(() => {
+      e.target.disabled = false;
+    }, 2000);
   }
 
   async function handleSubmit(e) {
     if (userNotLogedIn()) {
       return;
     }
-    e.target.disable = true;
+    e.target.disabled = true;
     setMessageInResult("Executing...");
     const user = getUser();
     const result = await fetch("http://localhost:5000/submit", {
@@ -182,7 +186,9 @@ function Code() {
       setMessageInResult(output);
     }
 
-    e.target.disable = false;
+    setTimeout(() => {
+      e.target.disabled = false;
+    }, 2000);
   }
 
   return (

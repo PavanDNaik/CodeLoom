@@ -1,15 +1,13 @@
-def smallesEven(n):
-    if n%2==0:
-        return n
-    else:
-        return n*2
-testCases = [5,6,7]
-expected = [10,6,14]
-for i in range(len(testCases)):
-    res = smallesEven(testCases[i])
+def addTwoNumers(num1, num2):
+    return num1+num2
+testCases = [[1, 2],[3, 4], [5, -2]]
+n = len(testCases)
+expected = [3, 7, 3]
+for i in range(n):
+    res = addTwoNumers(testCases[i][0],testCases[i][1])
     if res != expected[i]:
-        print("INPUT: ",testCases[i])
+        print("INPUT: ",testCases[i][0],",", testCases[i][1])
         print("EXPECTED: ",expected[i])
         print("RESULT: ",res)
         exit(0)
-print("True")
+print(True)

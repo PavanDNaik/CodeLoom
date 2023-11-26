@@ -1,12 +1,10 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { useLocation } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import Problems from "./Problems";
 import Contact from "../components/Contact";
 import PageNotFound from "./PageNotFound";
 function Home() {
-  const location = useLocation();
   let info = JSON.parse(localStorage.getItem("user"));
 
   return (
