@@ -7,7 +7,7 @@ function Loginform() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   async function handleLogin() {
-    const result = await fetch("http://localhost:5000/log-in", {
+    const result = await fetch("https://codeloom.onrender.com/log-in", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
