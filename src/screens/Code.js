@@ -14,7 +14,7 @@ async function getProblemInfo({ problemId, token }) {
     return JSON.parse(localStorage.getItem(problemId));
   }
   const problemInfoString = await fetch(
-    `https://codeloom.onrender.com/${problemId}`,
+    `https://codeloom.onrender.com/problems/${problemId}`,
     {
       method: "GET",
       headers: {
@@ -46,7 +46,7 @@ function Code() {
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
   const problemId = useParams();
-
+  console.log(problemId);
   //loader
   useEffect(() => {
     getProblemInfo(
@@ -62,7 +62,7 @@ function Code() {
         } else {
           setProblemInfo({ ...data });
           localStorage.setItem(
-            data.title.replaceAll(" ", "-"),
+            data.title && data.title.replaceAll(" ", "-"),
             JSON.stringify(data)
           );
         }
