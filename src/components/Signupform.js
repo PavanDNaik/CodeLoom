@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../css/login.css";
+const FETCH_BASE_URI =
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 function Signupform() {
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -8,7 +10,7 @@ function Signupform() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   async function handleSignUp() {
-    const result = await fetch("http://localhost:5000/sign-up", {
+    const result = await fetch(`${FETCH_BASE_URI}/sign-up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

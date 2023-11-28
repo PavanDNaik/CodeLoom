@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Question from "../components/Question";
+const FETCH_BASE_URI =
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 async function getAllProblems(user) {
   let allProblems = sessionStorage.getItem("problemSet");
 
@@ -8,7 +10,7 @@ async function getAllProblems(user) {
     return setOfProblemObject;
   }
 
-  let problemRequest = await fetch("https://codeloom.onrender.com/problems", {
+  let problemRequest = await fetch(`${FETCH_BASE_URI}/problems`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-
+const FETCH_BASE_URI =
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 function Submision(props) {
   const [submissions, setSubmissions] = useState([]);
   const [fetchStatus, setFetchStatus] = useState("Loading...");
@@ -15,19 +16,16 @@ function Submision(props) {
       const userEmailToFetch = JSON.parse(
         localStorage.getItem("user")
       )?.userEmail;
-      const fetchedSubmissions = await fetch(
-        `https://codeloom.onrender.com/submissions`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: userEmailToFetch,
-            pnum: props.problemNumber,
-          }),
-        }
-      ).catch((err) => console.log(err));
+      const fetchedSubmissions = await fetch(`${FETCH_BASE_URI}/submissions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: userEmailToFetch,
+          pnum: props.problemNumber,
+        }),
+      }).catch((err) => console.log(err));
       fetchedSubmissions.json().then((data) => {
         if (data.listOfSubmission) {
           if (!data.listOfSubmission.length) {

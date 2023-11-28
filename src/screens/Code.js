@@ -7,14 +7,15 @@ import Submision from "../components/Submision";
 import Editor from "../components/Editor";
 import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
-
+const FETCH_BASE_URI =
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 //fetch problem
 async function getProblemInfo({ problemId, token }) {
   if (localStorage.getItem(problemId)) {
     return JSON.parse(localStorage.getItem(problemId));
   }
   const problemInfoString = await fetch(
-    `https://codeloom.onrender.com/problems/${problemId}`,
+    `${FETCH_BASE_URI}/problems/${problemId}`,
     {
       method: "GET",
       headers: {
@@ -46,7 +47,6 @@ function Code() {
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
   const problemId = useParams();
-  console.log(problemId);
   //loader
   useEffect(() => {
     getProblemInfo(
@@ -112,14 +112,13 @@ function Code() {
     }
   }
   async function handleRun(e) {
-    console.log(e.target.disabled);
     if (userNotLogedIn()) {
       return;
     }
 
     e.target.disabled = true;
     setMessageInResult("Running...");
-    const result = await fetch("https://codeloom.onrender.com/run", {
+    const result = await fetch(`${FETCH_BASE_URI}/run`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -157,7 +156,7 @@ function Code() {
     e.target.disabled = true;
     setMessageInResult("Executing...");
     const user = getUser();
-    const result = await fetch("https://codeloom.onrender.com/submit", {
+    const result = await fetch(`${FETCH_BASE_URI}/submit`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

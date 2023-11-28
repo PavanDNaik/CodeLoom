@@ -6,8 +6,10 @@ function Loginform() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const FETCH_BASE_URI =
+    process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
   async function handleLogin() {
-    const result = await fetch("https://codeloom.onrender.com/log-in", {
+    const result = await fetch(`${FETCH_BASE_URI}/log-in`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

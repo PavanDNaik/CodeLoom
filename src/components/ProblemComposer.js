@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Editor from "../components/Editor";
+const FETCH_BASE_URI =
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 const EXAMPLE_SYNTAX = `
 Input: 1, 2
 output:3
@@ -94,7 +96,7 @@ function ProblemComposer() {
       submissionTestCode,
     };
     console.log(newProblem);
-    fetch("https://codeloom.onrender.com/admin/addProblem", {
+    fetch(`${FETCH_BASE_URI}/admin/addProblem`, {
       method: "POST",
       headers: {
         "content-Type": "application/json",
