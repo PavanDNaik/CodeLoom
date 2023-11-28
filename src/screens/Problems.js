@@ -8,7 +8,7 @@ async function getAllProblems(user) {
     return setOfProblemObject;
   }
 
-  let problemRequest = await fetch("http://localhost:5000/problems", {
+  let problemRequest = await fetch("https://codeloom.onrender.com/problems", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

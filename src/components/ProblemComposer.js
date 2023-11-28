@@ -94,7 +94,7 @@ function ProblemComposer() {
       submissionTestCode,
     };
     console.log(newProblem);
-    fetch("http://localhost:5000/admin/addProblem", {
+    fetch("https://codeloom.onrender.com/admin/addProblem", {
       method: "POST",
       headers: {
         "content-Type": "application/json",

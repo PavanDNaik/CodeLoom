@@ -16,7 +16,7 @@ function Submision(props) {
         localStorage.getItem("user")
       )?.userEmail;
       const fetchedSubmissions = await fetch(
-        `http://localhost:5000/submissions`,
+        `https://codeloom.onrender.com/submissions`,
         {
           method: "POST",
           headers: {

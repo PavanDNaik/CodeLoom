@@ -14,7 +14,7 @@ async function getProblemInfo({ problemId, token }) {
     return JSON.parse(localStorage.getItem(problemId));
   }
   const problemInfoString = await fetch(
-    `http://localhost:5000/problems/${problemId}`,
+    `https://codeloom.onrender.com/${problemId}`,
     {
       method: "GET",
       headers: {
@@ -119,7 +119,7 @@ function Code() {
 
     e.target.disabled = true;
     setMessageInResult("Running...");
-    const result = await fetch("http://localhost:5000/run", {
+    const result = await fetch("https://codeloom.onrender.com/run", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -157,7 +157,7 @@ function Code() {
     e.target.disabled = true;
     setMessageInResult("Executing...");
     const user = getUser();
-    const result = await fetch("http://localhost:5000/submit", {
+    const result = await fetch("https://codeloom.onrender.com/submit", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

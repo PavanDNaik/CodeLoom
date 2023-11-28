@@ -8,7 +8,7 @@ const fs = require("fs");
 const mongoose = require("mongoose");
 
 mongoose.connect(process.env.MONGO_SECRETE_URI);
-
+const BASE_URL = process.env.BASE_URL;
 app.use(express.json());
 app.use(cors());
 
@@ -433,5 +433,5 @@ app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`running in http://localhost:${port}`);
+  console.log(`${BASE_URL}${port}`);
 });
