@@ -12,12 +12,12 @@ function Home() {
       <Navbar {...info} />
       <div>
         <Routes>
+          <Route path="/" element={<Footer />} />
           <Route exact path="/problems" element={<Problems user={info} />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route Component={<PageNotFound />} />
         </Routes>
       </div>
-      <Footer />
     </div>
   );
 }

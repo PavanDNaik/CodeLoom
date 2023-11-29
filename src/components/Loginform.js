@@ -4,19 +4,26 @@ import { Link, useNavigate } from "react-router-dom";
 function Loginform() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
   const FETCH_BASE_URI =
     process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
-  async function handleLogin() {
+  async function handleLogin(e) {
+    if (userData.email === "" || userData.password === "") {
+      setError("Fill the Form");
+      return;
+    }
+    e.target.textContent = "verifying..";
     const result = await fetch(`${FETCH_BASE_URI}/log-in`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email,
-        password,
+        email: userData.email,
+        password: userData.password,
       }),
     });
     const data = await result.json();
@@ -26,36 +33,55 @@ function Loginform() {
       navigate(data.route);
     } else {
       setError(data.errors);
+      e.target.textContent = "Log-In";
     }
   }
-  return (
-    <div className="log-in">
-      <div>{error}</div>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        placeholder="Enter the email"
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Enter the passworld"
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button
-        onClick={async (e) => {
-          await handleLogin(e);
-        }}
-      >
-        submit
-      </button>
 
-      <div>
-        Are you a new user?
-        <Link to="/Sign-up">Sign-up</Link>
+  function updateUserDate(property, value) {
+    setUserData((prev) => {
+      return { ...prev, [property]: value };
+    });
+  }
+  return (
+    <div className="log-in-container">
+      <div className="log-in">
+        <div className="log-in-title">Log-In</div>
+        <div>Welcome Back</div>
+        <div className={`error-message ${error === "" ? "hide-message" : ""}`}>
+          {error + "  !!"}
+        </div>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Enter the email"
+          className="sign-in-input"
+          value={userData.email}
+          onChange={(e) => updateUserDate("email", e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Enter the passworld"
+          className="sign-in-input"
+          value={userData.password}
+          onChange={(e) => updateUserDate("password", e.target.value)}
+          required
+        />
+        <button
+          onClick={async (e) => {
+            await handleLogin(e);
+          }}
+          className="log-in-button"
+        >
+          Log-In
+        </button>
+        <div className="link-to-other-method">
+          Are you a new user?
+          <Link to="/Sign-up">Sign-up</Link>
+        </div>
       </div>
     </div>
   );

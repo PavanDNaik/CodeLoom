@@ -5,7 +5,7 @@ import moonImg from "../images/dark-mode.svg";
 import sunImg from "../images/light-mode.svg";
 
 function Navbar({ userName }) {
-  const [active, setActive] = useState("Home");
+  const [active, setActive] = useState("");
   const [themeImg, setThemeImg] = useState(
     getCurrentTheme() === "light-mode" ? moonImg : sunImg
   );
