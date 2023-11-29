@@ -11,7 +11,9 @@ function Signupform() {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
+  const [verifying, setVerifying] = useState(false);
   const navigate = useNavigate();
+
   async function handleSignUp(e) {
     if (
       userData.name === "" ||
@@ -26,6 +28,7 @@ function Signupform() {
       return;
     }
     e.target.textContent = "Verifying...";
+    setVerifying(true);
     const result = await fetch(`${FETCH_BASE_URI}/sign-up`, {
       method: "POST",
       headers: {
@@ -45,6 +48,7 @@ function Signupform() {
     } else {
       e.target.textContent = "Sign-Up";
       setError(data.errors);
+      setVerifying(false);
     }
   }
 
@@ -106,7 +110,7 @@ function Signupform() {
           onClick={(e) => {
             handleSignUp(e);
           }}
-          className="log-in-button"
+          className={`log-in-button ${verifying ? "blinking-item" : ""}`}
         >
           Sign-Up
         </button>

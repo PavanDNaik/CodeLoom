@@ -867,3 +867,21 @@ textarea.overview {
   justify-content: space-evenly;
   row-gap: 10px;
 }
+
+.blinking-item {
+  animation: blink infinite ease-in-out 1s !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}

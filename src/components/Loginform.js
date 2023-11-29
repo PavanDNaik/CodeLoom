@@ -8,6 +8,7 @@ function Loginform() {
     email: "",
     password: "",
   });
+  const [verifying, setVerifying] = useState(false);
   const FETCH_BASE_URI =
     process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
   async function handleLogin(e) {
@@ -15,7 +16,8 @@ function Loginform() {
       setError("Fill the Form");
       return;
     }
-    e.target.textContent = "verifying..";
+    e.target.textContent = "Verifying..";
+    setVerifying(true);
     const result = await fetch(`${FETCH_BASE_URI}/log-in`, {
       method: "POST",
       headers: {
@@ -33,6 +35,7 @@ function Loginform() {
       navigate(data.route);
     } else {
       setError(data.errors);
+      setVerifying(false);
       e.target.textContent = "Log-In";
     }
   }
@@ -74,7 +77,7 @@ function Loginform() {
           onClick={async (e) => {
             await handleLogin(e);
           }}
-          className="log-in-button"
+          className={`log-in-button ${verifying ? "blinking-item" : ""}`}
         >
           Log-In
         </button>
