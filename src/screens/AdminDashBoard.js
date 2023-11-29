@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Routes, Route } from "react-router-dom";
+import { Link, Routes, Route, useParams } from "react-router-dom";
 import Profile from "../components/Profile";
 import ProblemComposer from "../components/ProblemComposer";
 import ProblemRefiner from "../components/ProblemRefiner";
@@ -8,6 +8,7 @@ function getUser() {
   return JSON.parse(localStorage.getItem("user"));
 }
 function AdminDashBoard() {
+  const { admin } = useParams();
   const [user, setUser] = useState(null);
   useEffect(() => {
     setUser(getUser());
@@ -16,13 +17,13 @@ function AdminDashBoard() {
     <div>
       <ul className="navbar-list no-animation">
         <li>
-          <Link to="./addProblem">Add problem</Link>
+          <Link to={`/${admin}/dashboard/addProblem`}>Add problem</Link>
         </li>
         <li>
-          <Link to="./editProblem">Edit Problem</Link>
+          <Link to={`/${admin}/dashboard/editProblem`}>Edit Problem</Link>
         </li>
         <li>
-          <Link to="./Notification"> Notification</Link>
+          <Link to={`/${admin}/dashboard/Notification`}> Notification</Link>
         </li>
         <li>
           <Profile userName={user?.userName} />

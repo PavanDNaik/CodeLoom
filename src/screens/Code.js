@@ -11,8 +11,8 @@ const FETCH_BASE_URI =
   process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
 //fetch problem
 async function getProblemInfo({ problemId, token }) {
-  if (localStorage.getItem(problemId)) {
-    return JSON.parse(localStorage.getItem(problemId));
+  if (sessionStorage.getItem(problemId)) {
+    return JSON.parse(sessionStorage.getItem(problemId));
   }
   const problemInfoString = await fetch(
     `${FETCH_BASE_URI}/problems/${problemId}`,
@@ -61,7 +61,7 @@ function Code() {
           navigate("/404");
         } else {
           setProblemInfo({ ...data });
-          localStorage.setItem(
+          sessionStorage.setItem(
             data.title && data.title.replaceAll(" ", "-"),
             JSON.stringify(data)
           );
