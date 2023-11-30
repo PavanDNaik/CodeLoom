@@ -23,5 +23,5 @@ You may also see any lint errors in the console.
 
 ### `Start server`
 
-Run `cd server`
-Run `node index.js` || `nodemon index.js`
+    `cd server`
+    `node index.js`
