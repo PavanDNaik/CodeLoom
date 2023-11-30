@@ -42,7 +42,7 @@ function Code() {
   //tab hooks
   const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
   const [showCaseOrResult, setshowCaseOrResult] = useState("CASE");
-
+  const [running, setRunning] = useState(false);
   //split-pane
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
@@ -116,7 +116,7 @@ function Code() {
       return;
     }
 
-    e.target.disabled = true;
+    setRunning(true);
     setMessageInResult("Running...");
     const result = await fetch(`${FETCH_BASE_URI}/run`, {
       method: "POST",
@@ -145,7 +145,7 @@ function Code() {
     }
 
     setTimeout(() => {
-      e.target.disabled = false;
+      setRunning(false);
     }, 2000);
   }
 
@@ -153,7 +153,7 @@ function Code() {
     if (userNotLogedIn()) {
       return;
     }
-    e.target.disabled = true;
+    setRunning(true);
     setMessageInResult("Executing...");
     const user = getUser();
     const result = await fetch(`${FETCH_BASE_URI}/submit`, {
@@ -186,7 +186,7 @@ function Code() {
     }
 
     setTimeout(() => {
-      e.target.disabled = false;
+      setRunning(false);
     }, 2000);
   }
 
@@ -267,7 +267,11 @@ function Code() {
                     TestResult
                   </button>
                 </div>
-                <span className="run-submit-button-container">
+                <span
+                  className={`run-submit-button-container ${
+                    running ? "blinking-item" : ""
+                  }`}
+                >
                   <button
                     onClick={async (e) => await handleRun(e)}
                     className="run-button"
