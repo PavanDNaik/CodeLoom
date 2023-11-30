@@ -1,3 +1,10 @@
+# About
+
+### `CodeLoom`
+
+    A platform to practice coding .
+    Explore and expand your skills
+
 # Check-Out
 
 https://codeloom.vercel.app/
