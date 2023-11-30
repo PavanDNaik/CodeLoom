@@ -2,12 +2,12 @@
 
 ### `CodeLoom`
 
-    A platform to practice coding .
-    Explore and expand your skills
+A platform to practice coding .
+Explore and expand your skills
 
 # Check-Out
 
-https://codeloom.vercel.app/
+    https://codeloom.vercel.app/
 
 ## Available Scripts
 
