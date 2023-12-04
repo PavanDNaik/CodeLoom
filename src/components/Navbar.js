@@ -49,7 +49,6 @@ function Navbar({ userName }) {
           <img
             src={themeImg}
             alt=""
-            srcset=""
             className="switch-theme-icon"
             onClick={handleThemeChange}
           />

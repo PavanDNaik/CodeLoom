@@ -29,9 +29,10 @@ function Loginform() {
       }),
     });
     const data = await result.json();
-    if (!data.errors && data.msg) {
+    if (!data.errors && data.token) {
       setError("");
-      localStorage.setItem("user", JSON.stringify(data.msg));
+      localStorage.setItem("user", JSON.stringify(data.userName));
+      localStorage.setItem("authToken", JSON.stringify(data.token));
       navigate(data.route);
     } else {
       setError(data.errors);
@@ -67,7 +68,7 @@ function Loginform() {
           type="password"
           name="password"
           id="password"
-          placeholder="Enter the passworld"
+          placeholder="Enter the password"
           className="sign-in-input"
           value={userData.password}
           onChange={(e) => updateUserDate("password", e.target.value)}

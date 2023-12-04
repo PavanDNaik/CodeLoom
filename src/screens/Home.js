@@ -5,15 +5,15 @@ import Problems from "./Problems";
 import Contact from "../components/Contact";
 import PageNotFound from "./PageNotFound";
 function Home() {
-  let info = JSON.parse(localStorage.getItem("user"));
-
+  let userName = JSON.parse(localStorage.getItem("user"));
+  let token = JSON.parse(localStorage.getItem("authToken"));
   return (
     <div>
-      <Navbar {...info} />
+      <Navbar userName={userName} />
       <div>
         <Routes>
           <Route path="/" element={<Footer />} />
-          <Route exact path="/problems" element={<Problems user={info} />} />
+          <Route exact path="/problems" element={<Problems token={token} />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route Component={<PageNotFound />} />
         </Routes>

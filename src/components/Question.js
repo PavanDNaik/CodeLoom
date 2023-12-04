@@ -1,10 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-function Question({ pnum, title, difficulty, user }) {
+import { Link, useNavigate } from "react-router-dom";
+function Question({ pnum, title, difficulty, token }) {
+  const navigate = useNavigate();
   return (
-    <div className="question">
+    <div
+      className="question"
+      onClick={() => {
+        navigate(token ? "/problems/" + title.replaceAll(" ", "-") : "/login");
+      }}
+    >
       <div>{pnum}</div>
-      <Link to={user ? "/problems/" + title.replaceAll(" ", "-") : "/login"}>
+      <Link to={token ? "/problems/" + title.replaceAll(" ", "-") : "/login"}>
         <div>{title}</div>
       </Link>
       <div className={difficulty}>{difficulty}</div>

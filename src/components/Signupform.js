@@ -92,7 +92,7 @@ function Signupform() {
           type="password"
           name="password"
           id="password"
-          placeholder="Enter the passworld"
+          placeholder="Enter the password"
           className="sign-in-input"
           value={userData.password}
           onChange={(e) => updateUserData("password", e.target.value)}
@@ -101,7 +101,7 @@ function Signupform() {
           type="password"
           name="confirm-password"
           id="consirm-password"
-          placeholder="confirm passworld"
+          placeholder="confirm password"
           className="sign-in-input"
           value={userData.confirmPassword}
           onChange={(e) => updateUserData("confirmPassword", e.target.value)}

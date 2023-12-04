@@ -8,9 +8,9 @@ import Editor from "../components/Editor";
 import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
 const FETCH_BASE_URI =
-  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
+  process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:5000";
 //fetch problem
-async function getProblemInfo({ problemId, token }) {
+async function getProblemInfo({ problemId }, token) {
   if (sessionStorage.getItem(problemId)) {
     return JSON.parse(sessionStorage.getItem(problemId));
   }
@@ -24,21 +24,25 @@ async function getProblemInfo({ problemId, token }) {
       },
     }
   );
-
   const problemInfoObject = await problemInfoString
     .json()
     .catch((err) => console.log(err));
+
   return { ...problemInfoObject };
 }
 
+function getToken() {
+  return JSON.parse(localStorage.getItem("authToken"));
+}
 function Code() {
   //editor and problem hooks
   const navigate = useNavigate();
+  const [token, setToken] = useState(getToken);
   const [code, setCode] = useState("");
   const [lang, setLang] = useState("python");
   const [problemInfo, setProblemInfo] = useState({});
   const [testResult, setTestResult] = useState("");
-  // const [clickable, setClickable] = useState(true);
+
   //tab hooks
   const [submitionOrInfo, setSubmitionOrInfo] = useState("DESCRIPTION");
   const [showCaseOrResult, setshowCaseOrResult] = useState("CASE");
@@ -49,10 +53,8 @@ function Code() {
   const problemId = useParams();
   //loader
   useEffect(() => {
-    getProblemInfo(
-      problemId,
-      JSON.parse(localStorage.getItem("user")).userEmail
-    ).then((data) => {
+    setToken(getToken());
+    getProblemInfo(problemId, token).then((data) => {
       if (!data) {
         console.log("could not fint data");
       } else {
@@ -61,14 +63,16 @@ function Code() {
           navigate("/404");
         } else {
           setProblemInfo({ ...data });
-          sessionStorage.setItem(
-            data.title && data.title.replaceAll(" ", "-"),
-            JSON.stringify(data)
-          );
+          if (data) {
+            sessionStorage.setItem(
+              data.title && data.title.replaceAll(" ", "-"),
+              JSON.stringify(data)
+            );
+          }
         }
       }
     });
-  }, [problemId]);
+  }, [problemId, token]);
 
   //callbakc to editor
   const getCodeInfo = (codeFromEditor, language) => {
@@ -111,6 +115,23 @@ function Code() {
       return true;
     }
   }
+
+  async function handleResultDisplay(result, isSubmit) {
+    const output = await result.json();
+    if (!output || output.fetchError || !output.result) {
+      setMessageInResult("fetchError");
+    } else if (
+      output.result.substring &&
+      output?.result.substring(0, 4) === "True"
+    ) {
+      setMessageInResult("All Test Cases Passed");
+      if (isSubmit) {
+        showSubmissionSuccesMessage();
+      }
+    } else {
+      setMessageInResult(output?.result);
+    }
+  }
   async function handleRun(e) {
     if (userNotLogedIn()) {
       return;
@@ -122,6 +143,7 @@ function Code() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        token: token,
       },
       body: JSON.stringify({
         code: code,
@@ -133,20 +155,15 @@ function Code() {
       console.log(err);
     });
 
-    if (result) {
-      const output = await result.json();
-      if (output.error) {
-        setMessageInResult(output.error);
-      } else if (output.substring && output?.substring(0, 4) === "True") {
-        setMessageInResult("All Test Cases Passed");
-      } else {
-        setMessageInResult(output);
-      }
+    if (!result) {
+      setTestResult("");
+      return;
     }
 
+    await handleResultDisplay(result);
     setTimeout(() => {
       setRunning(false);
-    }, 2000);
+    }, 1000);
   }
 
   async function handleSubmit(e) {
@@ -160,6 +177,7 @@ function Code() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        token: token,
       },
       body: JSON.stringify({
         code: code,
@@ -175,29 +193,21 @@ function Code() {
       setTestResult("");
       return;
     }
-    const output = await result.json();
-    if (output.error) {
-      setMessageInResult(output.error);
-    } else if (output.substring && output.substring(0, 4) === "True") {
-      setMessageInResult("All Test Cases Passed");
-      showSubmissionSuccesMessage();
-    } else {
-      setMessageInResult(output);
-    }
 
+    await handleResultDisplay(result, true);
     setTimeout(() => {
       setRunning(false);
-    }, 2000);
+    }, 1000);
   }
 
   return (
     <div className="coding-interface">
       <div className="coding-interface-navbar">
-        <div className="back-svg" onClick={() => navigate(-1)}>
+        <div className="back-svg" onClick={() => navigate("/home/problems")}>
           <img src={backSVG} alt="<" />
           <span>Back</span>
         </div>
-        <Profile userName={getUser()?.userName} />
+        <Profile userName={getUser()} />
       </div>
       <div className="display-none" id="submission-message">
         SUBMISSION SUCCESSFULL
@@ -229,7 +239,7 @@ function Code() {
           {submitionOrInfo === "DESCRIPTION" ? (
             <Description {...problemInfo} />
           ) : (
-            <Submision problemNumber={String(problemInfo.pnum)} />
+            <Submision problemNumber={String(problemInfo.pnum)} token={token} />
           )}
         </Pane>
 

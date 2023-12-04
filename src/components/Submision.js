@@ -9,7 +9,7 @@ function Submision(props) {
   }, []);
   async function getLatestSubmissions() {
     try {
-      if (!localStorage.getItem("user")) {
+      if (!props.token) {
         setFetchStatus("Log-In/Sign-Up to see submissions!!");
         return;
       }
@@ -20,6 +20,7 @@ function Submision(props) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          token: props.token,
         },
         body: JSON.stringify({
           user: userEmailToFetch,

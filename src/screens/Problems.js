@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Question from "../components/Question";
 const FETCH_BASE_URI =
   process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
-async function getAllProblems(user) {
+async function getAllProblems(token) {
   let allProblems = sessionStorage.getItem("problemSet");
 
   if (allProblems) {
@@ -14,7 +14,7 @@ async function getAllProblems(user) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      token: user,
+      token: token,
     },
   });
 
@@ -37,20 +37,20 @@ function getPrior(a, b, sortFactor) {
   return -1 * sortFactor;
 }
 
-function Problems({ user }) {
+function Problems({ token }) {
   const [allProblems, setAllProblems] = useState(null);
   const [sortFactor, setSortFactor] = useState(1);
   const [listStatus, setListStatus] = useState("Loading...");
 
   useEffect(() => {
-    if (user) {
-      getAllProblems(user).then((problemSet) => {
+    if (token) {
+      getAllProblems(token).then((problemSet) => {
         setAllProblems(Object.values(problemSet));
       });
     } else {
       setListStatus("Log - in to get see The Problems");
     }
-  }, [user]);
+  }, [token]);
 
   useEffect(() => {
     if (allProblems) {
@@ -80,7 +80,7 @@ function Problems({ user }) {
         </div>
         {allProblems ? (
           allProblems.map((values, index) => {
-            return <Question key={index} {...values} user={user} />;
+            return <Question key={index} {...values} token={token} />;
           })
         ) : (
           <div>{listStatus}</div>

@@ -5,8 +5,22 @@
   --border-color: #78716c;
   --highlight-color: #d6d3d1;
   --font-color: #f5f5f4;
-}
 
+  /* --primary-color: #171717;
+  --secondary-color: #262626;
+  --tertiary-color: #404040;
+  --border-color: #737373;
+  --highlight-color: #d4d4d4;
+  --font-color: #f5f5f5; */
+
+  /* --primary-color: #18181b;
+  --secondary-color: #27272a;
+  --tertiary-color: #3f3f46;
+  --border-color: #71717a;
+  --highlight-color: #d4d4d8;
+  --font-color: #f4f4f5; */
+}
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&family=Poppins:wght@100;200&family=Source+Sans+3:wght@200&display=swap");
 .light-mode {
   --primary-color: #f5f5f4;
   --secondary-color: #d6d3d1;
@@ -28,6 +42,8 @@ body {
   background-color: var(--primary-color);
   color: var(--font-color);
   transition: background-color 500ms linear;
+  font-size: 19px;
+  font-family: poppins;
 }
 ul {
   list-style-type: none;
@@ -46,8 +62,8 @@ ul.navbar-list {
   align-items: center;
   list-style-type: none;
   width: 100vw;
-  background-color: var(--secondary-color);
-  border-bottom: 1px solid var(--border-color);
+  background-color: transparent;
+  border-bottom: 0.5px solid var(--border-color);
   animation: slide-in 0.5s ease-in-out;
   padding: 10px 5px;
   z-index: 2;
@@ -61,7 +77,7 @@ ul.navbar-list li a {
   display: flex;
   color: var(--font-color);
   text-decoration: none;
-  border-bottom: 2px solid var(--secondary-color);
+  border-bottom: 2px solid transparent;
 }
 
 ul.navbar-list li a:hover:not(.active-navbar-elements) {
@@ -189,6 +205,7 @@ select:hover {
   gap: 20%;
   padding: 10px 50px;
   transition: ease-in-out;
+  cursor: grab;
 }
 
 .question:nth-child(2n + 1) {
@@ -216,10 +233,9 @@ select:hover {
   justify-content: space-between;
   color: var(--font-color);
   padding: 10px 40px;
-  background-color: var(--tertiary-color);
+  background-color: var(--secondary-color);
   color: var(--highlight-color);
-  border-bottom: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+  margin-top: 20px;
 }
 .flex-column {
   display: flex;
@@ -618,7 +634,7 @@ div.problem-descrption {
   justify-content: center;
   align-items: center;
   padding: 0.2rem 2rem;
-  gap: 5rem;
+  gap: 20%;
 }
 
 .landing-bg-image {
@@ -632,17 +648,29 @@ div.problem-descrption {
   opacity: 0.2;
 }
 
-.landing-title {
+.paper-bg {
+  position: fixed;
+  rotate: 90deg;
+  height: 100vw;
+  object-fit: fill;
+  z-index: 0;
   color: white;
-  font-size: 15rem;
+}
+
+.landing-title {
+  margin-left: 50px;
+  color: white;
   word-wrap: break-word;
-  font-weight: 600;
+  font-family: "Fjalla One";
+  font-size: 15rem;
+  font-weight: 500;
+  z-index: 2;
 }
 
 .landing-title-part2 {
-  margin-top: -8rem;
+  font-weight: 300;
   font-size: 14rem;
-  font-weight: 400;
+  margin-top: -4rem;
 }
 
 .landing-title,
@@ -721,37 +749,40 @@ div.problem-descrption {
 .background-coding-logos {
   position: fixed;
   user-select: none;
+  animation: rotating-logos 8s infinite linear;
+  height: 10rem;
+  display: none;
 }
 
 .background-coding-logos-1 {
-  height: 12rem;
-  bottom: 15%;
-  right: 10%;
+  animation-delay: 0s;
+  height: 4rem;
   opacity: 0.8;
+  right: 20%;
 }
 .background-coding-logos-2 {
-  height: 12rem;
-  top: 6%;
-  right: 17%;
+  animation-delay: 20ms;
+  height: 7rem;
   opacity: 0.95;
+  right: 30%;
 }
 .background-coding-logos-3 {
-  height: 18rem;
-  top: 30%;
-  right: 4%;
+  animation-delay: 35ms;
+  height: 2rem;
   opacity: 0.95;
+  right: 50%;
 }
 .background-coding-logos-4 {
-  height: 12rem;
-  top: 12%;
-  right: 1%;
+  animation-delay: 15ms;
+  height: 5rem;
   opacity: 1;
+  right: 70%;
 }
 .background-coding-logos-5 {
-  height: 10rem;
-  bottom: 5%;
-  right: 1.5%;
+  animation-delay: 1ms;
+  height: 3rem;
   opacity: 0.75;
+  right: 80%;
 }
 
 .page-not-found {
@@ -887,11 +918,11 @@ textarea.overview {
   }
 }
 
-/* .blinking-item::after {
-  display: block;
-  content: " ";
-  width: 100%;
-  background-color: white;
-  height: 2px;
-  animation: loading 3s infinite ease-in-out !important;
+/* @keyframes rotating-logos {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 101vh;
+  }
 } */
