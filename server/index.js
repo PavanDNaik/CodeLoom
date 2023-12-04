@@ -328,10 +328,21 @@ app.post("/sign-up", async (req, res) => {
     });
     newUser
       .save()
-      .then((msg) => {
-        res.json({ msg, route: "/home" });
+      .then((someUser) => {
+        const dataForJwtSign = {
+          user: {
+            id: someUser._id.toString(),
+          },
+        };
+        const authToken = jwt.sign(dataForJwtSign, JWT_SECRETE);
+        return res.json({
+          token: authToken,
+          userName: someUser.userName,
+          route: "/home",
+        });
       })
       .catch((errors) => {
+        console.log("errors");
         res.status(404).json({ errors });
       });
   }
