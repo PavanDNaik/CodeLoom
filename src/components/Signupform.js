@@ -41,13 +41,14 @@ function Signupform() {
       }),
     });
     const data = await result.json();
-    if (!data.errors && data.msg) {
+    if (!data.errors && data.token) {
       setError("");
-      localStorage.setItem("user", JSON.stringify(data.msg));
+      localStorage.setItem("user", JSON.stringify(data.userName));
+      localStorage.setItem("authToken", JSON.stringify(data.token));
       navigate(data.route);
     } else {
       e.target.textContent = "Sign-Up";
-      setError(data.errors);
+      setError("Server Error");
       setVerifying(false);
     }
   }
