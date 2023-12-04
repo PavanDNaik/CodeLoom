@@ -6,13 +6,16 @@ const cors = require("cors");
 const { spawn } = require("child_process");
 const fs = require("fs");
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const BASE_URL = process.env.BASE_URL;
+const port = process.env.PORT || 5000;
+const JWT_SECRETE = process.env.JWT_SECRETE;
 
 mongoose.connect(process.env.MONGO_SECRETE_URI);
-const BASE_URL = process.env.BASE_URL;
 app.use(express.json());
 app.use(cors());
-
-const port = 5000;
 
 function createFileOfCode(lang, code, callback) {
   if (lang == "python") {
@@ -129,7 +132,7 @@ function executeCode(lang, code, callback) {
 }
 
 async function updateUsersProgressHistory(
-  currentUserEmail,
+  currentUserId,
   currentPnum,
   submisonInfo,
   latestCode,
@@ -138,9 +141,11 @@ async function updateUsersProgressHistory(
 ) {
   await mongoose
     .model("user")
-    .findOne({ userEmail: currentUserEmail })
+    .findById(currentUserId)
     .then((currentUser) => {
-      if (!currentUser.problemsReached) {
+      if (!currentUser) {
+        return;
+      } else if (!currentUser.problemsReached) {
         currentUser.problemsReached = new Map();
         currentUser.problemsReached.set(currentPnum, submisonInfo);
       } else if (!currentUser.problemsReached.get(currentPnum)) {
@@ -172,14 +177,33 @@ async function fetchTestCode(type, pnum, lang, callback) {
       console.log(err);
     });
 }
-app.post("/run", (req, res) => {
+
+function userAuthOnPostRequest(req, res, next) {
+  if (!req.headers.token) {
+    return res.json({ fetchError: "Token Required!" });
+  }
+  try {
+    const userId = jwt.verify(req.headers.token, JWT_SECRETE);
+    if (!userId) {
+      return res.status(401).json({ fetchError: "Invalid Token" });
+    } else {
+      req.body.userId = userId.user.id;
+      next();
+    }
+  } catch {
+    return res.status(401).json({ fetchError: "Invalid Token" });
+  }
+}
+
+app.post("/run", userAuthOnPostRequest, (req, res) => {
   const code = req.body.code;
   const lang = req.body.lang;
+
   try {
     fetchTestCode("testCode", req.body.pnum, lang, (testCode) => {
       executeCode(lang, code + testCode, (result) => {
         if (result) {
-          res.json(result);
+          res.json({ result });
         } else {
           res.status(500).json({ error: "Internal Server Error" });
         }
@@ -190,12 +214,11 @@ app.post("/run", (req, res) => {
   }
 });
 
-app.post("/submit", (req, res) => {
+app.post("/submit", userAuthOnPostRequest, (req, res) => {
   const code = req.body.code;
   const lang = req.body.lang;
-  const currentUserEmail = req.body.userEmail;
   const currentPnum = req.body.pnum;
-
+  const currentUserId = req.body.userId;
   try {
     fetchTestCode("submissionTestCode", req.body.pnum, lang, (testCode) => {
       executeCode(lang, code + testCode, async (result) => {
@@ -204,6 +227,7 @@ app.post("/submit", (req, res) => {
           let isSolved;
           const date = new Date();
           const currentDate = date.toLocaleDateString();
+
           if (result.substring(0, 4) == "True") {
             submissionStatus = {
               status: "AC",
@@ -219,6 +243,7 @@ app.post("/submit", (req, res) => {
             };
             isSolved = false;
           }
+
           const submisonInfo = {
             solved: isSolved,
             lastSubmission: code,
@@ -226,14 +251,14 @@ app.post("/submit", (req, res) => {
           };
 
           await updateUsersProgressHistory(
-            currentUserEmail,
+            currentUserId,
             String(currentPnum),
             submisonInfo,
             code,
             isSolved,
             submissionStatus
           );
-          res.json(String(result));
+          res.json({ result });
         } else {
           res.status(500).json({ error: "Internal Server Error" });
         }
@@ -244,14 +269,14 @@ app.post("/submit", (req, res) => {
   }
 });
 
-app.post("/submissions", (req, res) => {
-  if (!req.body.user) {
+app.post("/submissions", userAuthOnPostRequest, (req, res) => {
+  if (!req.body.pnum) {
     res.json([]);
     return;
   }
   mongoose
     .model("user")
-    .findOne({ userEmail: req.body.user })
+    .findById(req.body.userId)
     .select(`problemsReached.${req.body.pnum}`)
     .then((fetchedUser) => {
       if (
@@ -289,6 +314,8 @@ app.post("/sign-up", async (req, res) => {
   userName = req.body.name;
   userEmail = req.body.email;
   userPassword = req.body.password;
+  const salt = await bcrypt.genSalt(10);
+  const encryptedPassword = await bcrypt.hash(userPassword, salt);
   const someUser = await user.findOne({ userEmail: userEmail });
   if (someUser) {
     res.json({ errors: "Account already exists" });
@@ -297,7 +324,7 @@ app.post("/sign-up", async (req, res) => {
     const newUser = new user({
       userName,
       userEmail,
-      userPassword,
+      userPassword: encryptedPassword,
     });
     newUser
       .save()
@@ -313,43 +340,47 @@ app.post("/sign-up", async (req, res) => {
 app.post("/log-in", async (req, res) => {
   userEmail = req.body.email;
   userPassword = req.body.password;
-  // user
-  //   .findOne({ userEmail: userEmail })
-  //   .select("userName userEmail problemsReached.$")
-  //   .then((user) => {
-  //     res.json(user);
-  //   });
   const someUser = await user.findOne({ userEmail });
-
   if (someUser) {
-    if (someUser._doc.userPassword == userPassword) {
-      res.json({ msg: someUser._doc, route: "/home" });
-      return;
+    const pwdCompare = await bcrypt.compare(
+      userPassword,
+      someUser.userPassword
+    );
+    if (pwdCompare) {
+      const dataForJwtSign = {
+        user: {
+          id: someUser._id,
+        },
+      };
+      const authToken = jwt.sign(dataForJwtSign, JWT_SECRETE);
+      return res.json({
+        token: authToken,
+        userName: someUser.userName,
+        route: "/home",
+      });
     } else {
-      res.json({ errors: "passwrod is wrong" });
+      res.json({ errors: "Invalid Credentials!!" });
       return;
     }
   } else {
-    res.json({ errors: "Email id or passwrod is wrong" });
+    res.json({ errors: "Invalid Credentials!!" });
   }
 });
 
 async function userAuthOnGetRequest(req, res, next) {
-  // console.log(req.headers.token);
-  // if (!req.headers.token) {
-  //   res.status("404").send({ fetchError: "Log - in required 1" });
-  //   return;
-  // } else {
-  //   const user = await mongoose
-  //     .model("user")
-  //     .findOne({ userEmail: req.headers.token });
-  //   if (!user) {
-  //     res.status("401").send({ fetchError: "Forbidden 2" });
-  //     return;
-  //   } else {
-  //     next();
-  //   }
-  // }
+  if (!req.headers.token) {
+    return res.status(401).send({ fetchError: "Token Required" });
+  } else {
+    try {
+      const userID = jwt.verify(req.headers.token, JWT_SECRETE);
+      if (!userID) {
+        return res.status(401).json({ fetchError: "Invalid Token" });
+      }
+    } catch {
+      return res.status(401).json({ fetchError: "Invalid Token" });
+    }
+  }
+
   next();
 }
 //problems
@@ -398,14 +429,13 @@ app.post("/admin/addProblem", (req, res) => {
     });
 });
 
-app.get("/problems", userAuthOnGetRequest, (req, res) => {
+app.get("/problems", (req, res) => {
   try {
     mongoose
       .model("problems")
       .find({})
       .select("pnum title difficulty")
       .then((problems) => {
-        // mongoose.us
         res.json(problems);
       });
   } catch {
@@ -415,7 +445,6 @@ app.get("/problems", userAuthOnGetRequest, (req, res) => {
 
 app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
   const requestedProblemTitle = req.params.id.replaceAll("-", " ");
-
   mongoose
     .model("problems")
     .findOne({ title: requestedProblemTitle })
