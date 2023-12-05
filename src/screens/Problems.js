@@ -70,7 +70,7 @@ function Problems({ token }) {
                 setSortFactor(e.target.value);
               }}
             >
-              <option value="0" disabled selected hidden>
+              <option value="0" disabled hidden>
                 Difficulty
               </option>
               <option value="-1">Easy</option>
@@ -83,7 +83,16 @@ function Problems({ token }) {
             return <Question key={index} {...values} token={token} />;
           })
         ) : (
-          <div>{listStatus}</div>
+          <div className="loading-problems">
+            <div>{listStatus}</div>
+            <div className="loading-q-container">
+              <div className="loading-quetion-animate question"></div>
+              <div className="loading-quetion-animate question"></div>
+              <div className="loading-quetion-animate question"></div>
+              <div className="loading-quetion-animate question"></div>
+              <div className="loading-quetion-animate question"></div>
+            </div>
+          </div>
         )}
       </div>
     </div>

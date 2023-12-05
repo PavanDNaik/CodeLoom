@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import js_logo from "../images/js_logo.png";
-import python_logo from "../images/python_logo.png";
-import css_logo from "../images/css_logo.png";
-import cpp_logo from "../images/cpp_logo.png";
-import go_logo from "../images/go_logo.png";
 import crumbled from "../images/paper-bg.png";
+
 function Landing() {
   const navigate = useNavigate();
   const [logged, setLogged] = useState(false);
@@ -17,31 +13,7 @@ function Landing() {
   return (
     <div className="landing-page-container">
       <img src={crumbled} alt="" className="paper-bg" />
-      <img
-        src={go_logo}
-        alt=""
-        className="background-coding-logos background-coding-logos-1"
-      />
-      <img
-        src={python_logo}
-        alt=""
-        className="background-coding-logos background-coding-logos-2"
-      />
-      <img
-        src={cpp_logo}
-        alt=""
-        className="background-coding-logos background-coding-logos-3"
-      />
-      <img
-        src={css_logo}
-        alt=""
-        className="background-coding-logos background-coding-logos-4"
-      />
-      <img
-        src={js_logo}
-        alt=""
-        className="background-coding-logos background-coding-logos-5"
-      />
+
       <div className="landing-title street-light-effect">
         CODE <div className="landing-title-part2">LOOM</div>
       </div>
