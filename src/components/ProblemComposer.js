@@ -9,11 +9,11 @@ Explanation: 1 + 2 = 3
 `;
 const LANGUAGES = ["python", "java", "c"];
 function getObjectOfLanguages() {
-  let obj = {};
+  let langObj = {};
   for (let lang of LANGUAGES) {
-    obj[lang] = "";
+    langObj[lang] = "";
   }
-  return obj;
+  return langObj;
 }
 
 function ProblemComposer() {
@@ -61,10 +61,6 @@ function ProblemComposer() {
     );
   }
   function getExampleTemplate() {
-    if (numOfExamples > 5) {
-      alert("examples should be less then 6");
-      return "";
-    }
     return (
       <div className="admin-example-container">
         {Array.from({ length: numOfExamples }, (V, index) => index).map(
@@ -110,6 +106,9 @@ function ProblemComposer() {
           if (data.success) {
             document.getElementById("upload-message").textContent =
               data.success;
+          } else {
+            document.getElementById("upload-message").textContent =
+              "UPLOAD FAILED";
           }
         });
       })
@@ -164,22 +163,33 @@ function ProblemComposer() {
               setBasicProblemInfo(basicProblemInfo);
             }}
           ></textarea>
-          <div className="">
-            <div className="admin-section-titles">Examples</div>
-            <input
-              type="number"
-              id="numOfExamples"
-              placeholder="num of examples[0<n<5]"
-            />
-            <button
-              onClick={() => {
-                setNumOfExamples(
-                  document.getElementById("numOfExamples").value
-                );
-              }}
-            >
-              Get example template
-            </button>
+          <div className="admin-section-titles">Examples</div>
+          <div className="admin-section-container">
+            <div className="absolute-top">
+              <label htmlFor="Num of example templates">
+                Add Example Template
+              </label>
+              <button
+                onClick={() => {
+                  if (numOfExamples < 5) {
+                    setNumOfExamples(numOfExamples + 1);
+                  }
+                }}
+                className="submit-button"
+              >
+                +
+              </button>
+              <button
+                onClick={() => {
+                  if (numOfExamples > 0) {
+                    setNumOfExamples(numOfExamples - 1);
+                  }
+                }}
+                className="submit-button"
+              >
+                -
+              </button>
+            </div>
             {numOfExamples > 0 ? getExampleTemplate() : ""}
           </div>
         </div>
@@ -248,13 +258,11 @@ function ProblemComposer() {
         );
       })}
       <div className="admin-section-titles">UPLOAD PROBLEM</div>
-      <div
-        id="upload-message"
-        className="upload-message display-flex-center"
-      ></div>
-      <button className="submit-button" onClick={handleProblemSubmit}>
-        Upload
-      </button>
+      <div id="upload-message" className="upload-message display-flex-center">
+        <button className="submit-button" onClick={handleProblemSubmit}>
+          Upload
+        </button>
+      </div>
     </div>
   );
 }

@@ -209,8 +209,8 @@ select:hover {
 }
 
 div.loading-q-container > div.loading-quetion-animate.question {
-  height: 30px;
-  padding: 10px 50px;
+  height: 1.5rem;
+  padding: 0.5rem;
   width: 100%;
   animation: loading-q 2s infinite ease-in-out;
 }
@@ -907,7 +907,6 @@ div.admin-section-titles {
   padding-top: 10px;
   padding: 1rem;
   color: #39c56c;
-  border-top: 1px solid var(--border-color);
 }
 
 .boiler-and-test-container {
@@ -1024,3 +1023,15 @@ textarea.overview {
     top: 101vh;
   }
 } */
+
+.absolute-top {
+  position: absolute;
+  top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.admin-section-container {
+  position: relative;
+  padding-top: 100px;
+}

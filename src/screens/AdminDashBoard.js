@@ -7,26 +7,36 @@ import Notification from "../components/Notification";
 function getUser() {
   return JSON.parse(localStorage.getItem("user"));
 }
+function checkAuth() {
+  if (localStorage.getItem("adminAuthToken")) {
+    return true;
+  } else {
+    return false;
+  }
+}
 function AdminDashBoard() {
   const { admin } = useParams();
   const [user, setUser] = useState(null);
+  const [auth, setAuth] = useState(checkAuth);
   useEffect(() => {
     setUser(getUser());
   }, []);
-  return (
+  return auth ? (
     <div>
       <ul className="navbar-list no-animation">
         <li>
-          <Link to={`/${admin}/dashboard/addProblem`}>Add problem</Link>
+          <Link to={`/admin/${admin}/dashboard/addProblem`}>Add problem</Link>
         </li>
         <li>
-          <Link to={`/${admin}/dashboard/editProblem`}>Edit Problem</Link>
+          <Link to={`/admin/${admin}/dashboard/editProblem`}>Edit Problem</Link>
         </li>
         <li>
-          <Link to={`/${admin}/dashboard/Notification`}> Notification</Link>
+          <Link to={`/admin/${admin}/dashboard/Notification`}>
+            Notification
+          </Link>
         </li>
         <li>
-          <Profile userName={user?.userName} />
+          <Profile userName={user} />
         </li>
       </ul>
       <div className="admin-working-container">
@@ -37,6 +47,8 @@ function AdminDashBoard() {
         </Routes>
       </div>
     </div>
+  ) : (
+    <div>Page not found</div>
   );
 }
 

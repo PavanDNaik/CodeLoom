@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 const BASE_URL = process.env.BASE_URL;
 const port = process.env.PORT || 5000;
 const JWT_SECRETE = process.env.JWT_SECRETE;
-
+const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
 mongoose.connect(process.env.MONGO_SECRETE_URI);
 app.use(express.json());
 app.use(cors());
@@ -384,6 +384,7 @@ async function userAuthOnGetRequest(req, res, next) {
   } else {
     try {
       const userID = jwt.verify(req.headers.token, JWT_SECRETE);
+
       if (!userID) {
         return res.status(401).json({ fetchError: "Invalid Token" });
       }
@@ -471,7 +472,70 @@ app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
       res.status(404).json({ fetchError: "cannot find problem" });
     });
 });
+const adminSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+});
 
+const admin_list = new mongoose.model("admin_lists", adminSchema);
+async function adminAuth(req, res, next) {
+  const adminName = req.params.adminName;
+  const adminEmail = req.params.adminEmail;
+  const adminFromList = await admin_list.findOne({
+    name: adminName,
+    email: adminEmail,
+  });
+  if (!adminFromList) {
+    return res.json({ exists: false });
+  }
+  next();
+}
+app.get(
+  "/admin/:adminName/:adminEmail/admin-exists",
+  userAuthOnGetRequest,
+  adminAuth,
+  async (req, res) => {
+    return res.json({ exists: true });
+  }
+);
+
+app.post(
+  "/admin/:adminName/:adminEmail/login",
+  userAuthOnPostRequest,
+  adminAuth,
+  async (req, res) => {
+    const userId = req.body.userId;
+    const userAccountInfo = await mongoose
+      .model("user")
+      .findById(userId)
+      .select("userPassword");
+    if (!userAccountInfo) {
+      return res.json({ fetchError: "please login to user Account" });
+    }
+    const passwordMatched = await bcrypt.compare(
+      req.body.password,
+      userAccountInfo.userPassword
+    );
+
+    if (passwordMatched) {
+      const adminData = {
+        user: {
+          email: req.params.adminEmail,
+        },
+      };
+      const adminToken = jwt.sign(adminData, JWT_ADMIN_SECRETE);
+      return res.json({ adminAuthToken: adminToken });
+    } else {
+      return res.json({ fetchError: "Wrong Password" });
+    }
+  }
+);
 app.listen(port, () => {
   console.log(`${BASE_URL}${port}`);
 });

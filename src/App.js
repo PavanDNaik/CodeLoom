@@ -2,6 +2,7 @@ import Home from "./screens/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signupform from "./components/Signupform";
 import Loginform from "./components/Loginform";
+import AdminLogIn from "./components/AdminLogIn";
 import Landing from "./screens/Landing";
 import PageNotFound from "./screens/PageNotFound";
 import Code from "./screens/Code";
@@ -19,8 +20,13 @@ function App() {
           <Route exact path="/login" element={<Loginform />} />
           <Route
             exact
-            path="/:admin/dashboard/*"
+            path="/admin/:admin/dashboard/*"
             element={<AdminDashBoard />}
+          ></Route>
+          <Route
+            exact
+            path="/admin/:admin/:email/log-in/*"
+            element={<AdminLogIn />}
           ></Route>
           <Route exact path="/404" element={<PageNotFound />}></Route>
         </Routes>
