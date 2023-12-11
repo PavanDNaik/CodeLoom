@@ -46,7 +46,7 @@ function AdminLogIn() {
         setError("Page not Found");
       }
     });
-  }, []);
+  }, [admin, email]);
   return showPage ? (
     <div className="log-in-container">
       <div className="log-in">
@@ -69,7 +69,9 @@ function AdminLogIn() {
       </div>
     </div>
   ) : (
-    <div>{error || "Fetching Page Details!!"}</div>
+    <div className="Auth-message-container">
+      <div className="Auth-message">{error || "Fetching Page Details!!"}</div>
+    </div>
   );
 }
 

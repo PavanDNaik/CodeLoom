@@ -5,7 +5,8 @@
   --border-color: #78716c;
   --highlight-color: #d6d3d1;
   --font-color: #f5f5f4;
-
+  --home-hero-bg: #fff;
+  --home-exp-bg: #000;
   /* --primary-color: #171717;
   --secondary-color: #262626;
   --tertiary-color: #404040;
@@ -21,6 +22,7 @@
   --font-color: #f4f4f5; */
 }
 @import url("https://fonts.googleapis.com/css2?family=Fjalla+One&family=Poppins:wght@100;200&family=Source+Sans+3:wght@200&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;400&display=swap");
 .light-mode {
   --primary-color: #f5f5f4;
   --secondary-color: #d6d3d1;
@@ -28,6 +30,8 @@
   --border-color: #44403c;
   --highlight-color: #292524;
   --font-color: #1c1917;
+  --home-hero-bg: #000;
+  --home-exp-bg: #fff;
 }
 
 * {
@@ -55,15 +59,13 @@ a {
 }
 
 ul.navbar-list {
-  position: fixed;
-  top: 0px;
+  position: sticky;
+  top: 2px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
   list-style-type: none;
-  width: 100vw;
-  background-color: transparent;
-  border-bottom: 0.5px solid var(--border-color);
+  /* border-bottom: 0.5px solid var(--border-color); */
   animation: slide-in 0.5s ease-in-out;
   padding: 10px 5px;
   z-index: 2;
@@ -74,6 +76,7 @@ ul.navbar-list.no-animation {
 }
 
 ul.navbar-list li a {
+  font-weight: 600;
   display: flex;
   color: var(--font-color);
   text-decoration: none;
@@ -164,12 +167,10 @@ div.log-out-profile > img {
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  border-top: 1px solid black;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 button:hover,
@@ -194,7 +195,6 @@ select:hover {
 
 .problemSet {
   height: max-content;
-  margin-top: 4rem;
   display: flex;
   flex-direction: column;
 }
@@ -233,6 +233,7 @@ div.loading-q-container > div.loading-quetion-animate.question {
   padding: 10px 50px;
   transition: ease-in-out;
   cursor: grab;
+  font-weight: 500;
 }
 
 .question:nth-child(2n + 1) {
@@ -262,7 +263,7 @@ div.loading-q-container > div.loading-quetion-animate.question {
   padding: 10px 40px;
   background-color: var(--secondary-color);
   color: var(--highlight-color);
-  margin-top: 20px;
+  font-weight: 600;
 }
 .flex-column {
   display: flex;
@@ -1034,4 +1035,137 @@ textarea.overview {
 .admin-section-container {
   position: relative;
   padding-top: 100px;
+}
+
+.Auth-message-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: #000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Auth-message {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 20px !important;
+}
+
+.Auth-message::before {
+  content: " ";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #000;
+  border-top: 2px solid white;
+  border-left: none;
+  animation: rotate 2s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+.Home-content-container {
+  font-family: "Manrope";
+}
+
+.hero-text {
+  font-size: 100px;
+  font-weight: 1200;
+  margin-bottom: 0;
+}
+
+.second-hero-text {
+  display: flex;
+  background-color: transparent;
+  font-size: 30px;
+}
+
+.eng {
+  margin-top: 5%;
+  padding: 0px 50px;
+  gap: 10px;
+
+  background: linear-gradient(114.44deg, #3644db 6.56%, #d15bb2 116.73%);
+  border-radius: 100px;
+  width: fit-content;
+  height: 87px;
+
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 87px;
+  text-transform: uppercase;
+
+  color: var(--home-exp-bg);
+}
+
+.home-hero-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 10rem 7rem;
+  border-bottom-right-radius: 15rem 16rem;
+  background-color: var(--home-exp-bg);
+}
+
+.home-exp-container {
+  position: relative;
+  min-height: 100vh;
+  padding: 10rem 7rem;
+  border-top-left-radius: 16rem 15rem;
+  background-color: var(--home-hero-bg);
+  color: var(--home-exp-bg);
+}
+
+.hero-floating-content {
+  position: absolute;
+  right: 12rem;
+  bottom: 7rem;
+  width: 23%;
+  animation: floating 2s linear infinite;
+  border: 1px solid transparent;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.hero-floating-content:hover {
+  border-color: var(--home-hero-bg);
+}
+
+.home-exp-container > h2 {
+  font-size: 6rem;
+}
+.home-exp-container > p {
+  font-size: 2rem;
+  margin: 20px 0px;
+}
+.white {
+  background-color: var(--home-hero-bg) !important;
+}
+
+.black {
+  background-color: var(--home-exp-bg) !important;
+}
+
+@keyframes floating {
+  0% {
+    bottom: 8rem;
+  }
+  50% {
+    bottom: 7rem;
+  }
+  100% {
+    bottom: 8rem;
+  }
 }
