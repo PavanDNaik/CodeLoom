@@ -1,17 +1,17 @@
-# <a href="https://codeloom.vercel.app/">CLICK HERE</a> to Preview
+# <a href="https://code-loom.vercel.app/">CLICK HERE</a> to Preview
 
 # About
 
 ### `CodeLoom`
 
-### https://codeloom.vercel.app/
+### https://code-loom.vercel.app/
 
 A platform to practice coding .
 Explore and expand your skills
 
 # Check-Out
 
-    https://codeloom.vercel.app/
+    https://code-loom.vercel.app/
 
 ## Available Scripts
 
