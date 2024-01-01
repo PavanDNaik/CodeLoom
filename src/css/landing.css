@@ -1,0 +1,236 @@
+.landing-page-container {
+  position: relative;
+  background: rgb(95, 43, 190);
+  background: linear-gradient(
+    90deg,
+    rgba(95, 43, 190, 1) 0%,
+    rgba(25, 13, 49, 1) 70%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  height: 100vh;
+  padding-top: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2rem 2rem;
+  gap: 20%;
+}
+/* @keyframes slide-down {
+  0% {
+    position: relative;
+    top: -600px;
+  }
+  100% {
+    position: relative;
+    top: 0px;
+  }
+} */
+
+.landing-bg-image {
+  display: none;
+  width: 60rem;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -30rem;
+  margin-top: -30rem;
+  opacity: 0.2;
+}
+
+.paper-bg {
+  position: fixed;
+  rotate: 90deg;
+  height: 100vw;
+  object-fit: fill;
+  z-index: 0;
+  color: white;
+  animation: smooth-scale 2s ease-in-out;
+}
+.Thinker-img {
+  width: 100px;
+}
+@keyframes smooth-scale {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.landing-title {
+  margin-left: 50px;
+  color: white;
+  word-wrap: break-word;
+  font-family: "Fjalla One";
+  font-size: 15rem;
+  font-weight: 500;
+  z-index: 2;
+  animation: appear 2s ease-in-out;
+}
+
+.landing-title-part2 {
+  font-weight: 300;
+  font-size: 14rem;
+  margin-top: -4rem;
+}
+
+@keyframes slide-left {
+  0% {
+    position: relative;
+    left: -600px;
+  }
+  100% {
+    position: fixed;
+    left: 0px;
+  }
+}
+
+.landing-title,
+.landing-title-part2 {
+  user-select: none;
+  width: fit-content;
+}
+
+.landing-sign-up-buttons {
+  display: flex;
+  gap: 0.5rem;
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  backdrop-filter: blur(10px);
+  animation: landing-slide-in 2s ease-in-out;
+}
+
+@keyframes landing-slide-in {
+  0% {
+    top: -100px;
+  }
+  100% {
+    top: 10px;
+  }
+}
+
+.landing-sign-up-buttons > button,
+.landing-get-started {
+  background: transparent;
+  border: 1px solid #eee;
+  color: white;
+  padding: 0.5rem 0.7rem;
+  border-radius: 5px;
+}
+
+.landing-sign-in {
+  border: none !important;
+}
+
+.landing-get-started {
+  background-color: #eee;
+  color: #1e293b;
+  font-weight: 800;
+}
+
+.landing-get-started:hover {
+  transition: ease-out 0.25s;
+  background: transparent;
+  color: white;
+}
+.typing-text > * {
+  width: fit-content;
+  animation-delay: 10s;
+}
+
+.typing-text > h3 {
+  animation: left-appear 2s ease-in-out;
+}
+@keyframes left-appear {
+  0% {
+    scale: 0.5;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+.typing-text {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  color: #eee;
+  width: 65%;
+  padding: 2rem 1.5rem;
+  border-radius: 5px;
+  background-color: #00000044;
+  backdrop-filter: blur(1px);
+  animation: appear 2s ease-in-out;
+  visibility: unset;
+}
+@keyframes appear {
+  0% {
+    opacity: 0;
+    scale: 0.9;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+.typing-text:hover {
+  backdrop-filter: blur(2px);
+  transition: ease-in 0.15s;
+}
+.typing-text h3 {
+  border-bottom: 1px solid white;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.typing-text p {
+  word-wrap: break-word;
+  text-wrap: wrap;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #abb2bf;
+}
+.background-coding-logos {
+  position: fixed;
+  user-select: none;
+  animation: rotating-logos 8s infinite linear;
+  height: 10rem;
+  display: none;
+}
+
+.background-coding-logos-1 {
+  animation-delay: 0s;
+  height: 4rem;
+  opacity: 0.8;
+  right: 20%;
+}
+.background-coding-logos-2 {
+  animation-delay: 20ms;
+  height: 7rem;
+  opacity: 0.95;
+  right: 30%;
+}
+.background-coding-logos-3 {
+  animation-delay: 35ms;
+  height: 2rem;
+  opacity: 0.95;
+  right: 50%;
+}
+.background-coding-logos-4 {
+  animation-delay: 15ms;
+  height: 5rem;
+  opacity: 1;
+  right: 70%;
+}
+.background-coding-logos-5 {
+  animation-delay: 1ms;
+  height: 3rem;
+  opacity: 0.75;
+  right: 80%;
+}

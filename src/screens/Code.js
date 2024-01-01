@@ -50,7 +50,7 @@ function Code() {
   //split-pane
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
-  const problemId = useParams();
+  const problemId = useParams(); //route parameter
   //loader
   useEffect(() => {
     setToken(getToken());
@@ -74,7 +74,7 @@ function Code() {
     });
   }, [problemId, token]);
 
-  //callbakc to editor
+  //callback to editor
   const getCodeInfo = (codeFromEditor, language) => {
     setCode(codeFromEditor);
     setLang(language);
@@ -100,7 +100,7 @@ function Code() {
     setTimeout(() => {
       submissionPopMessage.classList.toggle("display-none");
       submissionPopMessage.classList.toggle("submission-success-message");
-    }, 2500);
+    }, 3500);
   }
 
   function getUser() {

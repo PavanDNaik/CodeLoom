@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import crumbled from "../images/paper-bg.png";
-
+import "../css/landing.css";
 function Landing() {
   const navigate = useNavigate();
   const [logged, setLogged] = useState(false);
