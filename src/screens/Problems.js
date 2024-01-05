@@ -48,7 +48,7 @@ function Problems({ token }) {
         setAllProblems(Object.values(problemSet));
       });
     } else {
-      setListStatus("Log - in to get see The Problems");
+      setListStatus("Log - in to Conitnue");
     }
   }, [token]);
 

@@ -7,6 +7,12 @@ const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
 const { handleCode } = require("./code_exe/codeRunner.js");
 const { mongoose, connectToMongo } = require("./db/connect.js");
 const { user, problem, admin_list } = require("./db/model.js");
+const {
+  userAuthOnPostRequest,
+  userAuthOnGetRequest,
+  adminAuth,
+} = require("./middleware/middleware.js");
+
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
@@ -62,23 +68,6 @@ async function fetchTestCode(type, pnum, lang, callback) {
     .catch((err) => {
       console.log(err);
     });
-}
-
-function userAuthOnPostRequest(req, res, next) {
-  if (!req.headers.token) {
-    return res.json({ fetchError: "Token Required!" });
-  }
-  try {
-    const userId = jwt.verify(req.headers.token, JWT_SECRETE);
-    if (!userId) {
-      return res.status(401).json({ fetchError: "Invalid Token" });
-    } else {
-      req.body.userId = userId.user.id;
-      next();
-    }
-  } catch {
-    return res.status(401).json({ fetchError: "Invalid Token" });
-  }
 }
 
 app.post("/run", userAuthOnPostRequest, (req, res) => {
@@ -248,24 +237,6 @@ app.post("/log-in", async (req, res) => {
   }
 });
 
-async function userAuthOnGetRequest(req, res, next) {
-  if (!req.headers.token) {
-    return res.status(401).send({ fetchError: "Token Required" });
-  } else {
-    try {
-      const userID = jwt.verify(req.headers.token, JWT_SECRETE);
-
-      if (!userID) {
-        return res.status(401).json({ fetchError: "Invalid Token" });
-      }
-    } catch {
-      return res.status(401).json({ fetchError: "Invalid Token" });
-    }
-  }
-
-  next();
-}
-
 app.post("/admin/addProblem", (req, res) => {
   const newProblem = new problem({
     ...req.body.newProblem,
@@ -313,18 +284,6 @@ app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
     });
 });
 
-async function adminAuth(req, res, next) {
-  const adminName = req.params.adminName;
-  const adminEmail = req.params.adminEmail;
-  const adminFromList = await admin_list.findOne({
-    name: adminName,
-    email: adminEmail,
-  });
-  if (!adminFromList) {
-    return res.json({ exists: false });
-  }
-  next();
-}
 app.get(
   "/admin/:adminName/:adminEmail/admin-exists",
   userAuthOnGetRequest,
