@@ -1,135 +1,21 @@
 require("dotenv").config();
-
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const { spawn } = require("child_process");
-const fs = require("fs");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
 const BASE_URL = process.env.BASE_URL;
 const port = process.env.PORT || 5000;
 const JWT_SECRETE = process.env.JWT_SECRETE;
 const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
-mongoose.connect(process.env.MONGO_SECRETE_URI);
+
+const { handleCode } = require("./code_exe/codeRunner.js");
+const { mongoose, connectToMongo } = require("./db/connect.js");
+
+const express = require("express");
+const cors = require("cors");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+connectToMongo();
+const app = express();
 app.use(express.json());
 app.use(cors());
-
-function createFileOfCode(lang, code, callback) {
-  if (lang == "python") {
-    fs.writeFileSync("userProgramFiles/testPython.py", code);
-  } else if (lang == "java") {
-    fs.writeFileSync("userProgramFiles/testJava.java", code);
-  } else if (lang == "c") {
-    fs.writeFileSync("userProgramFiles/testCprogram.c", code);
-  } else if (lang == "cpp") {
-    fs.writeFileSync("userProgramFiles/testCppprogram.cpp", code);
-  }
-  callback();
-}
-
-function getResults(childProcess, callback) {
-  let result = "";
-
-  childProcess.stdout.on("data", (data) => {
-    result += data;
-  });
-
-  childProcess.stderr.on("data", (data) => {
-    result += data;
-  });
-
-  childProcess.on("close", (code) => {
-    return callback(result);
-  });
-}
-
-function getResultOfexe(childProcess, exec, callback) {
-  let result = "";
-  childProcess.stdout.on("data", (data) => {
-    result += data;
-  });
-
-  childProcess.stderr.on("data", (err) => {
-    if (err) result += err;
-  });
-
-  childProcess.on("close", (code) => {
-    if (code === 0) {
-      const runEXE = spawn("./" + exec, []);
-      getResults(runEXE, (ret) => {
-        callback(ret);
-      });
-    } else {
-      callback(result);
-    }
-  });
-}
-
-function executeCode(lang, code, callback) {
-  createFileOfCode(lang, code, () => {
-    if (lang == "python") {
-      const pythonProcess = spawn("python", ["userProgramFiles/testPython.py"]);
-      getResults(pythonProcess, (ret) => {
-        callback(ret);
-      });
-    } else if (lang == "java") {
-      const javaProcess = spawn("javac", ["userProgramFiles/testJava.java"]);
-
-      let compileError = "";
-
-      javaProcess.stdout.on("data", (data) => {
-        compileError += data;
-      });
-
-      javaProcess.stderr.on("data", (data) => {
-        compileError += data;
-      });
-      javaProcess.on("close", (code) => {
-        if (code == 0) {
-          const runProcess = spawn("java", [
-            "-cp",
-            "userProgramFiles",
-            "testJava",
-          ]);
-          getResults(runProcess, (ret) => {
-            callback(ret);
-          });
-        } else {
-          callback(compileError);
-        }
-      });
-    } else if (lang == "c") {
-      const cCompileProcess = spawn("gcc", [
-        "userProgramFiles/testCprogram.c",
-        "-o",
-        "userProgramFiles/testCprogram",
-      ]);
-      getResultOfexe(
-        cCompileProcess,
-        "userProgramFiles/testCprogram",
-        (ret) => {
-          callback(ret);
-        }
-      );
-    } else if (lang == "cpp") {
-      const cppCompileProcess = spawn("g++", [
-        "userProgramFiles/testCppprogram.cpp",
-        "-o",
-        "userProgramFiles/testCppprogram",
-      ]);
-      getResultOfexe(
-        cppCompileProcess,
-        "userProgramFiles/testCppprogram",
-        (ret) => {
-          callback(ret);
-        }
-      );
-    }
-  });
-}
 
 async function updateUsersProgressHistory(
   currentUserId,
@@ -201,7 +87,7 @@ app.post("/run", userAuthOnPostRequest, (req, res) => {
 
   try {
     fetchTestCode("testCode", req.body.pnum, lang, (testCode) => {
-      executeCode(lang, code + testCode, (result) => {
+      handleCode(lang, code + testCode, (result) => {
         if (result) {
           res.json({ result });
         } else {
@@ -221,7 +107,7 @@ app.post("/submit", userAuthOnPostRequest, (req, res) => {
   const currentUserId = req.body.userId;
   try {
     fetchTestCode("submissionTestCode", req.body.pnum, lang, (testCode) => {
-      executeCode(lang, code + testCode, async (result) => {
+      handleCode(lang, code + testCode, async (result) => {
         if (result) {
           let submissionStatus;
           let isSolved;
