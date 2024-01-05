@@ -6,7 +6,7 @@ const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
 
 const { handleCode } = require("./code_exe/codeRunner.js");
 const { mongoose, connectToMongo } = require("./db/connect.js");
-
+const { user, problem, admin_list } = require("./db/model.js");
 const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcryptjs");
@@ -179,22 +179,6 @@ app.post("/submissions", userAuthOnPostRequest, (req, res) => {
     })
     .catch(() => res.sendStatus(404));
 });
-//schema
-const userSchema = new mongoose.Schema({
-  userName: String,
-  userEmail: String,
-  userPassword: String,
-  problemsReached: {
-    type: Map,
-    of: {
-      lastSubmission: String,
-      solved: Boolean,
-      submissions: Array,
-    },
-  },
-});
-
-const user = mongoose.model("user", userSchema);
 
 app.post("/sign-up", async (req, res) => {
   userName = req.body.name;
@@ -281,37 +265,7 @@ async function userAuthOnGetRequest(req, res, next) {
 
   next();
 }
-//problems
-const problemSchema = new mongoose.Schema({
-  pnum: Number,
-  title: String,
-  difficulty: String,
-  description: {
-    overview: String,
-    examples: Array,
-  },
-  boilerPlate: {
-    python: String,
-    java: String,
-    c: String,
-    cpp: String,
-  },
-  testCode: {
-    python: String,
-    java: String,
-    c: String,
-    cpp: String,
-  },
-  submissionTestCode: {
-    python: String,
-    java: String,
-    c: String,
-    cpp: String,
-  },
-  testCases: Array,
-});
 
-const problem = mongoose.model("problems", problemSchema);
 app.post("/admin/addProblem", (req, res) => {
   const newProblem = new problem({
     ...req.body.newProblem,
@@ -358,18 +312,7 @@ app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
       res.status(404).json({ fetchError: "cannot find problem" });
     });
 });
-const adminSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
-});
 
-const admin_list = new mongoose.model("admin_lists", adminSchema);
 async function adminAuth(req, res, next) {
   const adminName = req.params.adminName;
   const adminEmail = req.params.adminEmail;
