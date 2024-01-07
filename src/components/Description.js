@@ -1,10 +1,11 @@
 import React from "react";
 
-function Description({ pnum, title, description }) {
+function Description({ pnum, title, description, difficulty }) {
   return (
     <div className="problem-info split-pane-layoutCSS">
       <h3 className="problem-title">
         {pnum}. {title}
+        <h6 className={difficulty}>{difficulty}</h6>
       </h3>
       <div className="problem-descrption">
         <h4 className="problem-overview">

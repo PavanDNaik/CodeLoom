@@ -50,6 +50,7 @@ function Code() {
   //split-pane
   const [bodySizes, setBodySizes] = useState([100, "10%", "auto"]);
   const [editorSizes, setEditorSizes] = useState([100, "10%", "auto"]);
+  const [clickedPane, setClickedPane] = useState("DESCRIPTION");
   const problemId = useParams(); //route parameter
   //loader
   useEffect(() => {
@@ -216,31 +217,42 @@ function Code() {
         <Pane
           minSize={50}
           maxSize="70%"
-          className="description-submission-container"
+          className={`description-submission-container ${
+            clickedPane === "DESCRIPTION" ? "highlight-border" : ""
+          }`}
         >
-          <div className="stick-top-of-container-2">
-            <button
-              onClick={(e) => {
-                showTab("DESCRIPTION", submitionOrInfo, setSubmitionOrInfo);
-              }}
-              className={submitionOrInfo === "DESCRIPTION" ? "clicked" : ""}
-            >
-              Description
-            </button>
-            <button
-              onClick={(e) => {
-                showTab("SUBMISSION", submitionOrInfo, setSubmitionOrInfo);
-              }}
-              className={submitionOrInfo === "SUBMISSION" ? "clicked" : ""}
-            >
-              Submissions
-            </button>
+          <div
+            onClick={() => {
+              setClickedPane("DESCRIPTION");
+            }}
+          >
+            <div className="stick-top-of-container-2">
+              <button
+                onClick={(e) => {
+                  showTab("DESCRIPTION", submitionOrInfo, setSubmitionOrInfo);
+                }}
+                className={submitionOrInfo === "DESCRIPTION" ? "clicked" : ""}
+              >
+                Description
+              </button>
+              <button
+                onClick={(e) => {
+                  showTab("SUBMISSION", submitionOrInfo, setSubmitionOrInfo);
+                }}
+                className={submitionOrInfo === "SUBMISSION" ? "clicked" : ""}
+              >
+                Submissions
+              </button>
+            </div>
+            {submitionOrInfo === "DESCRIPTION" ? (
+              <Description {...problemInfo} />
+            ) : (
+              <Submision
+                problemNumber={String(problemInfo.pnum)}
+                token={token}
+              />
+            )}
           </div>
-          {submitionOrInfo === "DESCRIPTION" ? (
-            <Description {...problemInfo} />
-          ) : (
-            <Submision problemNumber={String(problemInfo.pnum)} token={token} />
-          )}
         </Pane>
 
         <Pane className="editor-testcases-container">
@@ -252,12 +264,28 @@ function Code() {
             <Pane
               minSize={50}
               maxSize="90%"
-              className="monaco-editor-container"
+              className={`monaco-editor-container ${
+                clickedPane === "EDITOR" ? "highlight-border" : ""
+              }`}
             >
-              <Editor getCodeInfo={getCodeInfo} problemInfo={problemInfo} />
+              <div
+                className="editor-container"
+                onClick={() => {
+                  setClickedPane("EDITOR");
+                }}
+              >
+                <Editor getCodeInfo={getCodeInfo} problemInfo={problemInfo} />
+              </div>
             </Pane>
 
-            <div className="result-test-case-container split-pane-layoutCSS ">
+            <div
+              className={`result-test-case-container split-pane-layoutCSS ${
+                clickedPane === "OUTPUT" ? "highlight-border" : ""
+              }`}
+              onClick={() => {
+                setClickedPane("OUTPUT");
+              }}
+            >
               <div className="stick-top-of-container">
                 <div>
                   <button
