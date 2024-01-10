@@ -11,6 +11,13 @@ function Loginform() {
   const [verifying, setVerifying] = useState(false);
   const FETCH_BASE_URI =
     process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:3000";
+
+  function handelLoginError(err) {
+    if (err) {
+      setError(err);
+    }
+    setVerifying(false);
+  }
   async function handleLogin(e) {
     if (userData.email === "" || userData.password === "") {
       setError("Fill the Form");
@@ -18,25 +25,30 @@ function Loginform() {
     }
     e.target.textContent = "Verifying..";
     setVerifying(true);
-    const result = await fetch(`${FETCH_BASE_URI}/log-in`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: userData.email,
-        password: userData.password,
-      }),
-    });
-    const data = await result.json();
-    if (!data.errors && data.token) {
-      setError("");
-      localStorage.setItem("user", JSON.stringify(data.userName));
-      localStorage.setItem("authToken", JSON.stringify(data.token));
-      navigate(data.route);
-    } else {
-      setError(data.errors);
-      setVerifying(false);
+
+    try {
+      const result = await fetch(`${FETCH_BASE_URI}/user/log-in`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: userData.email,
+          password: userData.password,
+        }),
+      });
+      const data = await result.json();
+      if (!data.errors && data.token) {
+        setError("");
+        localStorage.setItem("user", JSON.stringify(data.userName));
+        localStorage.setItem("authToken", JSON.stringify(data.token));
+        navigate(data.route);
+      } else {
+        handelLoginError(data?.errors);
+        e.target.textContent = "Log-In";
+      }
+    } catch (e) {
+      handelLoginError(e);
       e.target.textContent = "Log-In";
     }
   }

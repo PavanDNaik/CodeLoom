@@ -29,7 +29,7 @@ function Signupform() {
     }
     e.target.textContent = "Verifying...";
     setVerifying(true);
-    const result = await fetch(`${FETCH_BASE_URI}/sign-up`, {
+    const result = await fetch(`${FETCH_BASE_URI}/user/sign-up`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function Signupform() {
       navigate(data.route);
     } else {
       e.target.textContent = "Sign-Up";
-      setError("Server Error");
+      setError(data?.errors ? data.errors : "Server Error");
       setVerifying(false);
     }
   }

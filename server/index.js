@@ -1,59 +1,27 @@
 require("dotenv").config();
 const BASE_URL = process.env.BASE_URL;
 const port = process.env.PORT || 5000;
-const JWT_SECRETE = process.env.JWT_SECRETE;
-const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
 
 const { handleCode } = require("./code_exe/codeRunner.js");
 const { mongoose, connectToMongo } = require("./db/connect.js");
-const { user, problem, admin_list } = require("./db/model.js");
+connectToMongo();
+
+const { updateUsersProgressHistory } = require("./db/user/update.js");
+const userRouter = require("./routes/user.js");
+const adminRouter = require("./routes/admin.js");
 const {
   userAuthOnPostRequest,
   userAuthOnGetRequest,
-  adminAuth,
 } = require("./middleware/middleware.js");
 
 const express = require("express");
 const cors = require("cors");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
-connectToMongo();
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-async function updateUsersProgressHistory(
-  currentUserId,
-  currentPnum,
-  submisonInfo,
-  latestCode,
-  isSolved,
-  submissionStatus
-) {
-  await mongoose
-    .model("user")
-    .findById(currentUserId)
-    .then((currentUser) => {
-      if (!currentUser) {
-        return;
-      } else if (!currentUser.problemsReached) {
-        currentUser.problemsReached = new Map();
-        currentUser.problemsReached.set(currentPnum, submisonInfo);
-      } else if (!currentUser.problemsReached.get(currentPnum)) {
-        currentUser.problemsReached.set(currentPnum, submisonInfo);
-      } else {
-        const previousHistory = currentUser.problemsReached.get(currentPnum);
-        previousHistory.solved |= isSolved;
-        previousHistory.lastSubmission = latestCode;
-        previousHistory.submissions.push(submissionStatus);
-
-        currentUser.problemsReached.set(currentPnum, previousHistory);
-      }
-      currentUser.save().catch((err) => console.log(err));
-    })
-    .catch((err) => console.log(err));
-}
+app.use("/user", userRouter);
+app.use("/admin", adminRouter);
 
 async function fetchTestCode(type, pnum, lang, callback) {
   mongoose
@@ -169,89 +137,6 @@ app.post("/submissions", userAuthOnPostRequest, (req, res) => {
     .catch(() => res.sendStatus(404));
 });
 
-app.post("/sign-up", async (req, res) => {
-  userName = req.body.name;
-  userEmail = req.body.email;
-  userPassword = req.body.password;
-  const salt = await bcrypt.genSalt(10);
-  const encryptedPassword = await bcrypt.hash(userPassword, salt);
-  const someUser = await user.findOne({ userEmail: userEmail });
-  if (someUser) {
-    res.json({ errors: "Account already exists" });
-    return;
-  } else {
-    const newUser = new user({
-      userName,
-      userEmail,
-      userPassword: encryptedPassword,
-    });
-    newUser
-      .save()
-      .then((someUser) => {
-        const dataForJwtSign = {
-          user: {
-            id: someUser._id.toString(),
-          },
-        };
-        const authToken = jwt.sign(dataForJwtSign, JWT_SECRETE);
-        return res.json({
-          token: authToken,
-          userName: someUser.userName,
-          route: "/home",
-        });
-      })
-      .catch((errors) => {
-        console.log("errors");
-        res.status(404).json({ errors });
-      });
-  }
-});
-
-app.post("/log-in", async (req, res) => {
-  userEmail = req.body.email;
-  userPassword = req.body.password;
-  const someUser = await user.findOne({ userEmail });
-  if (someUser) {
-    const pwdCompare = await bcrypt.compare(
-      userPassword,
-      someUser.userPassword
-    );
-    if (pwdCompare) {
-      const dataForJwtSign = {
-        user: {
-          id: someUser._id,
-        },
-      };
-      const authToken = jwt.sign(dataForJwtSign, JWT_SECRETE);
-      return res.json({
-        token: authToken,
-        userName: someUser.userName,
-        route: "/home",
-      });
-    } else {
-      res.json({ errors: "Invalid Credentials!!" });
-      return;
-    }
-  } else {
-    res.json({ errors: "Invalid Credentials!!" });
-  }
-});
-
-app.post("/admin/addProblem", (req, res) => {
-  const newProblem = new problem({
-    ...req.body.newProblem,
-  });
-  newProblem
-    .save()
-    .then(() => {
-      console.log("New Problem Added!");
-      res.json({ success: "problem added" });
-    })
-    .catch(() => {
-      console.log("Could not Add problem!");
-    });
-});
-
 app.get("/problems", (req, res) => {
   try {
     mongoose
@@ -284,47 +169,6 @@ app.get("/problems/:id", userAuthOnGetRequest, (req, res) => {
     });
 });
 
-app.get(
-  "/admin/:adminName/:adminEmail/admin-exists",
-  userAuthOnGetRequest,
-  adminAuth,
-  async (req, res) => {
-    return res.json({ exists: true });
-  }
-);
-
-app.post(
-  "/admin/:adminName/:adminEmail/login",
-  userAuthOnPostRequest,
-  adminAuth,
-  async (req, res) => {
-    const userId = req.body.userId;
-    const userAccountInfo = await mongoose
-      .model("user")
-      .findById(userId)
-      .select("userPassword");
-    if (!userAccountInfo) {
-      return res.json({ fetchError: "please login to user Account" });
-    }
-    const passwordMatched = await bcrypt.compare(
-      req.body.password,
-      userAccountInfo.userPassword
-    );
-
-    if (passwordMatched) {
-      const adminData = {
-        user: {
-          email: req.params.adminEmail,
-        },
-      };
-      const adminToken = jwt.sign(adminData, JWT_ADMIN_SECRETE);
-      return res.json({ adminAuthToken: adminToken });
-    } else {
-      return res.json({ fetchError: "Wrong Password" });
-    }
-  }
-);
-
 app.listen(port, () => {
-  console.log(`${BASE_URL}${port}`);
+  console.log(`server running on ${BASE_URL}${port}`);
 });
