@@ -73,8 +73,10 @@ a {
 
 ul.navbar-list {
   position: sticky;
+  left: 0;
+  right: 0;
   top: 0;
-  background-color: transparent;
+  background-color: var(--primary-color);
 
   display: flex;
   justify-content: space-evenly;

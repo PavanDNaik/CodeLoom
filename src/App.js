@@ -28,7 +28,7 @@ function App() {
             path="/admin/:admin/:email/log-in/*"
             element={<AdminLogIn />}
           ></Route>
-          <Route exact path="/404" element={<PageNotFound />}></Route>
+          <Route exact path="*" element={<PageNotFound />}></Route>
         </Routes>
       </Router>
     </div>

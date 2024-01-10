@@ -14,6 +14,17 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+const adminSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
 const problemSchema = new mongoose.Schema({
   pnum: Number,
   title: String,
@@ -42,16 +53,30 @@ const problemSchema = new mongoose.Schema({
   },
   testCases: Array,
 });
-
-const adminSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-  },
-  name: {
-    type: String,
-    required: true,
-  },
+//  const structure = {
+//    Arithmetic: {
+//      Percentage: [Object],
+//      Average: [Object],
+//      "Problems on Trains": [Object],
+//      "Time and Distance": [Object],
+//      "Time and Work": [Object],
+//    },
+//    "Logical Reasonsing": {
+//      "Number Series": [Object],
+//      "Letter and Symbol Series": [Object],
+//      Analogies: [Object],
+//      "Logical Problems": [Object],
+//    },
+//    "Verbal Reasonsing": {
+//      Syllogism: [Object],
+//      "Blood Relation Test": [Object],
+//      "Series Completion": [Object],
+//      "Seating Arrangement": [Object],
+//    },
+//  };
+const aptitudeSchema = new mongoose.Schema({
+  catagoryName: String,
+  quetion: Object,
 });
 
-module.exports = { userSchema, problemSchema, adminSchema };
+module.exports = { userSchema, problemSchema, adminSchema, aptitudeSchema };

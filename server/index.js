@@ -9,6 +9,7 @@ connectToMongo();
 const { updateUsersProgressHistory } = require("./db/user/update.js");
 const userRouter = require("./routes/user.js");
 const adminRouter = require("./routes/admin.js");
+const aptitudeRouter = require("./routes/aptitude.js");
 const {
   userAuthOnPostRequest,
   userAuthOnGetRequest,
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(cors());
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
+app.use("/aptitude", aptitudeRouter);
 
 async function fetchTestCode(type, pnum, lang, callback) {
   mongoose

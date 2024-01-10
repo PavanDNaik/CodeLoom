@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const JWT_SECRETE = process.env.JWT_SECRETE;
 const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
 const { user, problem, admin_list } = require("../db/model");
 const {

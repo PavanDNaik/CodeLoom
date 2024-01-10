@@ -4,6 +4,7 @@ import Problems from "./Problems";
 import Contact from "../components/Contact";
 import PageNotFound from "./PageNotFound";
 import HomeContent from "../components/HomeContent";
+import Aptitude from "./Aptitude";
 function Home() {
   let userName = JSON.parse(localStorage.getItem("user"));
   let token = JSON.parse(localStorage.getItem("authToken"));
@@ -15,7 +16,8 @@ function Home() {
           <Route path="/" element={<HomeContent />} />
           <Route exact path="/problems" element={<Problems token={token} />} />
           <Route exact path="/contact" element={<Contact />} />
-          <Route Component={<PageNotFound />} />
+          <Route exact path="/aptitude" element={<Aptitude />} />
+          <Route path="*" Component={<PageNotFound />} />
         </Routes>
       </div>
     </div>
