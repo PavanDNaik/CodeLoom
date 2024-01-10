@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AptitudeTree } from "../structures/aptitudeTree";
 import AptiType from "../components/AptiType";
+import AptiQuestion from "../components/AptiQuestion";
 import "../css/apti.css";
 const FETCH_BASE_URI =
   process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:5000";
@@ -26,6 +27,8 @@ const getAptiQuestions = async (type, catagory) => {
 function Aptitude() {
   const [explore, setExplore] = useState(AptitudeTree);
   const [questions, setQuestions] = useState([]);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [index, setIndex] = useState(0);
   const [currentType, setCurrentType] = useState("");
   const [currentCatagory, setCurrentCatagory] = useState("");
   const updateCurrentType = (type) => {
@@ -38,9 +41,28 @@ function Aptitude() {
   useEffect(() => {
     getAptiQuestions(currentType, currentCatagory).then((qs) => {
       // console.log(qs);
-      setQuestions(qs);
+      if (qs?.length) {
+        setQuestions([...qs]);
+        setCurrentQuestion(qs[0]);
+        setIndex(0);
+      } else {
+        setQuestions([]);
+      }
+      setIndex(0);
     });
   }, [currentCatagory]);
+
+  useEffect(() => {
+    if (questions && questions.length) {
+      if (questions.length <= index) {
+        alert("You have completed all the questions");
+        setIndex(0);
+      } else {
+        setCurrentQuestion(questions[index]);
+      }
+    }
+  }, [index]);
+
   return (
     <div>
       <div className="apti-vs-container">
@@ -56,7 +78,15 @@ function Aptitude() {
             );
           })}
         </div>
-        <div className="apti-quetion-container"></div>
+        <div className="apti-question-container">
+          <AptiQuestion question={currentQuestion?.quetion} number={index} />
+          <button
+            className="fixed-right-bottom run-button"
+            onClick={() => setIndex(index + 1)}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

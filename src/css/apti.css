@@ -1,6 +1,3 @@
-.apti-vs-container {
-  display: flex;
-}
 .apti-explorer {
   min-width: 25%;
   border-right: 1px solid #555;
@@ -19,6 +16,7 @@
 
   text-transform: capitalize;
   padding: 10px 20px;
+  padding-left: 8px;
 }
 
 .apti-type-heading:hover {
@@ -36,12 +34,21 @@
   padding: 10px 20px;
   border-bottom: 1px solid #555;
 
-  margin-left: 10%;
+  margin-left: 15%;
 }
 .apti-categary-header:hover {
   background-color: #ffffff33;
 }
-.apti-catagory {
+
+.apti-vs-container {
+  display: flex;
+  gap: 2%;
+}
+.apti-question-container {
+  margin-left: 5px;
+  margin-right: 5px;
+  border: 1px solid #555;
+  flex: 1;
 }
 
 @keyframes slow-drop-down {
@@ -51,4 +58,48 @@
   100% {
     height: 20px;
   }
+}
+
+.apti-question {
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.apti-option-container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.apti-option {
+  display: flex;
+  gap: 5%;
+}
+
+.answer-section {
+  padding: 20px;
+}
+
+.answer {
+  font-weight: 700;
+}
+
+span.green {
+  font-weight: 700;
+  color: rgb(64, 171, 95);
+}
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+button.fixed-right-bottom {
+  position: absolute;
+  bottom: 10%;
+  right: 10%;
+  border-radius: 5px;
+  /* border: none; */
 }

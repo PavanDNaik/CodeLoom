@@ -20,6 +20,7 @@ function AptiType({ type, updateCurrentType, updateCurrentCatagory }) {
               return (
                 <AptiCatagory
                   key={i}
+                  number={i}
                   cat={cat}
                   typeName={type.typeName}
                   updateCurrentType={updateCurrentType}
