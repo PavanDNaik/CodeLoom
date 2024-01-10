@@ -24,14 +24,14 @@ function getModule(type) {
 //     aptitude.find({}).select("")
 // })
 router.post("/getQuestions", async (req, res) => {
-  const { type, catogary } = req.body;
+  const { type, catagory } = req.body;
   const aptitudeModel = getModule(type);
   try {
-    const quetions = await aptitudeModel.find({ catagoryName: catogary });
-    if (!quetions) {
+    const questions = await aptitudeModel.find({ catagoryName: catagory });
+    if (!questions) {
       res.send({});
     } else {
-      res.send({ quetions });
+      res.send({ questions });
     }
   } catch (e) {
     console.log(e);

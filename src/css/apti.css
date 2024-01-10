@@ -1,0 +1,54 @@
+.apti-vs-container {
+  display: flex;
+}
+.apti-explorer {
+  min-width: 25%;
+  border-right: 1px solid #555;
+  height: 90vh;
+}
+
+.apti-type {
+  border-bottom: 1px solid #666;
+}
+.apti-type-heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5%;
+  border-bottom: 1px solid #666;
+
+  text-transform: capitalize;
+  padding: 10px 20px;
+}
+
+.apti-type-heading:hover {
+  background-color: #00000055;
+}
+
+.explorer-button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+}
+
+.apti-categary-header {
+  padding: 10px 20px;
+  border-bottom: 1px solid #555;
+
+  margin-left: 10%;
+}
+.apti-categary-header:hover {
+  background-color: #ffffff33;
+}
+.apti-catagory {
+}
+
+@keyframes slow-drop-down {
+  0% {
+    height: 0;
+  }
+  100% {
+    height: 20px;
+  }
+}
