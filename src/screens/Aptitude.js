@@ -9,6 +9,10 @@ const getAptiQuestions = async (type, catagory) => {
   if (!type || !catagory) {
     return null;
   }
+  const storedData = sessionStorage.getItem(`/${type}/${catagory}`);
+  if (storedData) {
+    return JSON.parse(storedData);
+  }
   const response = await fetch(FETCH_BASE_URI + "/aptitude/getQuestions", {
     method: "POST",
     headers: {
@@ -42,6 +46,11 @@ function Aptitude() {
     getAptiQuestions(currentType, currentCatagory).then((qs) => {
       // console.log(qs);
       if (qs?.length) {
+        sessionStorage.setItem(
+          `/${currentType}/${currentCatagory}`,
+          JSON.stringify(qs)
+        );
+        console.log(...qs);
         setQuestions([...qs]);
         setCurrentQuestion(qs[0]);
         setIndex(0);
@@ -80,12 +89,16 @@ function Aptitude() {
         </div>
         <div className="apti-question-container">
           <AptiQuestion question={currentQuestion?.quetion} number={index} />
-          <button
-            className="fixed-right-bottom run-button"
-            onClick={() => setIndex(index + 1)}
-          >
-            Next
-          </button>
+          {currentQuestion ? (
+            <button
+              className="fixed-right-bottom run-button"
+              onClick={() => setIndex(index + 1)}
+            >
+              Next
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
