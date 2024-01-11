@@ -13,7 +13,7 @@
   justify-content: flex-start;
   gap: 5%;
   border-bottom: 1px solid #666;
-
+  background-color: #22201f;
   text-transform: capitalize;
   padding: 10px 20px;
   padding-left: 8px;
@@ -33,11 +33,16 @@
 .apti-categary-header {
   padding: 10px 20px;
   border-bottom: 1px solid #555;
-
-  margin-left: 15%;
+  background-color: #292726;
+  cursor: pointer;
+  padding-left: 15%;
 }
 .apti-categary-header:hover {
   background-color: #ffffff33;
+}
+.apti-categary-header > h3 {
+  display: flex;
+  gap: 5%;
 }
 
 .apti-vs-container {

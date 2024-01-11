@@ -12,7 +12,10 @@ function AptiCatagory({
   };
   return (
     <div className="apti-categary-header" onClick={handleClick}>
-      <h3>{cat?.catagoryName}</h3>
+      <h3>
+        <span>{"->"}</span>
+        {cat?.catagoryName}
+      </h3>
     </div>
   );
 }
