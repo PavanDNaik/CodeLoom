@@ -9,6 +9,8 @@ import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
 import testCaseIcon from "../images/editor-icons/testcase-icon.png";
 import outputIcon from "../images/editor-icons/output-icon.png";
+import descriptionIcon from "../images/editor-icons/description-icon.png";
+import submissionIcon from "../images/editor-icons/submission-icons.png";
 const FETCH_BASE_URI =
   process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:5000";
 //fetch problem
@@ -233,17 +235,39 @@ function Code() {
                 onClick={(e) => {
                   showTab("DESCRIPTION", submitionOrInfo, setSubmitionOrInfo);
                 }}
-                className={submitionOrInfo === "DESCRIPTION" ? "clicked" : ""}
+                className={`${
+                  submitionOrInfo === "DESCRIPTION"
+                    ? "tab-buttons clicked"
+                    : "tab-buttons"
+                }`}
               >
-                Description
+                <span>
+                  <img
+                    src={descriptionIcon}
+                    alt="o"
+                    className="editor-small-icons"
+                  />
+                </span>
+                <span>Description</span>
               </button>
               <button
                 onClick={(e) => {
                   showTab("SUBMISSION", submitionOrInfo, setSubmitionOrInfo);
                 }}
-                className={submitionOrInfo === "SUBMISSION" ? "clicked" : ""}
+                className={
+                  submitionOrInfo === "SUBMISSION"
+                    ? "tab-buttons clicked"
+                    : "tab-buttons"
+                }
               >
-                Submissions
+                <span>
+                  <img
+                    src={submissionIcon}
+                    alt="o"
+                    className="editor-small-icons"
+                  />
+                </span>
+                <span>Submissions</span>
               </button>
             </div>
             {submitionOrInfo === "DESCRIPTION" ? (

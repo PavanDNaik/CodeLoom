@@ -76,4 +76,6 @@ router.post("/log-in", async (req, res) => {
   }
 });
 
+router.post("/getSolvedQuestions", (req, res) => {});
+
 module.exports = router;

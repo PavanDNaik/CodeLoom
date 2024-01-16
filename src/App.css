@@ -1019,7 +1019,8 @@ textarea.overview {
 }
 .tab-buttons {
   display: inline-flex;
-  place-items: center;
+  /* justify-content: center; */
+  align-items: center;
   gap: 2%;
 }
 
