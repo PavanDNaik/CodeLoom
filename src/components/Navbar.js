@@ -1,11 +1,23 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Profile from "./Profile";
 import moonImg from "../images/dark-mode.svg";
 import sunImg from "../images/light-mode.svg";
 
 function Navbar({ userName }) {
   const [active, setActive] = useState("");
+  const [bg, setBg] = useState("");
+  const route = useLocation();
+  useEffect(() => {
+    if (route.pathname === "/home") {
+      setBg("Black-bg");
+    } else if (route.pathname == "/home/aptitude") {
+      setBg("apti-color");
+    } else {
+      setBg("");
+    }
+  }, [route]);
+
   const [themeImg, setThemeImg] = useState(
     getCurrentTheme() === "light-mode" ? moonImg : sunImg
   );
@@ -41,7 +53,7 @@ function Navbar({ userName }) {
 
   return (
     <div className="navbar">
-      <ul className="navbar-list">
+      <ul className={`${bg} navbar-list`}>
         <li>{getLink("Home", "/home")}</li>
         <li>{getLink("Problems", "/home/problems")}</li>
         <li>{getLink("Aptitude", "/home/aptitude")}</li>

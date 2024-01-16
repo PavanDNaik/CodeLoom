@@ -51,12 +51,6 @@ function Editor({ getCodeInfo, problemInfo, defaultLanguage }) {
         </select>
       </div>
       <div className="codeEditor">
-        {/* options=
-        {{
-          minimap: {
-            enabled: false,
-          },
-        }} */}
         <MonacoEditor
           value={
             problemInfo && problemInfo.boilerPlate
@@ -67,6 +61,11 @@ function Editor({ getCodeInfo, problemInfo, defaultLanguage }) {
           theme={theme}
           resizerSize={5}
           onChange={(value) => handleChange(value, lang)}
+          options={{
+            minimap: {
+              enabled: false,
+            },
+          }}
         />
       </div>
     </>

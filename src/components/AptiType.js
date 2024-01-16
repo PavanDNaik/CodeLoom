@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import AptiCatagory from "./AptiCatagory";
 
-function AptiType({ type, updateCurrentType, updateCurrentCatagory }) {
+function AptiType({
+  type,
+  updateCurrentType,
+  updateCurrentCatagory,
+  catagory,
+}) {
   const [clicked, setClicked] = useState(false);
   return (
     <div className="apti-type">
@@ -25,6 +30,7 @@ function AptiType({ type, updateCurrentType, updateCurrentCatagory }) {
                   typeName={type.typeName}
                   updateCurrentType={updateCurrentType}
                   updateCurrentCatagory={updateCurrentCatagory}
+                  curCatagory={catagory}
                 />
               );
             })

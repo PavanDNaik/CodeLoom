@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const getAnswerFromChar = (ch) => {
   return ch?.charCodeAt(0) - 65;
 };
-function AptiQuestion({ question, number }) {
+function AptiQuestion({ question, number, catagory }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answer, showAnwser] = useState(false);
   const handleVerify = () => {
@@ -21,10 +21,12 @@ function AptiQuestion({ question, number }) {
   useEffect(() => {
     setSelectedAnswer(null);
     showAnwser(false);
+    console.log(question);
   }, [question]);
 
   return question ? (
     <div className="apti-question">
+      <h1>{catagory}</h1>
       <h2>
         {number >= 0 ? number + 1 : "#"}. {question?.title}
       </h2>

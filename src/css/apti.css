@@ -1,7 +1,9 @@
 .apti-explorer {
   min-width: 25%;
-  border-right: 1px solid #555;
-  height: 90vh;
+  border-right: 1px  solid rgba(43,55,80,.7);
+  height: 92vh;
+background-color: #1d1e23;
+
 }
 
 .apti-type {
@@ -12,8 +14,8 @@
   align-items: center;
   justify-content: flex-start;
   gap: 5%;
-  border-bottom: 1px solid #666;
-  background-color: #22201f;
+  border-bottom: 1px  solid rgba(43,55,80,.7);
+  color: #5780b0;
   text-transform: capitalize;
   padding: 10px 20px;
   padding-left: 8px;
@@ -26,16 +28,20 @@
 .explorer-button {
   background: transparent;
   border: none;
-  color: white;
+  color: #5780b0;
   font-size: 30px;
 }
 
 .apti-categary-header {
   padding: 10px 20px;
   border-bottom: 1px solid #555;
-  background-color: #292726;
   cursor: pointer;
   padding-left: 15%;
+  /* color: #5780b0; */
+}
+
+.apti-categary-header.highlight-apti-cat{
+  background-color: #ffffff33;
 }
 .apti-categary-header:hover {
   background-color: #ffffff33;
@@ -53,7 +59,9 @@
   margin-left: 5px;
   margin-right: 5px;
   border: 1px solid #555;
+  border: 1px solid rgba(43,55,80,.7);
   flex: 1;
+  background-color: #1d1e23;
 }
 
 @keyframes slow-drop-down {
@@ -67,11 +75,14 @@
 
 .apti-question {
   padding: 5%;
+  padding-top: 3%;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
+.apti-question h1{
+  color: #5780b0;
+}
 .apti-option-container {
   padding: 5px;
   display: flex;
@@ -102,9 +113,21 @@ span.green {
 }
 
 button.fixed-right-bottom {
-  position: absolute;
-  bottom: 10%;
-  right: 10%;
   border-radius: 5px;
-  /* border: none; */
+  margin-left: 5%;
+  align-self: flex-end;
+}
+
+.aptitude{
+  background-color: rgb(36, 38, 44);
+  border-top: 1px solid rgba(43,55,80,.7);
+}
+
+.apti-top-headers{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 20px;
+  font-weight:900;
 }

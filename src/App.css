@@ -7,7 +7,7 @@
   --font-color: #f5f5f4;
   --home-hero-bg: #fff;
   --home-exp-bg: #000;
-  --editor-config-select:#1a1818ba;
+  --editor-config-select:#1e1e1e;
   /* --primary-color: #171717;
   --secondary-color: #262626;
   --tertiary-color: #404040;
@@ -80,7 +80,6 @@ ul.navbar-list {
   right: 0;
   top: 0;
   background-color: var(--primary-color);
-
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -91,6 +90,12 @@ ul.navbar-list {
   z-index: 2;
 }
 
+ul.navbar-list.Black-bg {
+  background-color: var(--home-exp-bg);
+}
+ul.navbar-list.apti-color{
+  background-color: #1d1e23;
+}
 ul.navbar-list.no-animation {
   animation: none;
 }
@@ -234,7 +239,15 @@ select:hover {
   align-items: center;
   width: 100%;
 }
+.problem-config-selects >select{
+  border: none;
+  background-color: transparent;
+  color: var(--font-color);
+}
+.problem-config-selects >select > option{
+  background-color: var(--primary-color);
 
+}
 div.loading-q-container > div.loading-quetion-animate.question {
   height: 2.5rem;
   padding: 0.5rem;
@@ -455,13 +468,12 @@ div.problem-descrption {
   height: 8%;
   padding: 4px 10px;
   background-color: var(--editor-config-select);
-  border-bottom: 1px solid var(--secondary-color);
 }
 
 .editor-config-selects > select,
 .editor-config-selects > div {
   background-color: transparent;
-  color: var(--highlight-color);
+  color: var(--border-color);
   padding: 2px;
   margin-left: 10px;
   border: none !important;
@@ -1015,3 +1027,4 @@ textarea.overview {
   background-color: var(--secondary-color);
   padding: 1px 2%;
 }
+

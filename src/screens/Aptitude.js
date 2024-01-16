@@ -73,7 +73,12 @@ function Aptitude() {
   }, [index]);
 
   return (
-    <div>
+    <div className="aptitude">
+      <div className="apti-top-headers">
+        <div>Chose Catagory</div>
+        <div>Questions</div>
+        <div></div>
+      </div>
       <div className="apti-vs-container">
         <div className="apti-explorer">
           {explore?.map((type, i) => {
@@ -81,6 +86,7 @@ function Aptitude() {
               <AptiType
                 key={i}
                 type={type}
+                catagory={currentQuestion?.catagoryName}
                 updateCurrentType={updateCurrentType}
                 updateCurrentCatagory={updateCurrentCatagory}
               />
@@ -88,7 +94,11 @@ function Aptitude() {
           })}
         </div>
         <div className="apti-question-container">
-          <AptiQuestion question={currentQuestion?.quetion} number={index} />
+          <AptiQuestion
+            question={currentQuestion?.quetion}
+            catagory={currentQuestion?.catagoryName}
+            number={index}
+          />
           {currentQuestion ? (
             <button
               className="fixed-right-bottom run-button"
