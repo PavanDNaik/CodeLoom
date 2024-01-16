@@ -44,7 +44,7 @@
   object-fit: fill;
   z-index: 0;
   color: white;
-  animation: smooth-scale 2s ease-in-out;
+  animation: smooth-scale 1s ease-in-out;
 }
 .Thinker-img {
   width: 100px;
@@ -64,11 +64,11 @@
   margin-left: 50px;
   color: white;
   word-wrap: break-word;
-  font-family: "Fjalla One";
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: 15rem;
-  font-weight: 500;
+  font-weight: 400;
   z-index: 2;
-  animation: appear 2s ease-in-out;
+  animation: appear 1s ease-in-out;
 }
 
 .landing-title-part2 {
@@ -101,7 +101,7 @@
   right: 10px;
   top: 10px;
   backdrop-filter: blur(10px);
-  animation: landing-slide-in 2s ease-in-out;
+  animation: landing-slide-in 1s ease-in-out;
 }
 
 @keyframes landing-slide-in {
@@ -142,17 +142,6 @@
   animation-delay: 10s;
 }
 
-.typing-text > h3 {
-  animation: left-appear 2s ease-in-out;
-}
-@keyframes left-appear {
-  0% {
-    scale: 0.5;
-  }
-  100% {
-    scale: 1;
-  }
-}
 
 .typing-text {
   z-index: 3;
@@ -165,7 +154,7 @@
   border-radius: 5px;
   background-color: #00000044;
   backdrop-filter: blur(1px);
-  animation: appear 2s ease-in-out;
+  animation: appear 1s ease-in-out;
   visibility: unset;
 }
 @keyframes appear {

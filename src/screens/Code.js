@@ -7,6 +7,8 @@ import Submision from "../components/Submision";
 import Editor from "../components/Editor";
 import backSVG from "../images/back.svg";
 import Profile from "../components/Profile";
+import testCaseIcon from "../images/editor-icons/testcase-icon.png";
+import outputIcon from "../images/editor-icons/output-icon.png";
 const FETCH_BASE_URI =
   process.env.REACT_APP_FETCH_BASE_URL || "http://localhost:5000";
 //fetch problem
@@ -292,17 +294,39 @@ function Code() {
                     onClick={(e) =>
                       showTab("CASE", showCaseOrResult, setshowCaseOrResult)
                     }
-                    className={showCaseOrResult === "CASE" ? "clicked" : ""}
+                    className={
+                      showCaseOrResult === "CASE"
+                        ? "tab-buttons clicked"
+                        : "tab-buttons "
+                    }
                   >
-                    TestCase
+                    <span>
+                      <img
+                        src={testCaseIcon}
+                        alt="t"
+                        className="editor-small-icons"
+                      />
+                    </span>
+                    <span>TestCase</span>
                   </button>
                   <button
                     onClick={(e) =>
                       showTab("RESULT", showCaseOrResult, setshowCaseOrResult)
                     }
-                    className={showCaseOrResult === "RESULT" ? "clicked" : ""}
+                    className={
+                      showCaseOrResult === "RESULT"
+                        ? "tab-buttons clicked"
+                        : "tab-buttons"
+                    }
                   >
-                    TestResult
+                    <span>
+                      <img
+                        src={outputIcon}
+                        alt="o"
+                        className="editor-small-icons"
+                      />
+                    </span>
+                    <span>TestResult</span>
                   </button>
                 </div>
                 <span

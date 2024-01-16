@@ -64,7 +64,7 @@ function Problems({ token }) {
         <div className="problemset-table-titles">
           <div>Number</div>
           <div>Title</div>
-          <div className="editor-config-selects">
+          <div className="problem-config-selects">
             <select
               onChange={(e) => {
                 setSortFactor(e.target.value);

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import crumbled from "../images/paper-bg.png";
 import "../css/landing.css";
 function Landing() {
   const navigate = useNavigate();
@@ -12,9 +11,7 @@ function Landing() {
   }, []);
   return (
     <div className="landing-page-container">
-      <img src={crumbled} alt="" className="paper-bg" />
-
-      <div className="landing-title street-light-effect">
+      <div className="landing-title">
         CODE <div className="landing-title-part2">LOOM</div>
       </div>
       <div>

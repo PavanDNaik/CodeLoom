@@ -7,6 +7,7 @@
   --font-color: #f5f5f4;
   --home-hero-bg: #fff;
   --home-exp-bg: #000;
+  --editor-config-select:#1a1818ba;
   /* --primary-color: #171717;
   --secondary-color: #262626;
   --tertiary-color: #404040;
@@ -32,6 +33,8 @@
   --font-color: #1c1917;
   --home-hero-bg: #000;
   --home-exp-bg: #fff;
+  --editor-config-select:#eee;
+
 }
 
 * {
@@ -233,7 +236,7 @@ select:hover {
 }
 
 div.loading-q-container > div.loading-quetion-animate.question {
-  height: 1.5rem;
+  height: 2.5rem;
   padding: 0.5rem;
   width: 100%;
   animation: loading-q 2s infinite ease-in-out;
@@ -330,7 +333,7 @@ div.loading-q-container > div.loading-quetion-animate.question {
 
 .editor-testresult {
   overflow-y: auto;
-  background-color: rgba(225, 225, 225, 0.1);
+  background-color: var(--tertiary-color);
   height: 100%;
   margin: 0;
   white-space: pre-wrap;
@@ -442,7 +445,7 @@ div.problem-descrption {
   background-color: var(--secondary-color);
   border: 1px solid var(--tertiary-color);
   border-radius: 5px;
-  padding: 0 1rem;
+  padding-bottom: 2%;
   min-height: 350px;
 }
 
@@ -450,16 +453,22 @@ div.problem-descrption {
   display: flex;
   z-index: 3;
   height: 8%;
-  padding: 2px;
+  padding: 4px 10px;
+  background-color: var(--editor-config-select);
+  border-bottom: 1px solid var(--secondary-color);
 }
+
 .editor-config-selects > select,
 .editor-config-selects > div {
-  background-color: var(--secondary-color);
+  background-color: transparent;
   color: var(--highlight-color);
   padding: 2px;
-  border-radius: 2px;
   margin-left: 10px;
-  border-color: var(--border-color);
+  border: none !important;
+  outline: none !important;
+}
+.editor-config-selects > select > option{
+  background-color: var(--secondary-color);
 }
 
 .result-test-case-container {
@@ -482,11 +491,14 @@ div.problem-descrption {
   height: 80%;
   width: 100%;
   border-radius: 3px;
-  padding: 1rem;
+  padding: 2px 0;
 }
+.output-section-container pre{
+  padding: 1rem;
 
+}
 .codeEditor {
-  height: 90%;
+  height: 87%;
 }
 .problem-page-header {
   height: 10vh;
@@ -985,4 +997,21 @@ textarea.overview {
   100% {
     bottom: 8rem;
   }
+}
+
+.editor-small-icons {
+  height: 15px;
+}
+.editor-medium-icons{
+  height: 24px;
+}
+.tab-buttons {
+  display: inline-flex;
+  place-items: center;
+  gap: 2%;
+}
+
+.editor-header{
+  background-color: var(--secondary-color);
+  padding: 1px 2%;
 }

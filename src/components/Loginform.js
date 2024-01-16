@@ -47,9 +47,9 @@ function Loginform() {
         handelLoginError(data?.errors);
         e.target.textContent = "Log-In";
       }
-    } catch (e) {
-      handelLoginError(e);
-      e.target.textContent = "Log-In";
+    } catch (event) {
+      handelLoginError(event);
+      // e.target.textContent = "Log-In";
     }
   }
 
