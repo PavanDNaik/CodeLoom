@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const JWT_ADMIN_SECRETE = process.env.JWT_ADMIN_SECRETE;
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const { user, problem, admin_list } = require("../db/model");
 const {
   userAuthOnGetRequest,
@@ -41,13 +43,11 @@ router.post(
   adminAuth,
   async (req, res) => {
     const userId = req.body.userId;
-    const userAccountInfo = await mongoose
-      .model("user")
-      .findById(userId)
-      .select("userPassword");
+    const userAccountInfo = await user.findById(userId);
     if (!userAccountInfo) {
       return res.json({ fetchError: "please login to user Account" });
     }
+
     const passwordMatched = await bcrypt.compare(
       req.body.password,
       userAccountInfo.userPassword

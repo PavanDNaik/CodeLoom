@@ -752,6 +752,7 @@ div.admin-section-titles {
 .boiler-and-test-container {
   display: flex;
   gap: 5%;
+  margin-bottom: 20px;
 }
 
 .admin-boiler-monaco-editor {

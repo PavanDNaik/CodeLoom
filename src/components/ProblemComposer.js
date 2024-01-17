@@ -71,6 +71,7 @@ function ProblemComposer() {
                 rows="10"
                 key={index}
                 placeholder={EXAMPLE_SYNTAX}
+                type="text"
                 onChange={(e) => {
                   basicProblemInfo.description.examples[index] = e.target.value;
                   setBasicProblemInfo(basicProblemInfo);
@@ -104,11 +105,13 @@ function ProblemComposer() {
       .then((result) => {
         result.json().then((data) => {
           if (data.success) {
-            document.getElementById("upload-message").textContent =
-              data.success;
+            // document.getElementById("upload-message").textContent =
+            //   data.success;
+            alert("success");
           } else {
-            document.getElementById("upload-message").textContent =
-              "UPLOAD FAILED";
+            // document.getElementById("upload-message").textContent =
+            //   "UPLOAD FAILED";
+            alert("Upload Failed");
           }
         });
       })
