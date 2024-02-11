@@ -76,7 +76,7 @@ function AptiQuestion({ question, number, catagory }) {
             </div>
           </div>
         ) : (
-          ""
+          <div></div>
         )}
       </div>
     </div>

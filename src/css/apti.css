@@ -131,3 +131,10 @@ button.fixed-right-bottom {
   font-size: 20px;
   font-weight:900;
 }
+.no-question-selected{
+  padding: 5%;
+  display:block;
+  gap: 20px;
+  height:630.600px; 
+  color:var(--font-color);
+ }

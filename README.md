@@ -1,31 +1,39 @@
-# <a href="https://code-loom.vercel.app/">CLICK HERE</a> to Preview
+# CodeLoom
 
-# About
+[![Preview](https://img.shields.io/badge/CLICK%20HERE-Preview-blue)](https://code-loom.vercel.app/)
 
-### `CodeLoom`
+## About
 
-### https://code-loom.vercel.app/
+**CodeLoom** is a platform designed to help you practice coding and expand your skills. It provides a space for exploration and learning in various programming domains.
 
-A platform to practice coding .
-Explore and expand your skills
+Visit [CodeLoom](https://code-loom.vercel.app/) to start your coding journey!
 
-# Check-Out
+## Features
 
-    https://code-loom.vercel.app/
+- Practice coding in a variety of languages.
+- Explore exercises tailored to different skill levels.
+- Track your progress and improve your coding abilities.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+### Installation
 
-### `npm start`
+Clone the repository:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```bash
+git clone https://github.com/your-username/code-loom.git
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Install dependencies
 
-### `Start Server`
+```bash
+cd code-loom
+npm install
+npm start
+```
 
-    cd server
-    node index.js
+```bash
+cd ./server
+npm install
+npm run dev
+```
